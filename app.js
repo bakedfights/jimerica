@@ -1,0 +1,77 @@
+"use strict";
+const COUNTRY_NAMES = {"Global":"🌍 Global","US":"🇺🇸 United States","TH":"🇹🇭 Thailand","JP":"🇯🇵 Japan","CL":"🇨🇱 Chile","BR":"🇧🇷 Brazil","KR":"🇰🇷 South Korea","PH":"🇵🇭 Philippines","VN":"🇻🇳 Vietnam","SG":"🇸🇬 Singapore","TW":"🇹🇼 Taiwan","MX":"🇲🇽 Mexico","PE":"🇵🇪 Peru","VE":"🇻🇪 Venezuela","PY":"🇵🇾 Paraguay","BY":"🇧🇾 Belarus","PA":"🇵🇦 Panama","CR":"🇨🇷 Costa Rica","KZ":"🇰🇿 Kazakhstan","CZ":"🇨🇿 Czechia","ID":"🇮🇩 Indonesia","MY":"🇲🇾 Malaysia","HK":"🇭🇰 Hong Kong","IN":"🇮🇳 India","GB":"🇬🇧 United Kingdom","CA":"🇨🇦 Canada","AR":"🇦🇷 Argentina","ES":"🇪🇸 Spain","BO":"🇧🇴 Bolivia","UY":"🇺🇾 Uruguay","SV":"🇸🇻 El Salvador","GT":"🇬🇹 Guatemala","HN":"🇭🇳 Honduras","DO":"🇩🇴 Dominican Republic","NI":"🇳🇮 Nicaragua","EC":"🇪🇨 Ecuador","CO":"🇨🇴 Colombia","UA":"🇺🇦 Ukraine","BG":"🇧🇬 Bulgaria","LV":"🇱🇻 Latvia","SA":"🇸🇦 Saudi Arabia","AE":"🇦🇪 UAE","MA":"🇲🇦 Morocco","IE":"🇮🇪 Ireland","HU":"🇭🇺 Hungary","AU":"🇦🇺 Australia","NZ":"🇳🇿 New Zealand","DE":"🇩🇪 Germany","FR":"🇫🇷 France","IT":"🇮🇹 Italy","PL":"🇵🇱 Poland","TR":"🇹🇷 Türkiye","EG":"🇪🇬 Egypt","PK":"🇵🇰 Pakistan","NG":"🇳🇬 Nigeria","ZA":"🇿🇦 South Africa"};
+const format = n => n.toLocaleString('en-US');
+const billions = n => (n / 1e9).toFixed(2) + 'B';
+// Parse at noon as a calendar date: no UTC-midnight shift to the previous PT day.
+const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+function node(tag, text, className) {
+  const el = document.createElement(tag);
+  if (text !== undefined && text !== null) el.textContent = text;
+  if (className) el.className = className;
+  return el;
+}
+function renderMetrics(id, entries) {
+  const container = document.getElementById(id);
+  container.replaceChildren(...entries.map(([value,label,detail]) => {
+    const metric = node('div', null, 'metric');
+    metric.append(node('strong', value), node('span',label));
+    if (detail) metric.append(node('small', detail));
+    return metric;
+  }));
+}
+let songSort = 'streams';
+function renderSongs() {
+  const onlyFeatures = document.getElementById('features-only').checked;
+  const rows = SONGS.filter(s => !onlyFeatures || s[3]).slice();
+  if (songSort === 'daily') rows.sort((a,b) => (b[2] ?? -1) - (a[2] ?? -1));
+  else if (songSort === 'title') rows.sort((a,b) => a[0].localeCompare(b[0]));
+  else rows.sort((a,b) => b[1] - a[1]);
+  document.getElementById('song-rows').replaceChildren(...rows.map(s => {
+    const row = node('tr');
+    const title = node('td', s[0]);
+    if (s[3]) title.append(node('span', '(feature)', 'feature-label'));
+    row.append(title, node('td', format(s[1])), node('td', s[2] === null ? '–' : format(s[2])));
+    return row;
+  }));
+  document.getElementById('song-count').textContent = `${rows.length} ${onlyFeatures ? 'featured ' : ''}songs · daily gains for ${UPDATED}`;
+}
+function movement(m) {
+  if (m === 'same') return ['= same', 'neutral'];
+  if (m === 're') return ['RE re-entry','reentry'];
+  if (m === 'new') return ['NEW','reentry'];
+  return m.startsWith('up ') ? ['▲ '+m.slice(3),'positive'] : ['▼ '+m.slice(5),'negative'];
+}
+function init() {
+  document.getElementById('summary').textContent = `Every Jimin song on Spotify, solo and features, with total streams and daily gains. Data as of ${UPDATED}, Spotify play counts.`;
+  const statement = document.getElementById('milestone');
+  statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(` streams across his solo and featured songs on Spotify as of ${longDate(UPDATED)}`));
+  renderMetrics('totals-metrics', [[billions(TOTALS.streams),'Total streams'],[format(TOTALS.daily),'Streams yesterday'],[billions(TOTALS.solo),'Solo streams'],[String(TOTALS.tracks),'Tracks counted']]);
+  const top = SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,10);
+  document.getElementById('top-bars').replaceChildren(...top.map(s=>{
+    const bar=node('div',null,'bar');
+    const label=node('div',null,'bar-label');
+    label.append(node('span',s[0]),node('strong',billions(s[1])));
+    const track=node('div',null,'bar-track');
+    track.setAttribute('aria-hidden','true');
+    const fill=node('div',null,'bar-fill');
+    fill.style.width=(s[1]/top[0][1]*100)+'%';
+    track.append(fill); bar.append(label,track); return bar;
+  }));
+  document.querySelectorAll('[data-sort]').forEach(button=>button.addEventListener('click',()=>{
+    songSort=button.dataset.sort;
+    document.querySelectorAll('[data-sort]').forEach(b=>b.setAttribute('aria-pressed', String(b===button)));
+    renderSongs();
+  }));
+  document.getElementById('features-only').addEventListener('change', renderSongs);
+  renderSongs();
+  document.getElementById('who-caption').textContent=`"Who" on Spotify's daily country charts for ${WHO_DATE}. Source: Spotify charts. Each chart keeps its own verified date.`;
+  renderMetrics('who-metrics', [[String(WHO.length),'Countries charting'],[String(WHO.filter(w=>w[1]<=10).length),'Top 10 spots'],[format(WHO.reduce((n,w)=>n+w[4],0)),'Daily streams on these charts']]);
+  document.getElementById('who-rows').replaceChildren(...WHO.map(w=>{
+    const row=node('tr');
+    const [move, cls]=movement(w[2]);
+    row.append(node('td',COUNTRY_NAMES[w[0]] ?? w[0]), node('td','#'+w[1]), node('td',move,cls),node('td',w[3]===null?'–':'#'+w[3]), node('td',format(w[4])),node('td',w[5]===null?'–':(w[5]>0?'+':'')+format(w[5]),w[5]===null?'neutral':w[5]>=0?'positive':'negative'));
+    return row;
+  }));
+  document.getElementById('source-description').textContent=`Last updated: ${UPDATED}. The figures are Spotify's public play counts, collected by kworb.net. Daily streams are the change in each track's play count between one daily snapshot and the next. Selected song totals may be refreshed from Spotify's live play counter; these are separate from the dated daily gains. Country charts are dated ${WHO_DATE}.`;
+}
+init();
