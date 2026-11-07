@@ -26,11 +26,15 @@ function renderSongs() {
   if (songSort === 'daily') rows.sort((a,b) => (b[2] ?? -1) - (a[2] ?? -1));
   else if (songSort === 'title') rows.sort((a,b) => a[0].localeCompare(b[0]));
   else rows.sort((a,b) => b[1] - a[1]);
+  const maxDaily = Math.max(0, ...SONGS.map(s => s[2] ?? 0));
   document.getElementById('song-rows').replaceChildren(...rows.map(s => {
     const row = node('tr');
     const title = node('td', s[0]);
     if (s[3]) title.append(node('span', '(feature)', 'feature-label'));
-    row.append(title, node('td', format(s[1])), node('td', s[2] === null ? '–' : format(s[2])));
+    const daily = node('td', s[2] === null ? '–' : format(s[2]));
+    if (s[2] !== null && maxDaily > 0) daily.style.setProperty('--w', Math.max(2, s[2] / maxDaily * 100) + '%');
+    daily.className = 'daily-cell';
+    row.append(title, node('td', format(s[1])), daily);
     return row;
   }));
   document.getElementById('song-count').textContent = `${rows.length} ${onlyFeatures ? 'featured ' : ''}songs · daily gains for ${UPDATED}`;
@@ -62,6 +66,7 @@ function init() {
     document.querySelectorAll('[data-sort]').forEach(b=>b.setAttribute('aria-pressed', String(b===button)));
     renderSongs();
   }));
+  document.querySelectorAll('th[data-col]').forEach(th=>{th.tabIndex=0;const go=()=>document.querySelector(`[data-sort="${th.dataset.col}"]`).click();th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
   document.getElementById('features-only').addEventListener('change', renderSongs);
   renderSongs();
   document.getElementById('who-caption').textContent=`"Who" on Spotify's daily country charts for ${WHO_DATE}. Source: Spotify charts. Each chart keeps its own verified date.`;
