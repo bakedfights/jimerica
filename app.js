@@ -45,11 +45,21 @@ function movement(m) {
   if (m === 'new') return ['NEW','reentry'];
   return m.startsWith('up ') ? ['▲ '+m.slice(3),'positive'] : ['▼ '+m.slice(5),'negative'];
 }
+const $ = id => document.getElementById(id);
 function init() {
+  if ($('summary')) 
   document.getElementById('summary').textContent = `Every Jimin song on Spotify, solo and features, with total streams and daily gains. Data as of ${UPDATED}, Spotify play counts.`;
-  const statement = document.getElementById('milestone');
+  if ($('milestone')) {
+  const statement = $('milestone');
   statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(` streams across his solo and featured songs on Spotify as of ${longDate(UPDATED)}`));
   renderMetrics('totals-metrics', [[billions(TOTALS.streams),'Total streams'],[format(TOTALS.daily),'Streams yesterday'],[billions(TOTALS.solo),'Solo streams'],[String(TOTALS.tracks),'Tracks counted']]);
+  }
+  if ($('daily-bars')) {
+  $('daily-caption').textContent = `Streams gained on ${longDate(UPDATED)}.`;
+  const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,5);
+  $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');l.append(node('span',s[0]),node('strong','+'+format(s[2])));const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
+  }
+  if ($('top-bars')) {
   const top = SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,10);
   document.getElementById('top-bars').replaceChildren(...top.map(s=>{
     const bar=node('div',null,'bar');
@@ -61,6 +71,8 @@ function init() {
     fill.style.width=(s[1]/top[0][1]*100)+'%';
     track.append(fill); bar.append(label,track); return bar;
   }));
+  }
+  if ($('song-rows')) {
   document.querySelectorAll('[data-sort]').forEach(button=>button.addEventListener('click',()=>{
     songSort=button.dataset.sort;
     document.querySelectorAll('[data-sort]').forEach(b=>b.setAttribute('aria-pressed', String(b===button)));
@@ -69,6 +81,8 @@ function init() {
   document.querySelectorAll('th[data-col]').forEach(th=>{th.tabIndex=0;const go=()=>document.querySelector(`[data-sort="${th.dataset.col}"]`).click();th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
   document.getElementById('features-only').addEventListener('change', renderSongs);
   renderSongs();
+  }
+  if ($('who-rows')) {
   document.getElementById('who-caption').textContent=`"Who" on Spotify's daily country charts for ${WHO_DATE}. Source: Spotify charts. Each chart keeps its own verified date.`;
   renderMetrics('who-metrics', [[String(WHO.length),'Countries charting'],[String(WHO.filter(w=>w[1]<=10).length),'Top 10 spots'],[format(WHO.reduce((n,w)=>n+w[4],0)),'Daily streams on these charts']]);
   document.getElementById('who-rows').replaceChildren(...WHO.map(w=>{
@@ -77,6 +91,7 @@ function init() {
     row.append(node('td',COUNTRY_NAMES[w[0]] ?? w[0]), node('td','#'+w[1]), node('td',move,cls),node('td',w[3]===null?'–':'#'+w[3]), node('td',format(w[4])),node('td',w[5]===null?'–':(w[5]>0?'+':'')+format(w[5]),w[5]===null?'neutral':w[5]>=0?'positive':'negative'));
     return row;
   }));
-  document.getElementById('source-description').textContent=`Last updated: ${UPDATED}. The figures are Spotify's public play counts, collected by kworb.net. Daily streams are the change in each track's play count between one daily snapshot and the next. Selected song totals may be refreshed from Spotify's live play counter; these are separate from the dated daily gains. Country charts are dated ${WHO_DATE}.`;
+  }
+  if ($('source-description')) document.getElementById('source-description').textContent=`Last updated: ${UPDATED}. The figures are Spotify's public play counts, collected by kworb.net. Daily streams are the change in each track's play count between one daily snapshot and the next. Selected song totals may be refreshed from Spotify's live play counter; these are separate from the dated daily gains. Country charts are dated ${WHO_DATE}.`;
 }
 init();

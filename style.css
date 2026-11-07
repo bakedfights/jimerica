@@ -31,3 +31,16 @@ th.sortable::after{content:" ↕";opacity:.4}
 .segmented button[aria-pressed=true]{background:var(--gold);color:#2b2d31;font-weight:700}
 footer strong{font-size:1.1rem}
 @media(max-width:600px){.site-header{padding-top:40px}nav{gap:8px}nav a{font-size:.8rem;padding:6px 11px}}
+/* multi-page nav */
+.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:16px;padding:12px max(24px,calc((100% - 1100px)/2));background:rgba(43,45,49,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .logo{font-weight:800;letter-spacing:.14em;color:var(--gold);font-size:.9rem;margin-right:auto}
+.pagelinks{display:flex;gap:6px}
+.pagelinks a{padding:8px 16px;border-radius:999px;color:var(--muted);font-weight:600;font-size:.9rem}
+.pagelinks a:hover{color:var(--text);background:var(--panel);text-decoration:none}
+.pagelinks a[aria-current=page]{background:var(--gold);color:#2b2d31}
+.menu-btn{display:none;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer}
+.page-sub{color:var(--muted);max-width:640px;margin-inline:auto}
+.cta{display:inline-block;margin:24px 10px 0 0;padding:10px 18px;border-radius:999px;border:1px solid rgba(240,198,116,.4);color:var(--gold);font-weight:600}
+.cta:hover{background:rgba(240,198,116,.1);text-decoration:none}
+#daily-bars .bar-fill{background:linear-gradient(90deg,#c9a24f,var(--gold))}
+@media(max-width:600px){.menu-btn{display:block}.topbar{flex-wrap:wrap;padding:10px 16px}.pagelinks{display:none;width:100%;flex-direction:column}.pagelinks.open{display:flex}.pagelinks a{padding:12px 16px}}

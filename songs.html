@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Archive of Jimin's achievements: Spotify total streams, daily gains, worldwide Who charts and solo milestones. By @JIMERICA.">
+<meta name="theme-color" content="#2b2d31">
+<title>Songs · Archive of Jimin's Achievements | JIMERICA</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;700&display=swap">
+<link rel="stylesheet" href="./style.css">
+<script src="./data.js" defer></script>
+<script src="./app.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main">Skip to content</a>
+<nav class="topbar" aria-label="Pages"><a class="logo" href="./">@JIMERICA</a><button class="menu-btn" aria-expanded="false" aria-controls="pagelinks" onclick="var o=this.getAttribute('aria-expanded')!=='true';this.setAttribute('aria-expanded',o);document.getElementById('pagelinks').classList.toggle('open',o)">Menu</button><div id="pagelinks" class="pagelinks"><a href="./">Overview</a><a href="./songs.html" aria-current="page">Songs</a><a href="./who.html">Who</a><a href="./about.html">About</a></div></nav>
+<header class="site-header"><div class="brand">@JIMERICA</div><h1>Songs</h1><p class="page-sub">Every solo and featured song, sortable by total or daily streams.</p></header>
+<main id="main">
+<noscript><p class="callout">Please enable JavaScript to see the updated Spotify statistics and song sorting controls. Achievement details and sources remain available below.</p></noscript>
+<section id="songs"><h2>Every song</h2><p class="caption">Daily = streams gained on the latest day kworb tracked; – means kworb lists no daily figure.</p><div class="controls"><div class="segmented" role="group" aria-label="Sort songs"><button type="button" data-sort="streams" aria-pressed="true">Total streams</button><button type="button" data-sort="daily" aria-pressed="false">Daily gain</button><button type="button" data-sort="title" aria-pressed="false">A–Z</button></div><label class="toggle"><input id="features-only" type="checkbox"> Features only</label></div><p id="song-count" class="caption" aria-live="polite"></p><div class="table-wrap" tabindex="0" role="region" aria-label="Every song statistics"><table><thead><tr><th scope="col" class="sortable" data-col="title">Song</th><th scope="col" class="sortable" data-col="streams">Streams</th><th scope="col" class="sortable" data-col="daily">Daily</th></tr></thead><tbody id="song-rows"></tbody></table></div><aside class="callout">Some "Who" remix and instrumental versions show very large daily gains while "Who" itself shows none. This is probably because Spotify links these versions to one track, so the original's daily plays are counted under them. The numbers are shown exactly as kworb lists them.</aside></section>
+</main>
+<footer><strong>@JIMERICA</strong><span>Source: Spotify</span><small>Independent fan archive · Not affiliated with Spotify or Jimin.</small></footer>
+</body></html>
