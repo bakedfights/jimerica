@@ -92,6 +92,18 @@ function init() {
     return row;
   }));
   }
-  if ($('source-description')) document.getElementById('source-description').textContent=`Last updated: ${UPDATED}. The figures are Spotify's public play counts, collected by kworb.net. Daily streams are the change in each track's play count between one daily snapshot and the next. Selected song totals may be refreshed from Spotify's live play counter; these are separate from the dated daily gains. Country charts are dated ${WHO_DATE}.`;
+  if ($('source-description')) document.getElementById('source-description').textContent=`Last updated: ${UPDATED}. The figures are Spotify's public play counts. Daily streams are the change in each track's play count between one daily snapshot and the next. Selected song totals may be refreshed from Spotify's live play counter; these are separate from the dated daily gains. Country charts are dated ${WHO_DATE}.`;
+}
+function renderChart(k, rows, src) {
+  const cap = $(k+'-cap'); cap.textContent = `Jimin's solo songs on Spotify's ${k==='us'?'USA':'South Korea'} Daily chart, all-time, as of ${longDate(ACH_CHART_ASOF)}. Source: `;
+  const l = node('a','Spotify Charts'); l.href = src; cap.append(l);
+  const best = rows.slice().sort((a,b)=>a[3]-b[3]||b[4]-a[4])[0], longest = rows.slice().sort((a,b)=>b[1]-a[1])[0];
+  renderMetrics(k+'-metrics', [['#'+best[3], 'Peak', best[0]], [format(rows.reduce((n,r)=>n+(r[3]===1?r[4]:0),0)), 'Total days at #1'], [format(longest[1]), 'Days charted (longest)', longest[0]], [String(rows.length), 'Solo songs charted']]);
+  $(k+'-rows').replaceChildren(...rows.map(r=>{const tr=node('tr');tr.append(node('td',r[0]),node('td','#'+r[3],r[3]===1?'gold':null),node('td',r[4]?format(r[4]):'–'),node('td',r[2]?format(r[2]):'–'),node('td',format(r[1])));return tr;}));
+}
+if (typeof ACH_US !== 'undefined' && $('us-rows')) {
+  renderChart('us', ACH_US, ACH_US_SRC); renderChart('kr', ACH_KR, ACH_KR_SRC);
+  $('brand-metrics').replaceChildren(...ACH_BRAND.map(b=>{const m=node('div',null,'metric');m.append(node('strong','#'+b[1]),node('span',b[0]));const sm=node('small','Index '+format(b[2])+' · ');const a=node('a','source');a.href=b[3];sm.append(a);m.append(sm);return m;}));
+  $('brand-note').append(document.createTextNode(ACH_BRAND_NOTE[0]+' '));const a=node('a','Source');a.href=ACH_BRAND_NOTE[1];$('brand-note').append(a);
 }
 init();

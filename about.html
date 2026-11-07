@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;700&display=swap">
 <link rel="stylesheet" href="./style.css">
 <script src="./data.js" defer></script>
+<script src="./achievements.js" defer></script>
 <script src="./app.js" defer></script>
 </head>
 <body>
@@ -20,6 +21,11 @@
 <header class="site-header"><div class="brand">@JIMERICA</div><h1>About</h1><p class="page-sub">Solo achievements, about Jimin, and sources.</p></header>
 <main id="main">
 <noscript><p class="callout">Please enable JavaScript to see the updated Spotify statistics and song sorting controls. Achievement details and sources remain available below.</p></noscript>
+<section id="chart-achievements"><h2>Solo chart &amp; brand achievements</h2>
+<section><h2>Spotify USA Daily chart</h2><p class="caption" id="us-cap"></p><div class="metrics" id="us-metrics"></div><div class="table-wrap" tabindex="0" role="region" aria-label="US daily chart"><table><thead><tr><th>Song</th><th>Peak</th><th>Days at peak</th><th>Top 10 days</th><th>Days charted</th></tr></thead><tbody id="us-rows"></tbody></table></div></section>
+<section><h2>Spotify South Korea Daily chart</h2><p class="caption" id="kr-cap"></p><div class="metrics" id="kr-metrics"></div><div class="table-wrap" tabindex="0" role="region" aria-label="KR daily chart"><table><thead><tr><th>Song</th><th>Peak</th><th>Days at peak</th><th>Top 10 days</th><th>Days charted</th></tr></thead><tbody id="kr-rows"></tbody></table></div></section>
+<section><h2>Brand reputation (한국기업평판연구소)</h2><p class="caption">Korean Business Research Institute, monthly boy group individual member brand reputation ranking.</p><div class="metrics" id="brand-metrics"></div><p class="caption" id="brand-note"></p></section>
+</section>
 <div id="achievements">      <section><h2>Solo Achievements</h2>
         <div class="metrics"><div class="metric"><strong>No. 1</strong><span>Like Crazy, Billboard Hot 100</span><small>First South Korean soloist to top it</small></div><div class="metric"><strong>No. 2 ×2</strong><span>FACE and MUSE, Billboard 200</span></div><div class="metric"><strong>33 weeks</strong><span>Who on the Hot 100</span></div><div class="metric"><strong>3</strong><span>Guinness World Records titles</span></div></div>
         <section><h2>FACE (March 24, 2023)</h2>
@@ -44,7 +50,7 @@
         <div class="link-cards"><a href="https://cursor.com/canvas/store-7b47cc70-2340-4302-b13c-2a1a4a532159/0e19b92d-94b6-4fda-9b68-6f6d65fed0d7" target="_blank" rel="noopener noreferrer"><strong>Jimin of BTS: The Full Story</strong><small>Grok Bot Page</small></a></div>
       </section>
 </div>
-<section id="sources"><h2>Sources</h2><p id="source-description"></p><div class="link-cards"><a href="https://kworb.net/spotify/artist/1oSPZhvZMIrWW5I41kPkkY_songs.html" target="_blank" rel="noopener noreferrer"><strong>Jimin – Spotify Top Songs</strong><small>kworb.net</small></a><a href="https://open.spotify.com/artist/1oSPZhvZMIrWW5I41kPkkY" target="_blank" rel="noopener noreferrer"><strong>Jimin on Spotify</strong><small>open.spotify.com</small></a><a href="https://kworb.net/spotify/track/7tI8dRuH2Yc6RuoTjxo4dU.html" target="_blank" rel="noopener noreferrer"><strong>Who – Spotify country chart history</strong><small>kworb.net</small></a></div></section>
+<section id="sources"><h2>Sources</h2><p id="source-description"></p><div class="link-cards"><a href="https://open.spotify.com/artist/1oSPZhvZMIrWW5I41kPkkY" target="_blank" rel="noopener noreferrer"><strong>Jimin on Spotify</strong><small>open.spotify.com</small></a><a href="https://charts.spotify.com/charts/overview/global" target="_blank" rel="noopener noreferrer"><strong>Spotify Charts</strong><small>charts.spotify.com</small></a></div></section>
 </main>
 <footer><strong>@JIMERICA</strong><span>Source: Spotify</span><small>Independent fan archive · Not affiliated with Spotify or Jimin.</small></footer>
 </body></html>
