@@ -59,3 +59,15 @@ function calPage(){
     dt.append(ul);box.append(dt);}
 }
 discPage(); calPage();
+function achPage(){
+  if(!document.getElementById('cat-charts')) return;
+  const sm=document.getElementById('sm-rows');
+  if(sm&&typeof SONGS!=='undefined'){
+    const tiers=[[2e9,'2 billion+'],[1e9,'1 billion+'],[5e8,'500 million+'],[1e8,'100 million+']];
+    tiers.forEach(([t,l],i)=>{const hi=i?tiers[i-1][0]:Infinity;const s=SONGS.filter(r=>r[1]>=t&&r[1]<hi).map(r=>r[0]);if(!s.length)return;
+      const tr=document.createElement('tr');tr.append(mk('td','gold',l+' streams'),mk('td',null,s.join(', ')));sm.append(tr);});
+    document.getElementById('sm-cap').textContent=`Spotify all-time streams per song as of ${fmtD(UPDATED)} (updates daily). Source: Spotify.`;
+  }
+  document.querySelectorAll('.ach-cat').forEach(d=>{const n=d.querySelectorAll('tbody tr').length+d.querySelectorAll('#brand-metrics .metric').length;d.querySelector('.ach-count').textContent=n?'· '+n:'';});
+}
+window.addEventListener('load',achPage);
