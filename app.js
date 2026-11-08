@@ -125,7 +125,7 @@ function renderChart(k, rows, src) {
 }
 if (typeof ACH_US !== 'undefined' && $('us-rows')) {
   renderChart('us', ACH_US, ACH_US_SRC); renderChart('kr', ACH_KR, ACH_KR_SRC);
-  $('brand-metrics').replaceChildren(...ACH_BRAND.map(b=>{const m=node('div',null,'metric');m.append(node('strong','#'+b[1]),node('span',b[0]));const sm=node('small','Index '+format(b[2])+' · ');const a=node('a','source');a.href=b[3];sm.append(a);m.append(sm);return m;}));
-  $('brand-note').append(document.createTextNode(ACH_BRAND_NOTE[0]+' '));const a=node('a','Source');a.href=ACH_BRAND_NOTE[1];$('brand-note').append(a);
+  $('brand-metrics').replaceChildren(...ACH_BRAND.map(b=>{const m=node('div',null,'metric');m.append(node('strong','#'+b[1]),node('span',b[0]));const sm=node('small','Index '+format(b[2]));m.append(sm);return m;}));
+  $('brand-note').textContent='61 total #1s, a record, as of the August 2026 ranking. The September and October reports did not restate the cumulative count.';
 }
 init();
