@@ -1,5 +1,5 @@
 "use strict";
-// Korean/English UI translation. Translates every UI text node and title/aria-label/placeholder/alt attribute
+// Korean/English UI translation. Translates every UI text node and title/aria-label/placeholder/alt/data-label attribute
 // (including JS-generated text) using exact phrases + patterns. Song titles and numbers stay as-is.
 // Choice persisted in localStorage 'jimerica-lang'.
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -123,7 +123,7 @@ function translateStr(s){
   const fm=t.match(/^(\S+) (.+)$/); if(fm&&KO[fm[2]]&&/\p{Extended_Pictographic}|\p{Regional_Indicator}/u.test(fm[1])) return lead+fm[1]+' '+KO[fm[2]]+trail;
   return lead+t+trail;
 }
-const ORIG=new WeakMap(), ATTRS=['title','aria-label','placeholder','alt'];
+const ORIG=new WeakMap(), ATTRS=['title','aria-label','placeholder','alt','data-label'];
 const SKIP='script,style,iframe,.no-tr';
 let LANG='en', busy=false;
 function trNode(root){
@@ -151,14 +151,14 @@ function applyLang(lang){
   if(LANG==='ko'){ trNode(document.body); document.title=titleEn.split(' · ').map(translateStr).join(' · '); }
   else { restore(); document.title=titleEn; }
   const sel=document.getElementById('lang-select'); if(sel) sel.value=LANG;
-  const lb=document.getElementById('lang-label'); if(lb) lb.textContent=LANG==='ko'?'언어 선택 · Choose English or Korean':'Choose English or Korean';
+  const lb=document.getElementById('lang-label'); if(lb) lb.textContent=LANG==='ko'?'언어 선택':'Choose English or Korean';
 }
 window.applyLang=applyLang; window.translateStr=translateStr;
 window.addEventListener('load',()=>{
   let lang='en'; try{lang=localStorage.getItem('jimerica-lang')||'en';}catch{}
   applyLang(lang);
-  new MutationObserver(ms=>{ if(busy||LANG!=='ko') return; for(const m of ms){ if(m.type==='characterData'){ if(!ORIG.has(m.target)||translateStr(ORIG.get(m.target))!==m.target.nodeValue){ORIG.delete(m.target);trNode(m.target.parentElement||m.target);} } else m.addedNodes.forEach(x=>trNode(x.nodeType===1?x:x.parentElement||x)); } })
-    .observe(document.body,{childList:true,subtree:true,characterData:true});
+  new MutationObserver(ms=>{ if(busy||LANG!=='ko') return; for(const m of ms){ if(m.type==='characterData'){ if(!ORIG.has(m.target)||translateStr(ORIG.get(m.target))!==m.target.nodeValue){ORIG.delete(m.target);trNode(m.target.parentElement||m.target);} } else if(m.type==='attributes'){ trNode(m.target); } else m.addedNodes.forEach(x=>trNode(x.nodeType===1?x:x.parentElement||x)); } })
+    .observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['data-label']});
   const sel=document.getElementById('lang-select'); if(sel) sel.addEventListener('change',()=>{const l=sel.value==='ko'?'ko':'en';try{localStorage.setItem('jimerica-lang',l);}catch{}applyLang(l);});
   document.querySelectorAll('.navgrp').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)document.querySelectorAll('.navgrp').forEach(o=>o!==d&&(o.open=false));}));
   document.addEventListener('click',e=>{if(!e.target.closest('.navgrp')&&window.innerWidth>600)document.querySelectorAll('.navgrp').forEach(o=>o.open=false);});

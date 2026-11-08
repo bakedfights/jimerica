@@ -13,6 +13,11 @@ const FEED = [
   "date": "2026-10-14"
  },
  {
+  "platform": "instagram",
+  "url": "https://www.instagram.com/p/DeH0wuCFAQW/",
+  "date": "2026-10-05"
+ },
+ {
   "platform": "tiktok",
   "url": "https://www.tiktok.com/@jimin/video/7690494266287688981",
   "date": "2026-09-28"
