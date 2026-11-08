@@ -572,7 +572,7 @@ const ES_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agost
 const esDate=(m,d,y)=>`${+d} de ${ES_MONTHS[m]} de ${y}`;
 const ES_PAT=[
 [/^Every Jimin song on Spotify, solo and features, with total streams and daily gains\. Data as of (.+), Spotify play counts\.$/,m=>`Todas las canciones de Jimin en Spotify, como solista y en colaboraciones, con reproducciones totales y diarias. Datos del ${m[1]}, según los contadores de Spotify.`],
-[/^streams across his solo and featured songs on Spotify as of (.+)$/,m=>`reproducciones de sus canciones como solista y colaboraciones en Spotify hasta el ${m[1]}`],
+[/^streams across his solo and featured songs on Spotify as of (.+)$/,m=>`de reproducciones de sus canciones como solista y colaboraciones en Spotify hasta el ${m[1]}`],
 [/^Streams gained on (.+)\.$/,m=>`Reproducciones obtenidas el ${m[1]}.`],
 [/^([\d.]+) Billion$/,m=>`${m[1].replace('.',',')} mil millones`],
 [/^(\d+) (featured )?songs · daily gains for (.+)$/,m=>`${m[1]} canciones${m[2]?' en colaboración':''} · reproducciones diarias del ${m[3]}`],
