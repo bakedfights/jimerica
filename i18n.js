@@ -162,3 +162,15 @@ window.addEventListener('load',()=>{
   document.querySelectorAll('.navgrp').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)document.querySelectorAll('.navgrp').forEach(o=>o!==d&&(o.open=false));}));
   document.addEventListener('click',e=>{if(!e.target.closest('.navgrp')&&window.innerWidth>600)document.querySelectorAll('.navgrp').forEach(o=>o.open=false);});
 });
+// Flat tabs: on narrow screens tabs scroll sideways; show fade + arrow hints where more tabs exist.
+window.addEventListener('load',()=>{
+  const wrap=document.querySelector('.tabs-wrap'), row=document.getElementById('pagelinks'); if(!wrap||!row) return;
+  const L=wrap.querySelector('.tab-arrow.left'), R=wrap.querySelector('.tab-arrow.right');
+  const upd=()=>{const max=row.scrollWidth-row.clientWidth; const l=row.scrollLeft>4, r=row.scrollLeft<max-4 && max>4;
+    wrap.classList.toggle('more-left',l); wrap.classList.toggle('more-right',r); L.hidden=!l; R.hidden=!r;};
+  const cur=row.querySelector('[aria-current=page]');
+  if(cur&&row.scrollWidth>row.clientWidth){ row.scrollLeft=Math.max(0,cur.offsetLeft-row.clientWidth/2+cur.offsetWidth/2); }
+  L.addEventListener('click',()=>row.scrollBy({left:-row.clientWidth*.7,behavior:'smooth'}));
+  R.addEventListener('click',()=>row.scrollBy({left:row.clientWidth*.7,behavior:'smooth'}));
+  row.addEventListener('scroll',upd,{passive:true}); window.addEventListener('resize',upd); upd(); setTimeout(upd,300);
+});
