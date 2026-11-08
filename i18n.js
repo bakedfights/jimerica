@@ -5,6 +5,7 @@
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MON3=MONTHS.map(m=>m.slice(0,3));
 const KO={
+"Current streams":"현재 스트리밍",
 // nav & chrome
 "Stats":"통계","Music":"음악","Fans":"팬","Overview":"개요","Songs":"곡","Trends":"추이","Milestones":"마일스톤","Achievements":"업적","Who":"Who","Discography":"디스코그래피","Calendar":"캘린더","Feed":"피드","Social Media":"SNS","X · @JIMERICA":"X · @JIMERICA","View on X ↗":"X에서 보기 ↗","Image from @JIMERICA post":"@JIMERICA 게시물 이미지","Streaming guide":"스트리밍 가이드","About":"소개","Menu":"메뉴",
 "Skip to content":"본문으로 건너뛰기","Source: Spotify":"출처: Spotify","Independent fan archive · Not affiliated with Spotify or Jimin.":"독립 팬 아카이브 · Spotify 및 지민과 무관합니다.","Pages":"페이지",
@@ -124,6 +125,7 @@ function translateStr(s){
   return lead+t+trail;
 }
 const ES={
+"Current streams":"Reproducciones actuales",
   "Stats": "Estadísticas",
   "Music": "Música",
   "Fans": "Fans",

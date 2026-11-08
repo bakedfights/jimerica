@@ -85,8 +85,8 @@ function milestonesPage(){
   el('ms-rows').replaceChildren(...rows.map(([s,m,d])=>{const tr=node('tr');const a=node('a',s[0]);a.href='./song.html?id='+slug(s[0]);const td=node('td');td.append(a);
     const pct=Math.min(100,(s[1]-(m-(m<=1e8?1e7:m<=1e9?5e7:1e8)))/(m<=1e8?1e7:m<=1e9?5e7:1e8)*100);
     const prog=node('td',null,'prog');const bar=node('div',null,'pbar');const f=node('span');f.style.width=pct+'%';bar.append(f);prog.append(bar);
-    tr.append(td,node('td',short(m),'gold'),node('td',format(m-s[1])),node('td',format(d)),node('td','≈ '+longDate(addDays(UPDATED,d))),prog);
-    ['Song','Milestone','Streams to go','Days','Est. date','Progress'].forEach((l,i)=>tr.cells[i].dataset.label=l);return tr;}));
+    tr.append(td,node('td',format(s[1]),'gold'),node('td',short(m),'gold'),node('td',format(m-s[1])),node('td',format(d)),node('td','≈ '+longDate(addDays(UPDATED,d))),prog);
+    ['Song','Current streams','Milestone','Streams to go','Days','Est. date','Progress'].forEach((l,i)=>tr.cells[i].dataset.label=l);return tr;}));
   const soon=rows[0]; if(soon) renderMetrics('ms-metrics',[[short(soon[1]),'Next milestone to fall',soon[0][0]],['≈ '+longDate(addDays(UPDATED,soon[2])),'Estimated date'],[String(rows.filter(r=>r[2]<=30).length),'Estimated within 30 days']]);
 }
 function whoLabels(){ document.querySelectorAll('#who-rows tr').forEach(tr=>['Country','Rank','Move','Peak','Daily streams','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l))); }
