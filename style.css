@@ -107,3 +107,8 @@ section{margin-bottom:40px}
 .pagelinks .navmenu a{background:transparent;border:0;box-shadow:none;color:var(--text);font-size:.92rem;border-radius:8px}
 .pagelinks .navmenu a:hover{background:#3a3d42}
 .pagelinks .navmenu a[aria-current=page]{background:rgba(240,198,116,.12);color:var(--gold)}
+.lang-pick{display:flex;align-items:center;gap:8px;margin-left:12px;font-size:.78rem;color:var(--muted)}
+.lang-pick select{background:#2b2d31;color:var(--text);border:1px solid #3a3d42;border-radius:999px;padding:5px 10px;font:inherit;font-size:.85rem;cursor:pointer}
+.lang-pick select:focus{outline:2px solid var(--gold);outline-offset:1px}
+.topbar .pagelinks{flex:1;justify-content:center}
+@media(max-width:600px){.lang-pick{margin:10px 8px 4px;justify-content:space-between;border-top:1px solid #3a3d42;padding-top:12px}}

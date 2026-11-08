@@ -14,12 +14,13 @@ function applyLang(lang){
     if(e.dataset.en==null) e.dataset.en=e.textContent.trim();
     e.textContent=lang==='ko'&&KO[e.dataset.en]?KO[e.dataset.en]:e.dataset.en;});
   document.querySelectorAll('[data-i18n]').forEach(e=>{if(e.dataset.enHtml==null)e.dataset.enHtml=e.innerHTML;e.innerHTML=lang==='ko'&&KO_BLOCK[e.dataset.i18n]?KO_BLOCK[e.dataset.i18n]:e.dataset.enHtml;});
-  const b=document.getElementById('lang-btn'); if(b) b.textContent=lang==='ko'?'English':'한국어';
+  const sel=document.getElementById('lang-select'); if(sel) sel.value=lang;
+  const lb=document.getElementById('lang-label'); if(lb) lb.textContent=lang==='ko'?'언어 선택 · Choose English or Korean':'Choose English or Korean';
 }
 window.addEventListener('load',()=>{
   let lang='en'; try{lang=localStorage.getItem('jimerica-lang')||'en';}catch{}
   applyLang(lang);
-  const b=document.getElementById('lang-btn'); if(b) b.addEventListener('click',()=>{lang=lang==='ko'?'en':'ko';try{localStorage.setItem('jimerica-lang',lang);}catch{}applyLang(lang);});
+  const sel=document.getElementById('lang-select'); if(sel) sel.addEventListener('change',()=>{lang=sel.value==='ko'?'ko':'en';try{localStorage.setItem('jimerica-lang',lang);}catch{}applyLang(lang);});
   // close other nav dropdowns when one opens; close on outside click
   document.querySelectorAll('.navgrp').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)document.querySelectorAll('.navgrp').forEach(o=>o!==d&&(o.open=false));}));
   document.addEventListener('click',e=>{if(!e.target.closest('.navgrp')&&window.innerWidth>600)document.querySelectorAll('.navgrp').forEach(o=>o.open=false);});
