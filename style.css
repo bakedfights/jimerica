@@ -72,3 +72,8 @@ footer strong{font-size:1.1rem}
 .feed-card blockquote>a{display:block;padding:40px;text-align:center;color:var(--gold)}
 .topbar .pagelinks a{padding:8px 12px}
 .chart-wrap .chart{max-height:300px}
+
+.chg-up{color:#3fb950!important;font-weight:600}.chg-down{color:#f85149!important;font-weight:600}.chg-zero{color:var(--muted)}
+#song-rows td:nth-child(4),#songs th:nth-child(4){text-align:right;white-space:nowrap}
+.bar-right{display:flex;gap:10px;align-items:baseline}.bar-right small{font-size:.78rem}
+@media(max-width:600px){.cards-sm .daily-cell[style]{background:none}}

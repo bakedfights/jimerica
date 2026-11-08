@@ -20,10 +20,27 @@ function renderMetrics(id, entries) {
   }));
 }
 let songSort = 'streams';
+// Day-over-day change in daily streams, from history.js snapshots ending on UPDATED. null if not enough data.
+function dailyChange(title) {
+  if (typeof HIST_SONGS === 'undefined') return null;
+  const i = HIST_DATES.indexOf(UPDATED), v = HIST_SONGS[title];
+  if (i < 2 || !v || [v[i], v[i-1], v[i-2]].some(x => x == null)) return null;
+  const today = v[i]-v[i-1], prev = v[i-1]-v[i-2];
+  return {delta: today-prev, pct: prev > 0 ? (today-prev)/prev*100 : null};
+}
+function changeNode(tag, title, withPct = true) {
+  const c = dailyChange(title);
+  if (!c) return node(tag, '–', 'chg-zero');
+  const cls = c.delta > 0 ? 'chg-up' : c.delta < 0 ? 'chg-down' : 'chg-zero';
+  const arrow = c.delta > 0 ? '▲ ' : c.delta < 0 ? '▼ ' : '';
+  const txt = arrow + (c.delta > 0 ? '+' : '') + format(c.delta) + (withPct && c.pct != null && c.delta ? ` (${c.pct > 0 ? '+' : ''}${c.pct.toFixed(1)}%)` : '');
+  const e = node(tag, txt, cls); e.title = 'Change vs the day before'; return e;
+}
 function renderSongs() {
   const onlyFeatures = document.getElementById('features-only').checked;
   const rows = SONGS.filter(s => !onlyFeatures || s[3]).slice();
   if (songSort === 'daily') rows.sort((a,b) => (b[2] ?? -1) - (a[2] ?? -1));
+  else if (songSort === 'change') rows.sort((a,b) => (dailyChange(b[0])?.delta ?? -Infinity) - (dailyChange(a[0])?.delta ?? -Infinity));
   else if (songSort === 'title') rows.sort((a,b) => a[0].localeCompare(b[0]));
   else rows.sort((a,b) => b[1] - a[1]);
   const maxDaily = Math.max(0, ...SONGS.map(s => s[2] ?? 0));
@@ -34,7 +51,7 @@ function renderSongs() {
     const daily = node('td', s[2] === null ? '–' : format(s[2]));
     if (s[2] !== null && maxDaily > 0) daily.style.setProperty('--w', Math.max(2, s[2] / maxDaily * 100) + '%');
     daily.className = 'daily-cell';
-    row.append(title, node('td', format(s[1])), daily);
+    row.append(title, node('td', format(s[1])), daily, changeNode('td', s[0]));
     return row;
   }));
   document.getElementById('song-count').textContent = `${rows.length} ${onlyFeatures ? 'featured ' : ''}songs · daily gains for ${UPDATED}`;
@@ -57,14 +74,14 @@ function init() {
   if ($('daily-bars')) {
   $('daily-caption').textContent = `Streams gained on ${longDate(UPDATED)}.`;
   const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,5);
-  $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');l.append(node('span',s[0]),node('strong','+'+format(s[2])));const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
+  $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right');r.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));l.append(node('span',s[0]),r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
   }
   if ($('top-bars')) {
   const top = SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,10);
   document.getElementById('top-bars').replaceChildren(...top.map(s=>{
     const bar=node('div',null,'bar');
     const label=node('div',null,'bar-label');
-    label.append(node('span',s[0]),node('strong',billions(s[1])));
+    const r=node('span',null,'bar-right');r.append(node('strong',billions(s[1])),changeNode('small',s[0],false));label.append(node('span',s[0]),r);
     const track=node('div',null,'bar-track');
     track.setAttribute('aria-hidden','true');
     const fill=node('div',null,'bar-fill');

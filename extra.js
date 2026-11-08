@@ -37,7 +37,7 @@ function songsPage(){
   const q=el('song-search'); if(!q) return;
   const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const show=!v||tr.cells[0].textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
   q.addEventListener('input',apply);
-  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});apply();};
+  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
 function songPage(){
@@ -48,7 +48,8 @@ function songPage(){
   const rank=SONGS.slice().sort((a,b)=>b[1]-a[1]).indexOf(s)+1, share=s[1]/TOTALS.streams*100;
   el('song-sub').textContent=`${s[3]?'Featured':'Solo'} song · #${rank} of ${SONGS.length} by total streams · data as of ${longDate(UPDATED)}`;
   const nm=nextMilestone(s[1]), days=s[2]>0?Math.ceil((nm-s[1])/s[2]):null;
-  renderMetrics('song-metrics',[[format(s[1]),'Total streams'],[s[2]==null?'–':'+'+format(s[2]),'Daily gain'],[share.toFixed(1)+'%','Share of all Jimin streams'],[short(nm),'Next milestone',days?`≈ ${longDate(addDays(UPDATED,days))} (estimate)`:'No daily data']]);
+  renderMetrics('song-metrics',[[format(s[1]),'Total streams'],[s[2]==null?'–':'+'+format(s[2]),'Daily gain',(()=>{const c=dailyChange(s[0]);return c?`${c.delta>0?'▲ +':c.delta<0?'▼ ':''}${format(c.delta)} vs day before`:'';})()],[share.toFixed(1)+'%','Share of all Jimin streams'],[short(nm),'Next milestone',days?`≈ ${longDate(addDays(UPDATED,days))} (estimate)`:'No daily data']]);
+  {const c=dailyChange(s[0]);const sm=document.querySelectorAll('#song-metrics .metric')[1]?.querySelector('small');if(sm&&c)sm.className=c.delta>0?'chg-up':c.delta<0?'chg-down':'chg-zero';}
   const vals=(typeof HIST_SONGS!=='undefined'&&HIST_SONGS[s[0]])||[]; const d=histDaily(vals);
   if(d.some(v=>v!=null)){el('song-chart').replaceChildren(svgChart(HIST_DATES.slice(1),d,{title:'Daily streams'}));el('song-chart-cap').textContent=`Daily streams from snapshots ${HIST_DATES[1]} to ${HIST_DATES.at(-1)} (each bar = change since the previous snapshot).`;}
   else el('song-chart-cap').textContent='Not enough history yet for a chart.';
