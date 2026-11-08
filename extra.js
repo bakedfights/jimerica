@@ -100,7 +100,10 @@ function feedPage(){
   g.innerHTML='';
   for(const f of items){
     const card=node('div',null,'feed-card'); const meta=node('div',null,'feed-meta');
-    meta.append(node('span',f.platform==='instagram'?'Instagram · @j.m':'TikTok · @jimin','feed-tag '+f.platform),node('span',longDate(f.date)));
+    meta.append(node('span',f.platform==='instagram'?'Instagram · @j.m':f.platform==='x'?'X · @JIMERICA':'TikTok · @jimin','feed-tag '+f.platform),node('span',longDate(f.date)));
+    if(f.platform==='x'){const a=document.createElement('a');a.href=f.url;a.target='_blank';a.rel='noopener';a.className='x-post';
+      if(f.text)a.append(node('p',f.text,'x-text no-tr'));if(f.image){const im=document.createElement('img');im.src=f.image;im.alt='Image from @JIMERICA post';im.loading='lazy';a.append(im);}
+      a.append(node('span','View on X ↗','x-open'));card.append(meta,a);g.append(card);continue;}
     const bq=document.createElement('blockquote');
     if(f.platform==='instagram'){bq.className='instagram-media';bq.dataset.instgrmPermalink=f.url;bq.dataset.instgrmVersion='14';}
     else{bq.className='tiktok-embed';bq.setAttribute('cite',f.url);bq.dataset.videoId=f.url.split('/').pop();const s=document.createElement('section');bq.append(s);}
