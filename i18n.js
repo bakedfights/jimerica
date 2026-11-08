@@ -53,7 +53,7 @@ const KO={
 "Birthday, release anniversaries and achievement dates.":"생일, 발매 기념일, 업적 날짜.","Coming up":"다가오는 날","All dates":"전체 날짜","Today":"오늘","Jimin's birthday":"지민 생일","source":"출처",
 "FACE (first solo album) and \"Like Crazy\"":"FACE(첫 솔로 앨범)와 \"Like Crazy\"","MUSE and \"Who\"":"MUSE와 \"Who\"","MUSE (WANDER / WONDER ver.) and Who (Remixes)":"MUSE (WANDER / WONDER ver.)와 Who (Remixes)","\"Angel Pt. 1\" (FAST X soundtrack)":"\"Angel Pt. 1\" (FAST X OST)","\"Set Me Free Pt.2\" pre-release single":"\"Set Me Free Pt.2\" 선공개 싱글",
 // feed
-"Jimin's latest Instagram and TikTok posts, plus updates from @JIMERICA on X.":"지민의 최신 인스타그램·틱톡 게시물과 X @JIMERICA 소식.","All":"전체","Open post ↗":"게시물 열기 ↗","TikTok profile":"틱톡 프로필","Live TikTok profile embed (updates automatically on TikTok's side).":"실시간 틱톡 프로필 (틱톡에서 자동 업데이트).","Filter posts":"게시물 필터",
+"Jimin's latest Instagram and TikTok posts.":"지민의 최신 인스타그램·틱톡 게시물.","All":"전체","Open post ↗":"게시물 열기 ↗","TikTok profile":"틱톡 프로필","Live TikTok profile embed (updates automatically on TikTok's side).":"실시간 틱톡 프로필 (틱톡에서 자동 업데이트).","Filter posts":"게시물 필터",
 // guide
 "New to streaming Jimin on Spotify? Start here.":"Spotify에서 지민 스트리밍이 처음이라면 여기서 시작하세요.","How to stream":"스트리밍 방법","Official Spotify links":"공식 Spotify 링크","Quick tips":"팁","Jimin on Spotify ↗":"Spotify의 지민 ↗",
 // about
