@@ -4,6 +4,16 @@ const slug = t => t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').r
 const addDays = (iso, n) => { const d = new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
 const short = n => n>=1e9 ? (n/1e9).toFixed(2)+'B' : n>=1e6 ? (n/1e6).toFixed(n>=1e8?0:1)+'M' : n>=1e3 ? Math.round(n/1e3)+'K' : String(n);
 const el = id => document.getElementById(id);
+// Average daily streams over the last up-to-7 snapshot days (history.js); falls back to the latest daily gain.
+function avg7(s){ const v=(typeof HIST_SONGS!=='undefined'&&HIST_SONGS[s[0]])||[]; const d=histDaily(v).filter(x=>x!=null&&x>=0).slice(-7); return d.length?{rate:Math.round(d.reduce((a,b)=>a+b,0)/d.length),n:d.length}:{rate:s[2],n:s[2]>0?1:0}; }
+function interactive(svg,wrap,labels,values){ // hover/tap tooltip on line points
+  const tip=document.createElement('div');tip.className='chart-tip';tip.hidden=true;wrap.append(tip);
+  svg.querySelectorAll('circle.dotc').forEach((c,i)=>{const idx=values.map((v,j)=>v==null?null:j).filter(j=>j!=null)[i];
+    const show=()=>{svg.querySelectorAll('.hov').forEach(x=>x.classList.remove('hov'));c.classList.add('hov');const r=svg.getBoundingClientRect(),w=wrap.getBoundingClientRect(),k=r.width/640;
+      tip.textContent=labels[idx]+': '+format(values[idx]);tip.style.left=(r.left-w.left+(+c.getAttribute('cx'))*k)+'px';tip.style.top=(r.top-w.top+(+c.getAttribute('cy'))*k)+'px';tip.hidden=false;};
+    c.setAttribute('r',6);c.setAttribute('tabindex','0');c.addEventListener('mouseenter',show);c.addEventListener('focus',show);c.addEventListener('click',show);});
+  svg.addEventListener('mouseleave',()=>tip.hidden=true);
+}
 function nextMilestone(n){ const step = n<1e8?1e7 : n<1e9?5e7 : 1e8; return Math.floor(n/step)*step+step; }
 // Simple accessible SVG chart. series: [{label, values}] ; kind 'line' or 'bar'
 function svgChart(labels, values, {kind='bar', title='', fmt=format}={}) {
@@ -47,13 +57,13 @@ function songPage(){
   document.title=s[0]+' · JIMERICA'; el('song-title').textContent=s[0];
   const rank=SONGS.slice().sort((a,b)=>b[1]-a[1]).indexOf(s)+1, share=s[1]/TOTALS.streams*100;
   el('song-sub').textContent=`${s[3]?'Featured':'Solo'} song · #${rank} of ${SONGS.length} by total streams · data as of ${longDate(UPDATED)}`;
-  const nm=nextMilestone(s[1]), days=s[2]>0?Math.ceil((nm-s[1])/s[2]):null;
+  const nm=nextMilestone(s[1]), a7=avg7(s), days=a7.rate>0?Math.ceil((nm-s[1])/a7.rate):null;
   renderMetrics('song-metrics',[[format(s[1]),'Total streams'],[s[2]==null?'–':'+'+format(s[2]),'Daily gain',(()=>{const c=dailyChange(s[0]);return c?`${c.delta>0?'▲ +':c.delta<0?'▼ ':''}${format(c.delta)} vs day before`:'';})()],[share.toFixed(1)+'%','Share of all Jimin streams'],[short(nm),'Next milestone',days?`≈ ${longDate(addDays(UPDATED,days))} (estimate)`:'No daily data']]);
   {const c=dailyChange(s[0]);const sm=document.querySelectorAll('#song-metrics .metric')[1]?.querySelector('small');if(sm&&c)sm.className=c.delta>0?'chg-up':c.delta<0?'chg-down':'chg-zero';}
   const vals=(typeof HIST_SONGS!=='undefined'&&HIST_SONGS[s[0]])||[]; const d=histDaily(vals);
-  if(d.some(v=>v!=null)){el('song-chart').replaceChildren(svgChart(HIST_DATES.slice(1),d,{title:'Daily streams'}));el('song-chart-cap').textContent=`Daily streams from snapshots ${HIST_DATES[1]} to ${HIST_DATES.at(-1)} (each bar = change since the previous snapshot).`;}
+  if(d.some(v=>v!=null)){const sv=svgChart(HIST_DATES.slice(1),d,{kind:'line',title:'Daily streams'});el('song-chart').replaceChildren(sv);interactive(sv,el('song-chart'),HIST_DATES.slice(1),d);el('song-chart-cap').textContent=`Daily streams ${HIST_DATES[1]} to ${HIST_DATES.at(-1)}. Hover or tap a point for the exact figure.`;}
   else el('song-chart-cap').textContent='Not enough history yet for a chart.';
-  el('share-x').dataset.share=`${s[0]} by Jimin has ${format(s[1])} streams on Spotify 💛 via @JIMERICA`;
+  el('share-x').dataset.share=`"${s[0]}" by Jimin has ${format(s[1])} streams on Spotify${s[2]?` (+${format(s[2])} on ${longDate(UPDATED)})`:''}. Next: ${short(nm)}${days?` in ~${format(days)} days`:''}. via @JIMERICA`;
 }
 function trendsPage(){
   if(!el('trend-total')) return;
@@ -70,8 +80,8 @@ function trendsPage(){
 }
 function milestonesPage(){
   if(!el('ms-rows')) return;
-  const rows=SONGS.filter(s=>s[2]>0).map(s=>{const m=nextMilestone(s[1]);const d=Math.ceil((m-s[1])/s[2]);return [s,m,d];}).sort((a,b)=>a[2]-b[2]);
-  el('ms-cap').textContent=`Estimated from each song's daily gain on ${longDate(UPDATED)}, assuming that rate stays constant. These are estimates, not predictions or official figures. Songs without a daily figure are left out.`;
+  const rows=SONGS.map(s=>[s,avg7(s)]).filter(([s,a])=>a.rate>0).map(([s,a])=>{const m=nextMilestone(s[1]);const d=Math.ceil((m-s[1])/a.rate);return [s,m,d,a];}).sort((a,b)=>a[2]-b[2]);
+  el('ms-cap').textContent=`Projected from each song's average daily streams over the last ${Math.max(...rows.map(r=>r[3].n),1)} days (up to 7) as of ${longDate(UPDATED)}, assuming that pace continues. These are estimates, not predictions or official figures. Songs without a daily figure are left out.`;
   el('ms-rows').replaceChildren(...rows.map(([s,m,d])=>{const tr=node('tr');const a=node('a',s[0]);a.href='./song.html?id='+slug(s[0]);const td=node('td');td.append(a);
     const pct=Math.min(100,(s[1]-(m-(m<=1e8?1e7:m<=1e9?5e7:1e8)))/(m<=1e8?1e7:m<=1e9?5e7:1e8)*100);
     const prog=node('td',null,'prog');const bar=node('div',null,'pbar');const f=node('span');f.style.width=pct+'%';bar.append(f);prog.append(bar);

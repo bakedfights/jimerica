@@ -81,3 +81,29 @@ footer strong{font-size:1.1rem}
 h1{background:none;-webkit-background-clip:initial;background-clip:initial;color:#f2f3f5}
 .topbar{background:#2b2d31;backdrop-filter:none;box-shadow:0 2px 12px rgba(0,0,0,.25)}
 .site-header{position:relative;z-index:0}
+/* v5: grouped nav, lang toggle, discography, calendar, guide */
+.pagelinks{display:flex;gap:4px;align-items:center}
+.navgrp{position:relative}.navgrp summary{list-style:none;cursor:pointer;padding:8px 14px;border-radius:999px;color:var(--muted);font-weight:600;user-select:none}
+.navgrp summary::-webkit-details-marker{display:none}.navgrp summary::after{content:" ▾";font-size:.75em}
+.navgrp.cur summary{color:var(--gold)}.navgrp summary:hover{color:var(--text);background:#3a3d42}
+.navmenu{position:absolute;top:calc(100% + 6px);left:0;min-width:190px;background:#2b2d31;border:1px solid #3a3d42;border-radius:12px;padding:6px;box-shadow:0 10px 30px rgba(0,0,0,.4);display:flex;flex-direction:column;z-index:50}
+.navmenu a{padding:9px 12px!important;border-radius:8px;color:var(--text)}.navmenu a:hover{background:#3a3d42;text-decoration:none}.navmenu a[aria-current=page]{color:var(--gold);font-weight:700}
+.lang-btn{margin-left:auto;background:transparent;border:1px solid #3a3d42;color:var(--text);border-radius:999px;padding:6px 12px;font:inherit;font-size:.85rem;cursor:pointer}.lang-btn:hover{border-color:var(--gold)}
+.topbar{gap:10px}
+@media(max-width:600px){.pagelinks.open{display:flex;flex-direction:column;align-items:stretch}.navmenu{position:static;box-shadow:none;border:0;padding:0 0 6px 12px;background:transparent}.navgrp summary{padding:12px 8px}.lang-btn{order:2}}
+.disc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,220px),1fr));gap:18px}
+.disc-card{background:var(--panel);border:1px solid #3a3d42;border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.disc-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.disc-card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.disc-card h3{margin:0;font-size:1.05rem}.disc-card .meta{color:var(--muted);font-size:.85rem}.disc-card details{font-size:.85rem;color:var(--muted)}.disc-card summary{cursor:pointer;color:var(--text)}
+.disc-card ol{margin:6px 0 0;padding-left:20px}.disc-card a.sp{margin-top:auto;color:var(--gold);font-weight:600}
+.cal-months{display:grid;gap:14px}.cal-month{background:var(--panel);border:1px solid #3a3d42;border-radius:14px}.cal-month summary{cursor:pointer;padding:14px 18px;font-weight:700}
+.cal-month ul{list-style:none;margin:0;padding:0 18px 12px}.cal-month li{display:flex;gap:14px;padding:10px 0;border-top:1px solid #3a3d42}.cal-day{color:var(--gold);font-weight:800;min-width:44px}
+.cal-kind{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.cal-month li a{color:var(--muted);font-size:.8rem}
+.guide-list{line-height:1.7;padding-left:22px;max-width:760px}.guide-list li{margin-bottom:12px}
+.link-grid{display:flex;flex-wrap:wrap;gap:10px}.link-grid .cta{margin:0}
+section{margin-bottom:40px}
+.chart .hov{fill:var(--gold)}.chart-tip{position:absolute;pointer-events:none;background:#2b2d31;border:1px solid var(--gold);border-radius:8px;padding:6px 10px;font-size:.8rem;white-space:nowrap;transform:translate(-50%,-110%)}
+.chart-wrap{position:relative}
+.pagelinks .navmenu a{background:transparent;border:0;box-shadow:none;color:var(--text);font-size:.92rem;border-radius:8px}
+.pagelinks .navmenu a:hover{background:#3a3d42}
+.pagelinks .navmenu a[aria-current=page]{background:rgba(240,198,116,.12);color:var(--gold)}
