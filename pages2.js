@@ -24,7 +24,7 @@ function discPage(){
       const b=mk('div','body'); b.append(mk('h3',null,r.t),mk('div','meta',r.type+' · '+fmtD(r.d)));
       if(r.note) b.append(mk('div','meta',r.note));
       if(r.prod||r.tracks){const dt=mk('details');dt.append(mk('summary','ui-t',r.tracks?'Tracks':'Credits'));
-        if(r.tracks){const ol=mk('ol');r.tracks.forEach(t=>ol.append(mk('li',null,t)));dt.append(ol);}
+        if(r.tracks){const ol=mk('ol');r.tracks.forEach(t=>{const li=mk('li');const s=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===t);if(s){const a=mk('a','no-tr',t);a.href='./song.html?id='+t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');li.append(a);}else li.textContent=t;ol.append(li);});dt.append(ol);}
         if(r.prod) dt.append(mk('p',null,'Label: '+r.label+' · Producers: '+r.prod));b.append(dt);}
       const a=mk('a','sp ui-t','Listen on Spotify ↗'); a.href=SP+r.id; a.target='_blank'; a.rel='noopener'; b.append(a);
       c.append(im,b); g.append(c);

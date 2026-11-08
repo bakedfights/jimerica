@@ -172,3 +172,6 @@ main{animation:fadein .25s ease-out}@keyframes fadein{from{opacity:0;transform:t
  .site-header h1{font-size:clamp(1.8rem,8vw,2.4rem)}
 }
 @media print{.topbar,.to-top,.tab-arrow,.share-row,.lang-pick,.show-more{display:none!important}body{background:#fff;color:#000}}
+
+.jump{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0 1rem}.jump a{padding:.35rem .7rem;border:1px solid #444;border-radius:999px;font-size:.85rem;color:var(--text)}.jump a:hover{border-color:#f0c674;text-decoration:none}
+.movers{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin:.25rem 0 1rem;font-size:.95rem}.mover strong{margin-left:.25rem}.ach-cat{scroll-margin-top:1.5rem}
