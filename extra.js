@@ -98,7 +98,11 @@ function feedPage(){
   document.querySelectorAll('[data-feed-filter]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.feedFilter||null)===filter)));
   el('feed-cap').textContent=`${items.length} post${items.length===1?'':'s'} · newest ${items[0]?longDate(items[0].date):'–'}. Posts load from Instagram/TikTok; if an embed is blocked, use the link.`;
   g.innerHTML='';
-  for(const f of items){
+  const PAGE=9; let shown=0; const more=document.createElement('button'); more.type='button'; more.className='cta show-more'; more.textContent='Show more';
+  const renderNext=()=>{ const batch=items.slice(shown,shown+PAGE); shown+=batch.length; renderItems(batch); more.hidden=shown>=items.length; if(window.instgrm)window.instgrm.Embeds.process(); };
+  more.addEventListener('click',renderNext); g.after(more);
+  function renderItems(list){
+  for(const f of list){
     const card=node('div',null,'feed-card'); const meta=node('div',null,'feed-meta');
     meta.append(node('span',f.platform==='instagram'?'Instagram · @j.m':f.platform==='x'?'X · @JIMERICA':'TikTok · @jimin','feed-tag '+f.platform),node('span',longDate(f.date)));
     if(f.platform==='x'){const a=document.createElement('a');a.href=f.url;a.target='_blank';a.rel='noopener';a.className='x-post';
@@ -110,6 +114,8 @@ function feedPage(){
     const a=node('a','Open post ↗');a.href=f.url;a.target='_blank';a.rel='noopener';bq.append(a);
     card.append(meta,bq); g.append(card);
   }
+  }
+  renderNext();
   const load=(src)=>{const s=document.createElement('script');s.async=true;s.src=src;document.body.append(s);};
   if(items.some(f=>f.platform==='instagram')) load('https://www.instagram.com/embed.js');
   if(items.some(f=>f.platform==='tiktok')||el('tt-profile')) load('https://www.tiktok.com/embed.js');

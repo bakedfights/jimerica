@@ -147,3 +147,4 @@ section{margin-bottom:40px}
 .x-text{margin:0;white-space:pre-line;line-height:1.55}.x-post img{width:100%;border-radius:10px;border:1px solid #3a3d42}
 .x-open{color:var(--gold);font-weight:600;font-size:.9rem}.feed-tag.x{color:#f2f3f5}
 @media(min-width:761px){.pagelinks.tabs a{padding:10px 8px!important;font-size:1.02rem}}
+.show-more{display:block;margin:24px auto 0;background:transparent;font:inherit;font-weight:600;cursor:pointer}
