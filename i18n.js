@@ -422,7 +422,7 @@ const ES={
   "Instagram · @j.m": "Instagram · @j.m",
   "TikTok · @jimin": "TikTok · @jimin",
   "Choose English or Korean": "Elige inglés o coreano",
-  "Choose English, Korean or Spanish": "Elige inglés, coreano o español",
+  "Language": "Idioma",
   "Choose English, Korean, or Spanish": "Elige inglés, coreano o español",
   "English": "Inglés",
   "Korean": "Coreano",
@@ -663,7 +663,7 @@ function applyLang(lang){
   if(LANG!=='en'){ trNode(document.body); document.title=titleEn.split(' · ').map(LANG==='es'?translateEs:translateStr).join(' · '); }
   else { restore(); document.title=titleEn; }
   const sel=document.getElementById('lang-select'); if(sel) sel.value=LANG;
-  const lb=document.getElementById('lang-label'); if(lb) lb.textContent=LANG==='ko'?'언어 선택: 영어, 한국어, 스페인어':LANG==='es'?'Elige inglés, coreano o español':'Choose English, Korean or Spanish';
+  const lb=document.getElementById('lang-label'); if(lb) lb.textContent=LANG==='ko'?'언어':LANG==='es'?'Idioma':'Language';
 }
 window.applyLang=applyLang; window.translateStr=translateStr; window.translateEs=translateEs;
 window.addEventListener('load',()=>{
