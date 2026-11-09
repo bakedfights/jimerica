@@ -78,7 +78,7 @@ function init() {
     if (up[1].delta>0) m.append(part('Biggest rise vs day before',up,'chg-up'));
     if (dn[1].delta<0) m.append(part('Biggest drop vs day before',dn,'chg-down'));
     m.hidden = !m.childNodes.length; } }
-  const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,5);
+  const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,10);
   $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right');r.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));l.append(node('span',s[0]),r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
   }
   if ($('top-bars')) {
