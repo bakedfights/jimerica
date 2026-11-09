@@ -121,7 +121,7 @@ function renderChart(k, rows, src) {
   const l = node('a','Spotify Charts'); l.href = src; cap.append(l);
   const best = rows.slice().sort((a,b)=>a[3]-b[3]||b[4]-a[4])[0], longest = rows.slice().sort((a,b)=>b[1]-a[1])[0];
   renderMetrics(k+'-metrics', [['#'+best[3], 'Peak', best[0]], [format(rows.reduce((n,r)=>n+(r[3]===1?r[4]:0),0)), 'Total days at #1'], [format(longest[1]), 'Days charted (longest)', longest[0]], [String(rows.length), 'Solo songs charted']]);
-  $(k+'-rows').replaceChildren(...rows.map(r=>{const tr=node('tr');const nz=t=>t.toLowerCase().replace(/ \((.+)\)$/,' - $1'),so=SONGS.find(x=>x[0]===r[0])||SONGS.find(x=>nz(x[0])===nz(r[0]))||SONGS.find(x=>x[0].startsWith(r[0]+' ('));tr.append(node('td',r[0]),node('td',so?format(so[1]):'–'),node('td','#'+r[3],r[3]===1?'gold':null),node('td',r[4]?format(r[4]):'–'),node('td',r[2]?format(r[2]):'–'),node('td',format(r[1])));return tr;}));
+  $(k+'-rows').replaceChildren(...rows.map(r=>{const tr=node('tr');tr.append(node('td',r[0]),node('td',r[5]?format(r[5]):'–'),node('td','#'+r[3],r[3]===1?'gold':null),node('td',r[4]?format(r[4]):'–'),node('td',r[2]?format(r[2]):'–'),node('td',format(r[1])));return tr;}));
 }
 if (typeof ACH_US !== 'undefined' && $('us-rows')) {
   renderChart('us', ACH_US, ACH_US_SRC); renderChart('kr', ACH_KR, ACH_KR_SRC);
