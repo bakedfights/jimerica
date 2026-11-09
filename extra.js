@@ -92,9 +92,10 @@ function milestonesPage(){
 }
 function whoLabels(){ document.querySelectorAll('#who-rows tr').forEach(tr=>['Country','Rank','Move','Peak','Daily streams','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l))); }
 songsPage(); songPage(); trendsPage(); milestonesPage(); whoLabels(); share();
+function showSwitch(show){document.querySelectorAll('.upd-switch [data-show]').forEach(a=>{const on=(a.dataset.show||null)===(show||null);on?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current');a.classList.toggle('on',on);});const j=el('jimin-posts'),o=el('official-posts'),t=el('tt-section');if(j)j.hidden=show==='official';if(t)t.hidden=show==='official';if(o)o.hidden=show==='jimin';}
 function feedPage(){
   const g=el('feed-grid'); if(!g||typeof FEED==='undefined') return;
-  const filter=new URLSearchParams(location.search).get('p');
+  const QS=new URLSearchParams(location.search),SHOW=QS.get('show');const filter=SHOW==='jimin'?QS.get('p'):null;showSwitch(SHOW);
   const items=FEED.filter(f=>!filter||f.platform===filter);
   document.querySelectorAll('[data-feed-filter]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.feedFilter||null)===filter)));
   el('feed-cap').textContent=`${items.length} post${items.length===1?'':'s'} · newest ${items[0]?longDate(items[0].date):'–'}. Posts load from Instagram/TikTok; if an embed is blocked, use the link.`;
@@ -130,8 +131,9 @@ function officialPage(){
   const g = typeof el === "function" ? el("official-grid") : document.getElementById("official-grid");
   if (!g || typeof OFFICIAL === "undefined") return;
   const params = new URLSearchParams(location.search);
-  const p = params.get("p"); // platform
-  const c = params.get("c"); // category
+  const comb = !!document.getElementById("jimin-posts"); const sub = !comb || params.get("show")==="official";
+  const p = sub ? params.get("p") : null; // platform
+  const c = sub ? params.get("c") : null; // category
   const items = OFFICIAL.filter(f => (!p || f.platform === p) && (!c || f.category === c))
     .slice().sort((a,b) => b.date.localeCompare(a.date) || (a.created_at_utc && b.created_at_utc ? b.created_at_utc.localeCompare(a.created_at_utc) : 0));
   document.querySelectorAll("[data-official-filter]").forEach(b => {
