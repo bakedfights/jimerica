@@ -687,7 +687,7 @@ window.addEventListener('load',()=>{
 // Shared polish: last-updated badge, back-to-top button.
 window.addEventListener('load',()=>{
   const h=document.querySelector('.site-header');
-  if(h&&typeof UPDATED!=='undefined'&&!document.querySelector('.upd-badge')){const b=document.createElement('div');b.className='upd-badge';
+  if(h&&typeof OFFICIAL==='undefined'&&typeof UPDATED!=='undefined'&&!document.querySelector('.upd-badge')){const b=document.createElement('div');b.className='upd-badge';
     b.textContent='Data updated '+new Date(UPDATED+'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});h.append(b);}
   const t=document.createElement('button');t.type='button';t.className='to-top';t.setAttribute('aria-label','Back to top');t.textContent='↑';
   t.addEventListener('click',()=>window.scrollTo({top:0}));document.body.append(t);
