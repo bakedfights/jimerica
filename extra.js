@@ -121,3 +121,62 @@ function feedPage(){
   if(items.some(f=>f.platform==='tiktok')||el('tt-profile')) load('https://www.tiktok.com/embed.js');
 }
 feedPage();
+
+"use strict";
+// Official updates are kept separate from personal SNS.
+// Depends on site helpers: el/node/longDate from app.js+extra.js, and OFFICIAL from official.js.
+function officialPage(){
+  const g = typeof el === "function" ? el("official-grid") : document.getElementById("official-grid");
+  if (!g || typeof OFFICIAL === "undefined") return;
+  const params = new URLSearchParams(location.search);
+  const p = params.get("p"); // platform
+  const c = params.get("c"); // category
+  const items = OFFICIAL.filter(f => (!p || f.platform === p) && (!c || f.category === c))
+    .slice().sort((a,b) => b.date.localeCompare(a.date) || (a.created_at_utc && b.created_at_utc ? b.created_at_utc.localeCompare(a.created_at_utc) : 0));
+  document.querySelectorAll("[data-official-filter]").forEach(b => {
+    const key = b.dataset.officialFilter || "";
+    const on = (!key && !p && !c) || key === p || key === c;
+    b.setAttribute("aria-pressed", String(on));
+  });
+  const cap = document.getElementById("official-cap");
+  g.replaceChildren();
+  if (!items.length) g.append(node("p", "No verified posts in this category yet.", "caption"));
+  const CAT = {brand:"Brand partner", label:"Label", bts:"BTS official", press:"Press"};
+  const PAGE = 9; let shown = 0;
+  const more = document.createElement("button"); more.type="button"; more.className="cta show-more"; more.textContent="Show more";
+  const pick = (f, base) => f[base] || "";
+  const renderNext = () => {
+    const batch = items.slice(shown, shown+PAGE); shown += batch.length;
+    for (const f of batch) {
+      const card = node("div", null, "feed-card");
+      const meta = node("div", null, "feed-meta");
+      const plat = f.platform === "instagram" ? "Instagram" : "X";
+      meta.append(
+        node("span", `${plat} · @${f.account}`, "feed-tag "+(f.platform==="x"?"x":f.platform)),
+        node("span", longDate(f.date))
+      );
+      const a = document.createElement("a");
+      a.href = f.url; a.target = "_blank"; a.rel = "noopener"; a.className = "x-post";
+      const cat = node("span", CAT[f.category] || f.category, "feed-tag");
+      cat.style.display = "inline-block"; cat.style.marginBottom = "6px";
+      a.append(cat);
+      const title = pick(f, "title");
+      if (title) a.append(node("strong", title));
+      const sum = pick(f, "summary");
+      if (sum) a.append(node("p", sum, "x-text"));
+      if (f.image) {
+        const im = document.createElement("img");
+        im.src = f.image; im.alt = title || ("Image from @"+f.account); im.loading = "lazy";
+        a.append(im);
+      }
+      a.append(node("span", "Open source ↗", "x-open"));
+      card.append(meta, a); g.append(card);
+    }
+    more.hidden = shown >= items.length;
+  };
+  more.addEventListener("click", renderNext);
+  if (!g.nextElementSibling || !g.nextElementSibling.classList.contains("show-more")) g.after(more);
+  renderNext();
+}
+
+officialPage();
