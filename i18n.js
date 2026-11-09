@@ -619,6 +619,8 @@ Object.assign(ES,{"LADOR Angel Muguet campaign with ambassador Jimin": "Campaña
 // Overview jump links and Songs trend column.
 Object.assign(KO,{"Numbers":"숫자","Daily gains":"일일 증가","Top songs":"인기곡","Trend":"추이","View trend →":"추이 보기 →","On this page":"이 페이지"});
 Object.assign(ES,{"Numbers":"Cifras","Daily gains":"Subidas diarias","Top songs":"Más escuchadas","Trend":"Tendencia","View trend →":"Ver tendencia →","On this page":"En esta página"});
+Object.assign(KO,{"Today at a glance": "오늘 한눈에 보기", "Data as of": "데이터 기준일", "New this week": "이번 주 새 소식", "Next": "다음", "The newest posts from Jimin and official accounts in the last 7 days.": "최근 7일간 지민과 공식 계정의 최신 게시물입니다.", "Nothing new this week, so here are the latest posts.": "이번 주 새 게시물이 없어 가장 최근 게시물을 보여드립니다.", "Jimin on Instagram": "지민 인스타그램", "Jimin on TikTok": "지민 틱톡", "New Instagram post": "새 인스타그램 게시물", "New TikTok video": "새 틱톡 영상", "Open ↗": "열기 ↗", "All official updates →": "모든 공식 소식 →", "All Jimin posts →": "지민 게시물 전체 →"});
+Object.assign(ES,{"Today at a glance": "Hoy de un vistazo", "Data as of": "Datos al", "New this week": "Novedades de la semana", "Next": "Próximo", "The newest posts from Jimin and official accounts in the last 7 days.": "Las publicaciones más recientes de Jimin y cuentas oficiales en los últimos 7 días.", "Nothing new this week, so here are the latest posts.": "No hay novedades esta semana, así que aquí están las publicaciones más recientes.", "Jimin on Instagram": "Jimin en Instagram", "Jimin on TikTok": "Jimin en TikTok", "New Instagram post": "Nueva publicación de Instagram", "New TikTok video": "Nuevo video de TikTok", "Open ↗": "Abrir ↗", "All official updates →": "Todas las novedades oficiales →", "All Jimin posts →": "Todas las publicaciones de Jimin →"});
 const ES_TEMPLATES=Object.entries(ES).filter(([k])=>k.includes('{')&&!/^\{month\}/.test(k)).map(([k,v])=>{
  const names=[];let pattern='',pos=0;const re=/\{(\w+)\}/g;let m;const esc=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  while((m=re.exec(k))){pattern+=esc(k.slice(pos,m.index))+'(.+?)';names.push(m[1]);pos=m.index+m[0].length;}pattern+=esc(k.slice(pos));return [new RegExp('^'+pattern+'$'),v,names];
@@ -690,7 +692,7 @@ window.addEventListener('load',()=>{
 // Shared polish: last-updated badge, back-to-top button.
 window.addEventListener('load',()=>{
   const h=document.querySelector('.site-header');
-  if(h&&typeof OFFICIAL==='undefined'&&typeof UPDATED!=='undefined'&&!document.querySelector('.upd-badge')){const b=document.createElement('div');b.className='upd-badge';
+  if(h&&!document.getElementById('official-grid')&&typeof UPDATED!=='undefined'&&!document.querySelector('.upd-badge')){const b=document.createElement('div');b.className='upd-badge';
     b.textContent='Data updated '+new Date(UPDATED+'T12:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});h.append(b);}
   const t=document.createElement('button');t.type='button';t.className='to-top';t.setAttribute('aria-label','Back to top');t.textContent='↑';
   t.addEventListener('click',()=>window.scrollTo({top:0}));document.body.append(t);

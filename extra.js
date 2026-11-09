@@ -45,9 +45,9 @@ function share(){
 }
 function songsPage(){
   const q=el('song-search'); if(!q) return;
-  const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const show=!v||tr.cells[0].textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
+  const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const show=!v||(tr.cells[0].querySelector('a')||tr.cells[0]).textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
   q.addEventListener('input',apply);
-  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});document.querySelectorAll('#song-rows tr').forEach(tr=>{if(tr.cells.length<5){const a=tr.cells[0].querySelector('a');const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';const c=node('td');c.append(v);tr.append(c);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change','Trend'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
+  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const a=tr.cells[0].querySelector('a');if(!a||tr.cells[0].querySelector('.ms-badge'))return;const r=MS.get(a.textContent);if(!r)return;const b=node('span',null,'ms-badge');b.append(node('span','Next'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));tr.cells[0].append(b);});document.querySelectorAll('#song-rows tr').forEach(tr=>{if(tr.cells.length<5){const a=tr.cells[0].querySelector('a');const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';const c=node('td');c.append(v);tr.append(c);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change','Trend'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
 function songPage(){
@@ -78,9 +78,10 @@ function trendsPage(){
     el('trend-who').replaceChildren(svgChart(WHO_HIST_DATES,tot,{title:'Who daily streams across charting countries'}));
     el('trend-who-cap').textContent=`"Who" daily streams summed over the country charts it appears on (${cnt.map((c,i)=>WHO_HIST_DATES[i].slice(5)+': '+c+' countries').join(', ')}).`;}
 }
+function msRows(){ return SONGS.map(s=>[s,avg7(s)]).filter(([s,a])=>a.rate>0).map(([s,a])=>{const m=nextMilestone(s[1]);const d=Math.ceil((m-s[1])/a.rate);return [s,m,d,a];}).sort((a,b)=>a[2]-b[2]); }
 function milestonesPage(){
   if(!el('ms-rows')) return;
-  const rows=SONGS.map(s=>[s,avg7(s)]).filter(([s,a])=>a.rate>0).map(([s,a])=>{const m=nextMilestone(s[1]);const d=Math.ceil((m-s[1])/a.rate);return [s,m,d,a];}).sort((a,b)=>a[2]-b[2]);
+  const rows=msRows();
   el('ms-cap').textContent=`Projected from each song's average daily streams over the last ${Math.max(...rows.map(r=>r[3].n),1)} days (up to 7) as of ${longDate(UPDATED)}, assuming that pace continues. These are estimates, not predictions or official figures. Songs without a daily figure are left out.`;
   el('ms-rows').replaceChildren(...rows.map(([s,m,d])=>{const tr=node('tr');const a=node('a',s[0]);a.href='./song.html?id='+slug(s[0]);const td=node('td');td.append(a);
     const pct=Math.min(100,(s[1]-(m-(m<=1e8?1e7:m<=1e9?5e7:1e8)))/(m<=1e8?1e7:m<=1e9?5e7:1e8)*100);
@@ -180,3 +181,30 @@ function officialPage(){
 }
 
 officialPage();
+
+// Overview: today at a glance + new this week (trial, Nov 9 2026)
+function glance(){
+  const g=el('glance'); if(!g) return;
+  const item=(label,value,cls,...sub)=>{const d=node('div',null,'g-item');d.append(node('span',label,'g-label'),node('strong',value,cls||''));if(sub.length){const s=node('span',null,'g-sub');sub.forEach((x,i)=>{if(i)s.append(' · ');s.append(x);});d.append(s);}return d;};
+  const r=msRows()[0]; const items=[item('Total streams',short(TOTALS.streams),'gold'),item('Streams yesterday','+'+short(TOTALS.daily),'green')];
+  if(r) items.push(item('Next milestone',short(r[1]),'gold',node('span',r[0][0],'no-tr'),node('span','≈ '+longDate(addDays(UPDATED,r[2])))));
+  items.push(item('Data as of',longDate(UPDATED)));
+  g.replaceChildren(...items);
+}
+function newThisWeek(){
+  const box=el('new-list'); if(!box) return;
+  const lang=()=>{let l=el('lang-select')?.value;if(!l){try{l=localStorage.getItem('jimerica-lang');}catch{}}return ['ko','es'].includes(l)?l:'en';};
+  const all=[...(typeof FEED!=='undefined'?FEED:[]).map(f=>({date:f.date,url:f.url,src:f.platform==='tiktok'?'Jimin on TikTok':'Jimin on Instagram',title:{en:f.platform==='tiktok'?'New TikTok video':'New Instagram post'},kind:'sns'})),
+    ...(typeof OFFICIAL!=='undefined'?OFFICIAL:[]).map(f=>({date:f.date,url:f.url,src:(f.platform==='x'?'X':'Instagram')+' · @'+f.account,title:{en:f.title,ko:f.title_ko,es:f.title_es},kind:'official',ts:f.created_at_utc||''}))]
+    .sort((a,b)=>b.date.localeCompare(a.date)||(b.ts||'').localeCompare(a.ts||''));
+  const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
+  const weekAgo=addDays(today,-7); const fresh=all.filter(x=>x.date>=weekAgo);
+  const list=(fresh.length?fresh:all).slice(0,3);
+  el('new-cap').textContent=fresh.length?'The newest posts from Jimin and official accounts in the last 7 days.':'Nothing new this week, so here are the latest posts.';
+  const render=()=>{const L=lang();box.replaceChildren(...list.map(x=>{const a=node('a',null,'new-item');a.href=x.url;a.target='_blank';a.rel='noopener';
+    const meta=node('span',null,'new-meta');meta.append(node('span',x.src),' · ',node('span',longDate(x.date)));
+    const t=x.kind==='official'?node('strong',x.title[L]||x.title.en,'no-tr'):node('strong',x.title.en);
+    a.append(meta,t,node('span','Open ↗','new-open'));return a;}));};
+  render(); const sel=el('lang-select'); if(sel) sel.addEventListener('change',()=>setTimeout(render,0));
+}
+glance(); newThisWeek();
