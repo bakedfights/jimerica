@@ -47,7 +47,7 @@ function songsPage(){
   const q=el('song-search'); if(!q) return;
   const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const show=!v||tr.cells[0].textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
   q.addEventListener('input',apply);
-  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
+  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});document.querySelectorAll('#song-rows tr').forEach(tr=>{if(tr.cells.length<5){const a=tr.cells[0].querySelector('a');const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';const c=node('td');c.append(v);tr.append(c);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change','Trend'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
 function songPage(){
