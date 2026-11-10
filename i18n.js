@@ -73,6 +73,7 @@ const tr=s=>KO[s]!=null?KO[s]:s;
 const RULES=[
  [/\b(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})/g,(_,m,d,y)=>koDate(MONTHS.indexOf(m)+1,d,y)],
  [/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}), (\d{4})/g,(_,m,d,y)=>koDate(MON3.indexOf(m)+1,d,y)],
+ [/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/g,(_,m,d)=>`${MON3.indexOf(m)+1}월 ${d}일`],
  [/\b(January|February|March|April|May|June|July|August|September|October|November|December) (\d{4})\b/g,(_,m,y)=>`${y}년 ${MONTHS.indexOf(m)+1}월`],
  [/^(January|February|March|April|May|June|July|August|September|October|November|December) · (\d+)$/,(_,m,n)=>`${MONTHS.indexOf(m)+1}월 · ${n}`],
 ];
@@ -116,6 +117,8 @@ const PAT=[ // applied after date conversion; full-string patterns
  [/^(\d+) match(es)?$/,m=>`${m[1]}개 일치`],
  [/^Data updated (.+)$/,m=>`데이터 업데이트 ${m[1]}`],
  [/^Total streams: (.+)$/,m=>`총 스트리밍: ${m[1]}`],
+ [/^Today's goal \((.+)\): (.+)\+ streams to beat (.+)$/,m=>`오늘 목표 (${m[1]}): ${m[2]}+ 스트리밍으로 ${m[3]} 넘어서기`],
+ [/^(.+) was bigger$/,m=>`${m[1]}이 더 높음`],
 ];
 function translateStr(s){
   const lead=s.match(/^\s*/)[0], trail=s.match(/\s*$/)[0], core=s.trim(); if(!core) return s;
@@ -614,6 +617,8 @@ const ES_PAT=[
 [/^(\d+) match(es)?$/,m=>`${m[1]} ${m[1]==='1'?'coincidencia':'coincidencias'}`],
 [/^Data updated (.+)$/,m=>`Datos actualizados el ${m[1]}`],
 [/^Total streams: (.+)$/,m=>`Reproducciones totales: ${m[1]}`],
+[/^Today's goal \((.+)\): (.+)\+ streams to beat (.+)$/,m=>`Objetivo de hoy (${m[1]}): ${m[2]}+ reproducciones para superar el ${m[3]}`],
+[/^(.+) was bigger$/,m=>`${m[1]} fue mayor`],
 [/^(.+) daily streams$/,m=>`Reproducciones diarias de ${m[1]}`],
 [/^(.+) · (\d+)$/,m=>`${ES[m[1]]||m[1]} · ${m[2]}`]
 ];
@@ -635,6 +640,8 @@ Object.assign(ES,{"Total chart streams":"Reproducciones totales en la lista"});
 Object.assign(KO,{"Service":"복무","Jimin enlisted for military service":"지민 입대","Jimin discharged from military service":"지민 전역","\"Like Crazy\" No. 1 on the Billboard Hot 100":"\"Like Crazy\" 빌보드 핫100 1위","Dates use Pacific time (PT). \"Promise\" was posted December 31, 2018, 00:01 KST, which is December 30 in PT.":"날짜는 태평양 시간(PT) 기준입니다. \"Promise\"는 2018년 12월 31일 00:01(한국 시간)에 공개되었으며, PT로는 12월 30일입니다.","\"Christmas Love\"":"\"Christmas Love\"","\"Promise\"":"\"Promise\""});
 Object.assign(ES,{"Service":"Servicio","Jimin enlisted for military service":"Jimin se alistó en el servicio militar","Jimin discharged from military service":"Jimin recibió la baja del servicio militar","\"Like Crazy\" No. 1 on the Billboard Hot 100":"\"Like Crazy\" n.º 1 en el Billboard Hot 100","Dates use Pacific time (PT). \"Promise\" was posted December 31, 2018, 00:01 KST, which is December 30 in PT.":"Las fechas usan la hora del Pacífico (PT). \"Promise\" se publicó el 31 de diciembre de 2018 a las 00:01 KST, que es el 30 de diciembre en PT.","\"Christmas Love\"":"\"Christmas Love\"","\"Promise\"":"\"Promise\""});
 
+Object.assign(KO,{"Same as the day before":"전날과 같음","Both days were equal":"이틀 모두 같음"});
+Object.assign(ES,{"Same as the day before":"Igual que el día anterior","Both days were equal":"Los dos días fueron iguales"});
 Object.assign(KO,{"Search the site":"사이트 검색","Search songs, albums, dates…":"노래, 앨범, 날짜 검색…","No matches":"검색 결과 없음","Album":"앨범","Single":"싱글","Featured release":"피처링","7-day trend":"최근 7일 추이","Open post ↗":"게시물 열기 ↗","Open TikTok profile ↗":"틱톡 프로필 열기 ↗","New Instagram post":"새 인스타그램 게시물","New TikTok video":"새 틱톡 영상","Each card links to the original Instagram or TikTok post.":"각 카드는 원본 인스타그램 또는 틱톡 게시물로 연결됩니다.","The official TikTok account, linked here rather than embedded, so this page stays in the site's dark style.":"공식 틱톡 계정 링크입니다. 페이지 스타일을 유지하기 위해 임베드 대신 링크만 둡니다.","Sun":"일","Mon":"월","Tue":"화","Wed":"수","Thu":"목","Fri":"금","Sat":"토"});
 Object.assign(ES,{"Search the site":"Buscar en el sitio","Search songs, albums, dates…":"Buscar canciones, álbumes, fechas…","No matches":"Sin resultados","Album":"Álbum","Single":"Sencillo","Featured release":"Colaboración","7-day trend":"Tendencia de 7 días","Open post ↗":"Abrir publicación ↗","Open TikTok profile ↗":"Abrir perfil de TikTok ↗","New Instagram post":"Nueva publicación de Instagram","New TikTok video":"Nuevo vídeo de TikTok","Each card links to the original Instagram or TikTok post.":"Cada tarjeta enlaza a la publicación original de Instagram o TikTok.","The official TikTok account, linked here rather than embedded, so this page stays in the site's dark style.":"La cuenta oficial de TikTok, enlazada aquí en lugar de incrustada, para mantener el estilo oscuro del sitio.","Sun":"dom","Mon":"lun","Tue":"mar","Wed":"mié","Thu":"jue","Fri":"vie","Sat":"sáb"});
 
@@ -648,7 +655,8 @@ function translateEs(s){
  let t=core.replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December) (\d{1,2}), (\d{4})/g,(_,m,d,y)=>esDate(MONTHS.indexOf(m),d,y))
  .replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2}), (\d{4})/g,(_,m,d,y)=>esDate(MON3.indexOf(m),d,y))
  .replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December) (\d{4})\b/g,(_,m,y)=>`${ES_MONTHS[MONTHS.indexOf(m)]} de ${y}`)
- .replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December) ·/g,(_,m)=>ES_MONTHS[MONTHS.indexOf(m)]+' ·');
+ .replace(/\b(January|February|March|April|May|June|July|August|September|October|November|December) ·/g,(_,m)=>ES_MONTHS[MONTHS.indexOf(m)]+' ·')
+ .replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{1,2})\b/g,(_,m,d)=>`${+d} ${ES_MONTHS[MON3.indexOf(m)].slice(0,3)}`);
  for(const [re,f] of ES_PAT){const m=t.match(re);if(m)return lead+f(m)+trail;}
  for(const [re,value,names] of ES_TEMPLATES){const m=t.match(re);if(m){const vals=Object.fromEntries(names.map((n,i)=>[n,m[i+1]]));return lead+value.replace(/\{(\w+)\}/g,(_,n)=>vals[n]??'')+trail;}}
  const fm=t.match(/^(\S+) (.+)$/);if(fm&&ES[fm[2]]&&/\p{Extended_Pictographic}|\p{Regional_Indicator}/u.test(fm[1]))return lead+fm[1]+' '+ES[fm[2]]+trail;

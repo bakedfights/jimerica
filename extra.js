@@ -226,11 +226,54 @@ function officialPage(){
 
 officialPage();
 
+// All-song daily total for a snapshot date (change from the previous calendar day).
+// Returns null if that day or the day before is missing or not consecutive — never guess.
+function dailyTotalOn(date){
+  if(typeof HIST_DATES==='undefined'||typeof HIST_SONGS==='undefined') return null;
+  const i=HIST_DATES.indexOf(date);
+  if(i<1) return null;
+  if(HIST_DATES[i-1]!==addDays(date,-1)) return null;
+  let sum=0,n=0;
+  for(const t of Object.keys(HIST_SONGS)){
+    const v=HIST_SONGS[t];
+    if(!v||v[i]==null||v[i-1]==null) continue;
+    sum+=v[i]-v[i-1]; n++;
+  }
+  return n?sum:null;
+}
+function shortDate(iso){
+  return new Date(iso+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+
 // Overview: today at a glance + new this week (trial, Nov 9 2026)
 function glance(){
   const g=el('glance'); if(!g) return;
   const item=(label,value,cls,...sub)=>{const d=node('div',null,'g-item');d.append(node('span',label,'g-label'),node('strong',value,cls||''));if(sub.length){const s=node('span',null,'g-sub');sub.forEach((x,i)=>{if(i)s.append(' · ');s.append(x);});d.append(s);}return d;};
-  const r=msRows()[0]; const items=[item('Streams yesterday','+'+short(TOTALS.daily),'green')];
+  const card=node('div',null,'g-item');
+  card.append(node('span','Streams yesterday','g-label'));
+  card.append(node('strong','+'+short(TOTALS.daily),'green'));
+  const prevDate=addDays(UPDATED,-1);
+  const prev=dailyTotalOn(prevDate);
+  if(prev!=null){
+    const delta=TOTALS.daily-prev;
+    const pct=prev>0?delta/prev*100:null;
+    const row=node('span',null,'g-sub g-compare');
+    const a=node('span',shortDate(UPDATED)+': +'+short(TOTALS.daily),'g-day'+(delta>0?' g-ahead':''));
+    const b=node('span',shortDate(prevDate)+': +'+short(prev),'g-day'+(delta<0?' g-ahead':''));
+    row.append(a,document.createTextNode(' vs '),b);
+    let cmp;
+    if(delta>0) cmp=node('span','▲ +'+short(delta)+(pct!=null?` (${pct>0?'+':''}${pct.toFixed(1)}%)`:''),'g-cmp g-cmp-up');
+    else if(delta<0) cmp=node('span','▼ −'+short(Math.abs(delta))+(pct!=null?` (${pct.toFixed(1).replace('-','−')}%)`:''),'g-cmp g-cmp-down');
+    else cmp=node('span','Same as the day before','g-cmp g-cmp-eq');
+    row.append(cmp);
+    row.title=delta===0?'Both days were equal':shortDate(delta>0?UPDATED:prevDate)+' was bigger';
+    card.append(row);
+  }
+  const todayPT=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
+  const goalLine=node('span',`Today's goal (${shortDate(todayPT)}): ${format(TOTALS.daily+1)}+ streams to beat ${shortDate(UPDATED)}`,'g-sub g-goal');
+  card.append(goalLine);
+  const items=[card];
+  const r=msRows()[0];
   if(r){const sub=[];const im=typeof coverImg==='function'?coverImg(r[0][0],'cover-sm',28):null;if(im)sub.push(im);sub.push(node('span',r[0][0],'no-tr'),node('span','≈ '+longDate(addDays(UPDATED,r[2]))));items.push(item('Next milestone',short(r[1]),'',...sub));}
   g.replaceChildren(...items);
 }

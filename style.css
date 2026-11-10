@@ -306,3 +306,13 @@ h1{font-size:clamp(1.55rem,3.2vw,2.15rem);margin:8px 0 10px;font-weight:800}
 @media(prefers-reduced-motion:reduce){
   .ms-ring-fg{transition:none}
 }
+
+/* Overview Streams yesterday: day-before comparison + today's beat-yesterday goal */
+.g-compare{gap:8px;align-items:baseline;font-variant-numeric:tabular-nums}
+.g-day{color:var(--muted)}
+.g-ahead{color:var(--text);font-weight:600}
+.g-cmp{font-weight:600;white-space:nowrap}
+.g-cmp-up{color:var(--green)}
+.g-cmp-down{color:var(--red)}
+.g-cmp-eq{color:var(--muted);font-weight:500}
+.g-goal{font-size:12px;color:var(--muted);line-height:1.4}
