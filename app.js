@@ -54,8 +54,13 @@ function renderSongs() {
   const maxDaily = Math.max(0, ...SONGS.map(s => s[2] ?? 0));
   document.getElementById('song-rows').replaceChildren(...rows.map(s => {
     const row = node('tr');
-    const title = node('td', s[0]);
-    if (s[3]) title.append(node('span', '(feature)', 'feature-label'));
+    const title = node('td', null, 'song-title-cell');
+    const im = typeof coverImg==='function' ? coverImg(s[0],'cover-sm',40) : null;
+    if (im) title.append(im);
+    const name = node('div', null, 'song-title-text');
+    name.append(document.createTextNode(s[0]));
+    if (s[3]) name.append(node('span', '(feature)', 'feature-label'));
+    title.append(name);
     const daily = node('td', s[2] === null ? '–' : format(s[2]));
     if (s[2] !== null && maxDaily > 0) daily.style.setProperty('--w', Math.max(2, s[2] / maxDaily * 100) + '%');
     daily.className = 'daily-cell';
@@ -73,12 +78,13 @@ function movement(m) {
 const $ = id => document.getElementById(id);
 function init() {
   if ($('summary')) 
-  document.getElementById('summary').textContent = `Every Jimin song on Spotify, solo and features, with total streams and daily gains. Data as of ${UPDATED}, Spotify play counts.`;
+  document.getElementById('summary').textContent = `Every Jimin song on Spotify, solo and features, with total streams and daily gains.`;
   if ($('milestone')) {
   const statement = $('milestone');
-  statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(` streams across his solo and featured songs on Spotify as of ${longDate(UPDATED)}`));
+  statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(' streams across his solo and featured songs on Spotify.'));
   // Solo/feature stream split is hidden: TOTALS.feat matches the 3 feature-flagged songs, but TOTALS.solo comes from a source summary that does not equal total minus features or the sum of the other rows.
-  renderMetrics('totals-metrics', [[billions(TOTALS.streams),'Total streams'],[format(TOTALS.daily),'Streams yesterday'],[String(TOTALS.tracks),'Tracks counted']]);
+  // Total and data date live here (hero + the page's "Data updated" badge), not also in the glance strip.
+  renderMetrics('totals-metrics', [[format(TOTALS.daily),'Streams yesterday'],[String(TOTALS.tracks),'Tracks counted']]);
   }
   if ($('daily-bars')) {
   $('daily-caption').textContent = `Streams gained on ${longDate(UPDATED)}.`;
@@ -88,14 +94,14 @@ function init() {
     if (dn[1].delta<0) m.append(part('Biggest drop vs day before',dn,'chg-down'));
     m.hidden = !m.childNodes.length; } }
   const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,10);
-  $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right');r.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));l.append(node('span',s[0]),r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
+  $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right');r.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));l.append(name,r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
   }
   if ($('top-bars')) {
   const top = SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,10);
   document.getElementById('top-bars').replaceChildren(...top.map(s=>{
     const bar=node('div',null,'bar');
     const label=node('div',null,'bar-label');
-    const r=node('span',null,'bar-right');r.append(node('strong',billions(s[1])),changeNode('small',s[0],false));label.append(node('span',s[0]),r);
+    const r=node('span',null,'bar-right');r.append(node('strong',billions(s[1])),changeNode('small',s[0],false));const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));label.append(name,r);
     const track=node('div',null,'bar-track');
     track.setAttribute('aria-hidden','true');
     const fill=node('div',null,'bar-fill');

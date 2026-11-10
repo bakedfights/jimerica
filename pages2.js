@@ -13,6 +13,31 @@ const DISC=[
  {k:'feat',t:'Angel Pt. 1 — FAST X (Original Motion Picture Soundtrack)',type:'Soundtrack · Kodak Black, NLE Choppa feat. Jimin, JVKE & Muni Long',d:'2023-05-19',id:'04qe48XDdDs4hdurvRDsCF',img:'ab67616d0000b2731aa0427818a335a27fba086e'},
  {k:'feat',t:'VIBE — Down to Earth',type:'TAEYANG feat. Jimin of BTS',d:'2023-04-25',id:'6uMu4poce5OdMd1HYglZux',img:'ab67616d0000b27346313223adf2b6d726388328',note:'Album date on Spotify; the VIBE single was released January 13, 2023.'},
  {k:'feat',t:'With you — Our Blues (Original Television Soundtrack)',type:'OST · Jimin & HA SUNG WOON',d:'2022-05-24',id:'2CMhOK08vzM7xTl3nEnghs',img:'ab67616d0000b273dcf2ea6a2e3a7aaf53041534',note:'Compilation date on Spotify.'}];
+
+// Official Spotify cover for a song title, using the same DISC image ids as the Discography page.
+function songCover(title){
+  if(typeof DISC==='undefined'||!title) return null;
+  const norm=typeof songNorm==='function'?songNorm:t=>t.toLowerCase().replace(/[–—]/g,'-').replace(/\(feat\.[^)]*\)/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+  const n=norm(title);
+  const exactTitle=DISC.find(r=>norm(r.t)===n);
+  if(exactTitle) return {src:IMG+exactTitle.img, alt:title+' cover art', album:exactTitle.t};
+  for(const r of DISC){ if((r.tracks||[]).some(t=>t===title||norm(t)===n)) return {src:IMG+r.img, alt:title+' cover art', album:r.t}; }
+  if(/^who\b/.test(n)&&/remix|instrumental/.test(n)){const r=DISC.find(x=>x.t==='Who (Remixes)'); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
+  if(/^like crazy\b/.test(n)){const r=DISC.find(x=>x.t==='FACE'); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
+  if(/^vibe\b/.test(n)){const r=DISC.find(x=>/VIBE/.test(x.t)); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
+  if(/^angel pt\.? 1\b/.test(n)){const r=DISC.find(x=>/Angel Pt\. 1/.test(x.t)); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
+  if(/^with you\b/.test(n)){const r=DISC.find(x=>/With you/.test(x.t)); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
+  return null;
+}
+function coverImg(title, className, size){
+  const c=songCover(title); if(!c) return null;
+  const im=document.createElement('img');
+  im.src=c.src; im.alt=c.alt; im.loading='lazy'; im.decoding='async';
+  if(className) im.className=className;
+  const n=size||40; im.width=n; im.height=n;
+  return im;
+}
+
 const fmtD=iso=>new Date(iso+'T12:00:00').toLocaleDateString(document.documentElement.lang==='ko'?'ko-KR':'en-US',{year:'numeric',month:'long',day:'numeric'});
 function mk(t,c,txt){const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;}
 function discPage(){
@@ -20,7 +45,7 @@ function discPage(){
   for(const k of ['album','single','feat']){
     const g=document.getElementById(k==='album'?'disc-albums':k==='single'?'disc-singles':'disc-feat');
     for(const r of DISC.filter(x=>x.k===k)){
-      const c=mk('article','disc-card'); const im=mk('img'); im.src=IMG+r.img; im.alt=r.t+' cover art'; im.loading='lazy';
+      const c=mk('article','disc-card'); c.id='disc-'+r.t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); const im=mk('img'); im.src=IMG+r.img; im.alt=r.t+' cover art'; im.loading='lazy';
       const b=mk('div','body'); b.append(mk('h3',null,r.t),mk('div','meta',r.type+' · '+fmtD(r.d)));
       if(r.note) b.append(mk('div','meta',r.note));
       if(r.prod||r.tracks){const dt=mk('details');dt.append(mk('summary','ui-t',r.tracks?'Tracks':'Credits'));
@@ -48,23 +73,68 @@ const CAL=[
  ['01-13',2023,'Release','"VIBE" (TAEYANG feat. Jimin)','https://en.wikipedia.org/wiki/Vibe_(Taeyang_song)'],
  ['05-18',2023,'Release','"Angel Pt. 1" (FAST X soundtrack)','https://en.wikipedia.org/wiki/Angel_Pt._1'],
  ['06-11',2025,'Service','Jimin discharged from military service','https://en.yna.co.kr/view/AEN20250611000951315']];
-function calPage(){
-  const box=document.getElementById('cal-months'); if(!box) return;
+function calEvents(){
   const ev=CAL.slice();
   if(typeof ACH_BRAND!=='undefined') ACH_BRAND.forEach(r=>{if(r[1]===1&&/^\d{4}-\d{2}-\d{2}$/.test(r[4]||''))ev.push([r[4].slice(5),+r[4].slice(0,4),'Achievement',`#1 boy group member brand reputation (${r[0]})`,r[3]]);});
+  return ev;
+}
+function calPage(){
+  const box=document.getElementById('cal-months'); if(!box) return;
+  const ev=calEvents();
   const todayIso=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
   const today=new Date(todayIso+'T12:00:00'); const ty=today.getFullYear();
+  const loc=document.documentElement.lang==='ko'?'ko-KR':document.documentElement.lang==='es'?'es-ES':'en-US';
   const next=e=>{let d=new Date(ty+'-'+e[0]+'T12:00:00');if(d<today)d=new Date((ty+1)+'-'+e[0]+'T12:00:00');return d;};
   const up=ev.map(e=>[e,next(e)]).sort((a,b)=>a[1]-b[1]).slice(0,3);
   const nb=document.getElementById('cal-next');
+  nb.replaceChildren();
   up.forEach(([e,d])=>{const days=Math.round((d-today)/864e5);const m=mk('div','metric');m.append(mk('strong',null,days===0?'Today':days+' days'),mk('span',null,e[3]),mk('small',null,fmtD(d.toISOString().slice(0,10))+' · '+(d.getFullYear()-e[1])+(e[2]==='Birthday'?'':' yr anniversary')));nb.append(m);});
-  for(let mo=1;mo<=12;mo++){const items=ev.filter(e=>+e[0].slice(0,2)===mo).sort((a,b)=>a[0].localeCompare(b[0]));if(!items.length)continue;
-    const dt=mk('details','cal-month');if(mo===today.getMonth()+1||mo===up[0][1].getMonth()+1)dt.open=true;
-    dt.append(mk('summary',null,new Date(2000,mo-1,1).toLocaleDateString(document.documentElement.lang==='ko'?'ko-KR':'en-US',{month:'long'})+' · '+items.length));
-    const ul=mk('ul');items.forEach(e=>{const li=mk('li');const tx=mk('div');tx.append(mk('div','cal-kind',e[2]+' · '+e[1]),mk('div',null,e[3]));const a=mk('a',null,'source');a.href=e[4];a.target='_blank';a.rel='noopener';tx.append(a);li.append(mk('div','cal-day',e[0].slice(3)),tx);ul.append(li);});
-    dt.append(ul);box.append(dt);}
+  box.replaceChildren();
+  const dows=[0,1,2,3,4,5,6].map(i=>new Date(2026,7,2+i).toLocaleDateString('en-US',{weekday:'short'})); // Sun–Sat in English for i18n maps
+  for(let mo=1;mo<=12;mo++){
+    const items=ev.filter(e=>+e[0].slice(0,2)===mo).sort((a,b)=>a[0].localeCompare(b[0]));
+    const byDay={}; items.forEach(e=>{const d=e[0].slice(3);(byDay[d]=byDay[d]||[]).push(e);});
+    const month=mk('section','cal-grid-month');
+    if(mo===today.getMonth()+1||(up[0]&&mo===up[0][1].getMonth()+1)) month.classList.add('is-focus');
+    const monthName=new Date(2000,mo-1,1).toLocaleDateString('en-US',{month:'long'});
+    month.append(mk('h3',null,monthName+' · '+items.length));
+    const grid=mk('div','cal-grid');
+    dows.forEach(d=>grid.append(mk('span','cal-dow',d)));
+    const first=new Date(ty+'-'+String(mo).padStart(2,'0')+'-01T12:00:00');
+    const start=first.getDay(); // 0 Sun
+    const dim=new Date(ty,mo,0).getDate();
+    for(let i=0;i<start;i++) grid.append(mk('span','cal-cell is-pad',''));
+    for(let day=1;day<=dim;day++){
+      const key=String(day).padStart(2,'0');
+      const evs=byDay[key];
+      const cell=mk(evs?'button':'span','cal-cell'+(evs?' has-event':'')+(ty===today.getFullYear()&&mo===today.getMonth()+1&&day===today.getDate()?' is-today':''), String(day));
+      if(evs){
+        cell.type='button';
+        cell.id='cal-'+String(mo).padStart(2,'0')+'-'+key;
+        cell.setAttribute('aria-label', evs.map(e=>monthName+' '+day+': '+e[3]).join('. '));
+        cell.title=evs.map(e=>e[3]).join(', ');
+        cell.addEventListener('click',()=>{const list=month.querySelector('.cal-events'); if(list) list.scrollIntoView({block:'nearest'});});
+      }
+      grid.append(cell);
+    }
+    month.append(grid);
+    if(items.length){
+      const ul=mk('ul','cal-events');
+      items.forEach(e=>{
+        const li=mk('li'); const tx=mk('div');
+        tx.append(mk('div','cal-kind',e[2]+' · '+e[1]),mk('div',null,e[3]));
+        const a=mk('a',null,'source'); a.href=e[4]; a.target='_blank'; a.rel='noopener'; tx.append(a);
+        li.append(mk('div','cal-day',e[0].slice(3)),tx); ul.append(li);
+      });
+      month.append(ul);
+    }
+    box.append(month);
+  }
 }
 discPage(); calPage();
+const _calSel=document.getElementById('lang-select');
+if(_calSel&&document.getElementById('cal-months')) _calSel.addEventListener('change',()=>setTimeout(calPage,0));
+
 function achPage(){
   if(!document.getElementById('cat-charts')) return;
   const sm=document.getElementById('sm-rows');

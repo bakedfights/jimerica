@@ -32,6 +32,42 @@ function svgChart(labels, values, {kind='bar', title='', fmt=format}={}) {
 }
 // daily gains derived from consecutive snapshot totals
 function histDaily(vals){ return vals.slice(1).map((v,i)=>v!=null&&vals[i]!=null?v-vals[i]:null); }
+
+function sparkline(title){
+  if(typeof HIST_SONGS==='undefined'||!HIST_SONGS[title]) return null;
+  const d=histDaily(HIST_SONGS[title]).slice(-7);
+  const nums=d.filter(v=>v!=null); if(nums.length<2) return null;
+  const W=84,H=24,P=2, ns='http://www.w3.org/2000/svg';
+  let lo=Math.min(...nums), hi=Math.max(...nums); if(hi===lo){hi+=1;lo=Math.max(0,lo-1);}
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.setAttribute('class','spark'); svg.setAttribute('role','img');
+  const t=document.createElementNS(ns,'title'); t.textContent='7-day trend'; svg.append(t);
+  const x=i=>P+i*(W-2*P)/Math.max(1,d.length-1), y=v=>H-P-(H-2*P)*((v-lo)/(hi-lo));
+  const pts=d.map((v,i)=>v==null?null:x(i)+','+y(v)).filter(Boolean).join(' ');
+  const pl=document.createElementNS(ns,'polyline'); pl.setAttribute('points',pts); pl.setAttribute('class','spark-line'); svg.append(pl);
+  return svg;
+}
+function msRing(s, large){
+  if(!s) return null;
+  const m=nextMilestone(s[1]), step=m<=1e8?1e7:m<=1e9?5e7:1e8, start=m-step;
+  const pct=Math.min(100,Math.max(0,(s[1]-start)/step*100));
+  const size=large?72:32, sw=large?6:3, rad=(size/2)-sw-0.5, circ=2*Math.PI*rad;
+  const ns='http://www.w3.org/2000/svg';
+  const wrap=document.createElement(large?'div':'span'); wrap.className=large?'ms-ring ms-ring-lg':'ms-ring';
+  const svg=document.createElementNS(ns,'svg');
+  svg.setAttribute('viewBox','0 0 '+size+' '+size);
+  svg.setAttribute('width',size); svg.setAttribute('height',size);
+  svg.setAttribute('role','img');
+  const t=document.createElementNS(ns,'title'); t.textContent=Math.round(pct)+'% toward '+short(m); svg.append(t);
+  const bg=document.createElementNS(ns,'circle'); bg.setAttribute('class','ms-ring-bg');
+  const fg=document.createElementNS(ns,'circle'); fg.setAttribute('class','ms-ring-fg');
+  [bg,fg].forEach(c=>{c.setAttribute('cx',size/2);c.setAttribute('cy',size/2);c.setAttribute('r',rad);c.setAttribute('fill','none');c.setAttribute('stroke-width',sw);});
+  fg.setAttribute('stroke-dasharray',String(circ)); fg.setAttribute('stroke-dashoffset',String(circ*(1-pct/100)));
+  svg.append(bg,fg); wrap.append(svg);
+  if(large){const lab=node('span',null,'ms-ring-label'); lab.append(document.createTextNode(Math.round(pct)+'% '),node('span','toward '+short(m))); wrap.append(lab);}
+  return wrap;
+}
 function share(){
   document.querySelectorAll('[data-share]').forEach(b=>{
     b.addEventListener('click',async()=>{
@@ -44,9 +80,9 @@ function share(){
 }
 function songsPage(){
   const q=el('song-search'); if(!q) return;
-  const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const show=!v||(tr.cells[0].querySelector('a')||tr.cells[0]).textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
+  const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const name=tr.cells[0].querySelector('a.song-link')||tr.cells[0].querySelector('a')||tr.cells[0];const show=!v||name.textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
   q.addEventListener('input',apply);
-  const link=()=>{const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(!td.querySelector('a')){const t=td.firstChild.textContent;const a=node('a',t);a.href='./song/'+slug(t)+'.html';td.firstChild.replaceWith(a);}const a=td.querySelector('a');if(!a)return;if(!td.querySelector('.ms-badge')){const r=MS.get(a.textContent);if(r){const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));td.append(b);}}if(!td.querySelector('.trend-link')){const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';td.append(v);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
+  const link=()=>{const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];const nameEl=td.querySelector('.song-title-text')||td;if(!td.querySelector('a.song-link')){const src=[...nameEl.childNodes].find(n=>n.nodeType===3||(n.nodeType===1&&!n.classList.contains('feature-label')));if(!src)return;const t=src.textContent;const a=node('a',t,'song-link');a.href='./song/'+slug(t)+'.html';src.replaceWith(a);}const a=td.querySelector('a.song-link');if(!a)return;if(!td.querySelector('.ms-badge')){const r=MS.get(a.textContent);if(r){const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));td.append(b);}}if(!td.querySelector('.song-viz')){const viz=node('div',null,'song-viz');const sp=sparkline(a.textContent);const song=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===a.textContent);const ring=msRing(song);if(sp)viz.append(sp);if(ring)viz.append(ring);if(viz.childNodes.length)td.append(viz);}if(!td.querySelector('.trend-link')){const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';td.append(v);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
 function songPage(){
@@ -56,6 +92,12 @@ function songPage(){
   document.title=s[0]+' · JIMERICA'; el('song-title').textContent=s[0];
   const rank=SONGS.slice().sort((a,b)=>b[1]-a[1]).indexOf(s)+1, share=s[1]/TOTALS.streams*100;
   el('song-sub').textContent=`${s[3]?'Featured':'Solo'} song · #${rank} of ${SONGS.length} by total streams · data as of ${longDate(UPDATED)}`;
+  const hero=el('song-hero');
+  if(hero&&!hero.querySelector('.cover-lg')){
+    const im=typeof coverImg==='function'?coverImg(s[0],'cover-lg',200):null;
+    if(im){im.loading='eager'; hero.prepend(im);}
+    const ring=msRing(s,true); if(ring) hero.append(ring);
+  }
   const nm=nextMilestone(s[1]), a7=avg7(s), days=a7.rate>0?Math.ceil((nm-s[1])/a7.rate):null;
   renderMetrics('song-metrics',[[format(s[1]),'Total streams'],[s[2]==null?'–':'+'+format(s[2]),'Daily gain',(()=>{const c=dailyChange(s[0]);return c?`${c.delta>0?'▲ +':c.delta<0?'▼ ':''}${format(c.delta)} vs day before`:'';})()],[share.toFixed(1)+'%','Share of all Jimin streams'],[short(nm),'Next milestone',days?`≈ ${longDate(addDays(UPDATED,days))} (estimate)`:'No daily data']]);
   {const c=dailyChange(s[0]);const sm=document.querySelectorAll('#song-metrics .metric')[1]?.querySelector('small');if(sm&&c)sm.className=c.delta>0?'chg-up':c.delta<0?'chg-down':'chg-zero';}
@@ -99,29 +141,28 @@ function feedPage(){
   const QS=new URLSearchParams(location.search),SHOW=QS.get('show');const filter=SHOW==='jimin'?QS.get('p'):null;showSwitch(SHOW);
   const items=FEED.filter(f=>!filter||f.platform===filter);
   document.querySelectorAll('[data-feed-filter]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.feedFilter||null)===filter)));
-  el('feed-cap').textContent=`${items.length} post${items.length===1?'':'s'} · newest ${items[0]?longDate(items[0].date):'–'}. Posts load from Instagram/TikTok; if an embed is blocked, use the link.`;
+  el('feed-cap').textContent=`${items.length} post${items.length===1?'':'s'} · newest ${items[0]?longDate(items[0].date):'–'}. Each card links to the original Instagram or TikTok post.`;
   g.innerHTML='';
   const PAGE=9; let shown=0; const more=document.createElement('button'); more.type='button'; more.className='cta show-more'; more.textContent='Show more';
-  const renderNext=()=>{ const batch=items.slice(shown,shown+PAGE); shown+=batch.length; renderItems(batch); more.hidden=shown>=items.length; if(window.instgrm)window.instgrm.Embeds.process(); };
+  const renderNext=()=>{ const batch=items.slice(shown,shown+PAGE); shown+=batch.length; renderItems(batch); more.hidden=shown>=items.length; };
   more.addEventListener('click',renderNext); g.after(more);
   function renderItems(list){
   for(const f of list){
     const card=node('div',null,'feed-card'); const meta=node('div',null,'feed-meta');
-    meta.append(node('span',f.platform==='instagram'?'Instagram · @j.m':f.platform==='x'?'X · @JIMERICA':'TikTok · @jimin','feed-tag '+f.platform),node('span',longDate(f.date)));
-    if(f.platform==='x'){const a=document.createElement('a');a.href=f.url;a.target='_blank';a.rel='noopener';a.className='x-post';
-      if(f.text)a.append(node('p',f.text,'x-text no-tr'));if(f.image){const im=document.createElement('img');im.src=f.image;im.alt='Image from @JIMERICA post';im.loading='lazy';a.append(im);}
-      a.append(node('span','View on X ↗','x-open'));card.append(meta,a);g.append(card);continue;}
-    const bq=document.createElement('blockquote');
-    if(f.platform==='instagram'){bq.className='instagram-media';bq.dataset.instgrmPermalink=f.url;bq.dataset.instgrmVersion='14';}
-    else{bq.className='tiktok-embed';bq.setAttribute('cite',f.url);bq.dataset.videoId=f.url.split('/').pop();const s=document.createElement('section');bq.append(s);}
-    const a=node('a','Open post ↗');a.href=f.url;a.target='_blank';a.rel='noopener';bq.append(a);
-    card.append(meta,bq); g.append(card);
+    const who=f.platform==='instagram'?'Instagram · @j.m':f.platform==='x'?'X · @JIMERICA':'TikTok · @jimin';
+    meta.append(node('span',who,'feed-tag '+f.platform),node('span',longDate(f.date)));
+    const a=document.createElement('a');a.href=f.url;a.target='_blank';a.rel='noopener';a.className='feed-link';
+    const caption=f.text||f.caption||'';
+    const title=f.title||(f.platform==='instagram'?'New Instagram post':f.platform==='tiktok'?'New TikTok video':'Post');
+    if(title&&!caption) a.append(node('strong',title));
+    if(caption) a.append(node('p',caption,'x-text no-tr'));
+    // Photos only when a stable image URL is already in the data (none are stored for Jimin's Instagram/TikTok posts).
+    if(f.image){const im=document.createElement('img');im.src=f.image;im.alt=title||('Image from '+who);im.loading='lazy';a.append(im);}
+    a.append(node('span','Open post ↗','feed-open'));
+    card.append(meta,a);g.append(card);
   }
   }
   renderNext();
-  const load=(src)=>{const s=document.createElement('script');s.async=true;s.src=src;document.body.append(s);};
-  if(items.some(f=>f.platform==='instagram')) load('https://www.instagram.com/embed.js');
-  if(items.some(f=>f.platform==='tiktok')||el('tt-profile')) load('https://www.tiktok.com/embed.js');
 }
 feedPage();
 
@@ -189,9 +230,8 @@ officialPage();
 function glance(){
   const g=el('glance'); if(!g) return;
   const item=(label,value,cls,...sub)=>{const d=node('div',null,'g-item');d.append(node('span',label,'g-label'),node('strong',value,cls||''));if(sub.length){const s=node('span',null,'g-sub');sub.forEach((x,i)=>{if(i)s.append(' · ');s.append(x);});d.append(s);}return d;};
-  const r=msRows()[0]; const items=[item('Total streams',short(TOTALS.streams),'gold'),item('Streams yesterday','+'+short(TOTALS.daily),'green')];
-  if(r) items.push(item('Next milestone',short(r[1]),'gold',node('span',r[0][0],'no-tr'),node('span','≈ '+longDate(addDays(UPDATED,r[2])))));
-  items.push(item('Data as of',longDate(UPDATED)));
+  const r=msRows()[0]; const items=[item('Streams yesterday','+'+short(TOTALS.daily),'green')];
+  if(r){const sub=[];const im=typeof coverImg==='function'?coverImg(r[0][0],'cover-sm',28):null;if(im)sub.push(im);sub.push(node('span',r[0][0],'no-tr'),node('span','≈ '+longDate(addDays(UPDATED,r[2]))));items.push(item('Next milestone',short(r[1]),'',...sub));}
   g.replaceChildren(...items);
 }
 function newThisWeek(){

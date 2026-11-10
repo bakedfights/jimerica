@@ -106,6 +106,9 @@ const PAT=[ // applied after date conversion; full-string patterns
  [/^(\d+) days$/,m=>`${m[1]}일 남음`],
  [/^(.+) · (\d+) yr anniversary$/,m=>`${m[1]} · ${m[2]}주년`],
  [/^(Birthday|Release|Achievement|Service) · (\d{4})$/,m=>`${{Birthday:'생일',Release:'발매',Achievement:'업적',Service:'복무'}[m[1]]} · ${m[2]}`],
+ [/^(.+) cover art$/,m=>`${m[1]} 커버 아트`],
+ [/^(\d+)% toward (.+)$/,m=>`${m[2]}까지 ${m[1]}%`],
+ [/^(\d+) post(s?) · newest (.+)\. Each card links to the original Instagram or TikTok post\.$/,m=>`${m[1]}개의 게시물 · 최신 ${m[3]}. 각 카드는 원본 인스타그램 또는 틱톡 게시물로 연결됩니다.`],
  [/^#1 boy group member brand reputation \((.+)\)$/,m=>`보이그룹 개인 브랜드평판 1위 (${m[1]})`],
  [/^"(.+)" \(TAEYANG feat\. Jimin\)$/,m=>`"${m[1]}" (태양 feat. 지민)`],
  [/^(\d+) posts? · newest (.+)\. Posts load from Instagram\/TikTok; if an embed is blocked, use the link\.$/,m=>`게시물 ${m[1]}개 · 최신 ${m[2]}. 인스타그램/틱톡에서 불러옵니다. 임베드가 막히면 링크를 이용하세요.`],
@@ -602,6 +605,9 @@ const ES_PAT=[
 [/^(\d+) days$/,m=>`${m[1]} días`],
 [/^(.+) · (\d+) yr anniversary$/,m=>`${m[1]} · ${m[2]}.º aniversario`],
 [/^(Birthday|Release|Achievement|Service) · (\d{4})$/,m=>`${{Birthday:'Cumpleaños',Release:'Lanzamiento',Achievement:'Logro',Service:'Servicio'}[m[1]]} · ${m[2]}`],
+ [/^(.+) cover art$/,m=>`Portada de ${m[1]}`],
+ [/^(\d+)% toward (.+)$/,m=>`${m[1]} % hacia ${m[2]}`],
+ [/^(\d+) post(s?) · newest (.+)\. Each card links to the original Instagram or TikTok post\.$/,m=>`${m[1]} publicación${m[1]==='1'?'':'es'} · la más reciente: ${m[3]}. Cada tarjeta enlaza a la publicación original de Instagram o TikTok.`],
 [/^#1 boy group member brand reputation \((.+)\)$/,m=>`N.º 1 en reputación de marca individual de integrantes de grupos masculinos (${m[1]})`],
 [/^"(.+)" \(TAEYANG feat\. Jimin\)$/,m=>`"${m[1]}" (TAEYANG con Jimin)`],
 [/^(\d+) posts? · newest (.+)\. Posts load from Instagram\/TikTok; if an embed is blocked, use the link\.$/,m=>`${m[1]} publicaciones · la más reciente: ${m[2]}. Las publicaciones se cargan desde Instagram/TikTok; si el contenido incrustado está bloqueado, usa el enlace.`],
@@ -628,6 +634,10 @@ Object.assign(ES,{"Total chart streams":"Reproducciones totales en la lista"});
 
 Object.assign(KO,{"Service":"복무","Jimin enlisted for military service":"지민 입대","Jimin discharged from military service":"지민 전역","\"Like Crazy\" No. 1 on the Billboard Hot 100":"\"Like Crazy\" 빌보드 핫100 1위","Dates use Pacific time (PT). \"Promise\" was posted December 31, 2018, 00:01 KST, which is December 30 in PT.":"날짜는 태평양 시간(PT) 기준입니다. \"Promise\"는 2018년 12월 31일 00:01(한국 시간)에 공개되었으며, PT로는 12월 30일입니다.","\"Christmas Love\"":"\"Christmas Love\"","\"Promise\"":"\"Promise\""});
 Object.assign(ES,{"Service":"Servicio","Jimin enlisted for military service":"Jimin se alistó en el servicio militar","Jimin discharged from military service":"Jimin recibió la baja del servicio militar","\"Like Crazy\" No. 1 on the Billboard Hot 100":"\"Like Crazy\" n.º 1 en el Billboard Hot 100","Dates use Pacific time (PT). \"Promise\" was posted December 31, 2018, 00:01 KST, which is December 30 in PT.":"Las fechas usan la hora del Pacífico (PT). \"Promise\" se publicó el 31 de diciembre de 2018 a las 00:01 KST, que es el 30 de diciembre en PT.","\"Christmas Love\"":"\"Christmas Love\"","\"Promise\"":"\"Promise\""});
+
+Object.assign(KO,{"Search the site":"사이트 검색","Search songs, albums, dates…":"노래, 앨범, 날짜 검색…","No matches":"검색 결과 없음","Album":"앨범","Single":"싱글","Featured release":"피처링","7-day trend":"최근 7일 추이","Open post ↗":"게시물 열기 ↗","Open TikTok profile ↗":"틱톡 프로필 열기 ↗","New Instagram post":"새 인스타그램 게시물","New TikTok video":"새 틱톡 영상","Each card links to the original Instagram or TikTok post.":"각 카드는 원본 인스타그램 또는 틱톡 게시물로 연결됩니다.","The official TikTok account, linked here rather than embedded, so this page stays in the site's dark style.":"공식 틱톡 계정 링크입니다. 페이지 스타일을 유지하기 위해 임베드 대신 링크만 둡니다.","Sun":"일","Mon":"월","Tue":"화","Wed":"수","Thu":"목","Fri":"금","Sat":"토"});
+Object.assign(ES,{"Search the site":"Buscar en el sitio","Search songs, albums, dates…":"Buscar canciones, álbumes, fechas…","No matches":"Sin resultados","Album":"Álbum","Single":"Sencillo","Featured release":"Colaboración","7-day trend":"Tendencia de 7 días","Open post ↗":"Abrir publicación ↗","Open TikTok profile ↗":"Abrir perfil de TikTok ↗","New Instagram post":"Nueva publicación de Instagram","New TikTok video":"Nuevo vídeo de TikTok","Each card links to the original Instagram or TikTok post.":"Cada tarjeta enlaza a la publicación original de Instagram o TikTok.","The official TikTok account, linked here rather than embedded, so this page stays in the site's dark style.":"La cuenta oficial de TikTok, enlazada aquí en lugar de incrustada, para mantener el estilo oscuro del sitio.","Sun":"dom","Mon":"lun","Tue":"mar","Wed":"mié","Thu":"jue","Fri":"vie","Sat":"sáb"});
+
 const ES_TEMPLATES=Object.entries(ES).filter(([k])=>k.includes('{')&&!/^\{month\}/.test(k)).map(([k,v])=>{
  const names=[];let pattern='',pos=0;const re=/\{(\w+)\}/g;let m;const esc=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  while((m=re.exec(k))){pattern+=esc(k.slice(pos,m.index))+'(.+?)';names.push(m[1]);pos=m.index+m[0].length;}pattern+=esc(k.slice(pos));return [new RegExp('^'+pattern+'$'),v,names];
