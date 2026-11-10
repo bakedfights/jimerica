@@ -1,7 +1,9 @@
-// Daily Spotify data. Dates describe each source dataset, never the retrieval time.
+// Daily Spotify data. UPDATED and WHO_DATE are source dataset dates, never the retrieval time.
+// REFRESHED is the Pacific (America/Los_Angeles) calendar date the daily routine last published this file.
 // SONGS: [title, total streams, daily gain or null, is feature]
 // WHO: [country code, rank, movement, peak or null, daily streams, daily change or null]
 const UPDATED = "2026-11-08";
+const REFRESHED = "2026-11-09";
 const TOTALS = {
   "streams": 8745894214,
   "daily": 2221868,
