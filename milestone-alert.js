@@ -5,7 +5,7 @@
 // Remove: delete this file, its <script> tag and the <aside id="ms-alert"> in index.html, and the "ms-alert" CSS block.
 (function milestoneAlert(){
   const box=document.getElementById('ms-alert'); if(!box||typeof msRows!=='function') return;
-  const ALERT_DAYS=2, MAX_SHOWN=3;
+  const ALERT_DAYS=7, MAX_SHOWN=3;
   const sd=iso=>new Date(iso+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
   const due=msRows().filter(r=>r[2]<=ALERT_DAYS);       // [song, milestone, days, avg]
   if(!due.length){ box.hidden=true; box.replaceChildren(); return; }
