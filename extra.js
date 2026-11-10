@@ -157,7 +157,7 @@ function feedPage(){
     if(title&&!caption) a.append(node('strong',title));
     if(caption) a.append(node('p',caption,'x-text no-tr'));
     // Photos only when a stable image URL is already in the data (none are stored for Jimin's Instagram/TikTok posts).
-    if(f.image){const im=document.createElement('img');im.src=f.image;im.alt=title||('Image from '+who);im.loading='lazy';a.append(im);}
+    if(f.image){const im=document.createElement('img');im.src=f.image;im.alt=title||('Image from '+who);im.loading='lazy';im.decoding='async';a.append(im);}
     a.append(node('span','Open post ↗','feed-open'));
     card.append(meta,a);g.append(card);
   }
@@ -211,7 +211,7 @@ function officialPage(){
       if (sum) a.append(node("p", sum, "x-text"));
       if (f.image) {
         const im = document.createElement("img");
-        im.src = f.image; im.alt = title || ("Image from @"+f.account); im.loading = "lazy";
+        im.src = f.image; im.alt = title || ("Image from @"+f.account); im.loading = "lazy"; im.decoding = "async";
         a.append(im);
       }
       a.append(node("span", "Open source ↗", "x-open"));

@@ -645,6 +645,26 @@ Object.assign(ES,{"Same as the day before":"Igual que el día anterior","Both da
 Object.assign(KO,{"Search the site":"사이트 검색","Search songs, albums, dates…":"노래, 앨범, 날짜 검색…","No matches":"검색 결과 없음","Album":"앨범","Single":"싱글","Featured release":"피처링","7-day trend":"최근 7일 추이","Open post ↗":"게시물 열기 ↗","Open TikTok profile ↗":"틱톡 프로필 열기 ↗","New Instagram post":"새 인스타그램 게시물","New TikTok video":"새 틱톡 영상","Each card links to the original Instagram or TikTok post.":"각 카드는 원본 인스타그램 또는 틱톡 게시물로 연결됩니다.","The official TikTok account, linked here rather than embedded, so this page stays in the site's dark style.":"공식 틱톡 계정 링크입니다. 페이지 스타일을 유지하기 위해 임베드 대신 링크만 둡니다.","Sun":"일","Mon":"월","Tue":"화","Wed":"수","Thu":"목","Fri":"금","Sat":"토"});
 Object.assign(ES,{"Search the site":"Buscar en el sitio","Search songs, albums, dates…":"Buscar canciones, álbumes, fechas…","No matches":"Sin resultados","Album":"Álbum","Single":"Sencillo","Featured release":"Colaboración","7-day trend":"Tendencia de 7 días","Open post ↗":"Abrir publicación ↗","Open TikTok profile ↗":"Abrir perfil de TikTok ↗","New Instagram post":"Nueva publicación de Instagram","New TikTok video":"Nuevo vídeo de TikTok","Each card links to the original Instagram or TikTok post.":"Cada tarjeta enlaza a la publicación original de Instagram o TikTok.","The official TikTok account, linked here rather than embedded, so this page stays in the site's dark style.":"La cuenta oficial de TikTok, enlazada aquí en lugar de incrustada, para mantener el estilo oscuro del sitio.","Sun":"dom","Mon":"lun","Tue":"mar","Wed":"mié","Thu":"jue","Fri":"vie","Sat":"sáb"});
 
+// Nov 10, 2026 features: Stream on Spotify button, milestone alert banner, weekly recap (remove with their features; see FANSITE.md).
+Object.assign(KO,{"Stream on Spotify ↗":"Spotify에서 듣기 ↗","Open this track on Spotify":"Spotify에서 이 곡 열기","Milestone alert":"마일스톤 알림","Estimate":"예상","is about to pass":"곧 돌파:","See all upcoming milestones →":"다가오는 마일스톤 모두 보기 →","See upcoming milestones →":"다가오는 마일스톤 보기 →","Estimate: assumes each song keeps its recent 7-day average pace.":"예상치입니다. 각 곡이 최근 7일 평균 속도를 유지한다고 가정합니다.",
+"Weekly recap":"주간 요약","Streams in the last 7 days":"최근 7일 스트리밍","All songs combined":"전체 곡 합계","vs previous 7 days":"이전 7일 대비","Biggest climber":"가장 크게 오른 곡","No song gained on the previous 7 days":"이전 7일보다 늘어난 곡이 없습니다","Most streamed this week":"이번 주 최다 스트리밍","Milestones crossed":"달성한 마일스톤","None this week":"이번 주 없음","No song passed a new round-number milestone.":"새로 넘어선 마일스톤이 있는 곡이 없습니다.","Daily streams, all songs":"일일 스트리밍 (전체 곡)","Source: Spotify. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.":"출처: Spotify. 일일 증가는 태평양 시간(PT) 날짜와 사이트 전체와 동일한 일일 기록을 사용합니다."});
+Object.assign(ES,{"Stream on Spotify ↗":"Escuchar en Spotify ↗","Open this track on Spotify":"Abrir esta canción en Spotify","Milestone alert":"Alerta de hito","Estimate":"Estimación","is about to pass":"está a punto de superar","See all upcoming milestones →":"Ver todos los próximos hitos →","See upcoming milestones →":"Ver próximos hitos →","Estimate: assumes each song keeps its recent 7-day average pace.":"Estimación: supone que cada canción mantiene su ritmo medio reciente de 7 días.",
+"Weekly recap":"Resumen semanal","Streams in the last 7 days":"Reproducciones en los últimos 7 días","All songs combined":"Todas las canciones juntas","vs previous 7 days":"frente a los 7 días anteriores","Biggest climber":"Mayor subida","No song gained on the previous 7 days":"Ninguna canción subió respecto a los 7 días anteriores","Most streamed this week":"Más escuchada de la semana","Milestones crossed":"Hitos alcanzados","None this week":"Ninguno esta semana","No song passed a new round-number milestone.":"Ninguna canción superó un nuevo hito redondo.","Daily streams, all songs":"Reproducciones diarias, todas las canciones","Source: Spotify. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.":"Fuente: Spotify. Las subidas diarias usan fechas del Pacífico y las mismas instantáneas diarias que el resto del sitio."});
+PAT.push(
+ [/^\(est\. (.+)\)$/,m=>`(예상 ${m[1]})`],
+ [/^\+([\d,]+) streams$/,m=>`+${m[1]} 스트리밍`],
+ [/^\+([\d,]+) vs previous 7 days$/,m=>`이전 7일 대비 +${m[1]}`],
+ [/^(?:([+−]?[\d.]+%) · )?previous: ([\d,]+)$/,m=>`${m[1]?m[1]+' · ':''}이전 ${m[2]}`],
+ [/^: reached (.+)$/,m=>`: ${m[1]} 달성`],
+ [/^Needs 14 days of history\. Available from (.+)\.$/,m=>`14일치 기록이 필요합니다. ${m[1]}부터 확인할 수 있습니다.`]);
+ES_PAT.push(
+ [/^\(est\. (.+)\)$/,m=>`(est. ${m[1]})`],
+ [/^\+([\d,]+) streams$/,m=>`+${m[1]} reproducciones`],
+ [/^\+([\d,]+) vs previous 7 days$/,m=>`+${m[1]} frente a los 7 días anteriores`],
+ [/^(?:([+−]?[\d.]+%) · )?previous: ([\d,]+)$/,m=>`${m[1]?m[1]+' · ':''}anterior: ${m[2]}`],
+ [/^: reached (.+)$/,m=>`: alcanzó ${m[1]}`],
+ [/^Needs 14 days of history\. Available from (.+)\.$/,m=>`Requiere 14 días de historial. Disponible desde el ${m[1]}.`]);
+
 const ES_TEMPLATES=Object.entries(ES).filter(([k])=>k.includes('{')&&!/^\{month\}/.test(k)).map(([k,v])=>{
  const names=[];let pattern='',pos=0;const re=/\{(\w+)\}/g;let m;const esc=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  while((m=re.exec(k))){pattern+=esc(k.slice(pos,m.index))+'(.+?)';names.push(m[1]);pos=m.index+m[0].length;}pattern+=esc(k.slice(pos));return [new RegExp('^'+pattern+'$'),v,names];

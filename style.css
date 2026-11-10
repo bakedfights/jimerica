@@ -316,3 +316,44 @@ h1{font-size:clamp(1.55rem,3.2vw,2.15rem);margin:8px 0 10px;font-weight:800}
 .g-cmp-down{color:var(--red)}
 .g-cmp-eq{color:var(--muted);font-weight:500}
 .g-goal{font-size:12px;color:var(--muted);line-height:1.4}
+
+/* feature:spotify-btn (Nov 10, 2026) — remove with spotify-button.js */
+.spotify-btn{border-color:rgba(240,198,116,.55);font-weight:700}
+.spotify-btn:hover{background:var(--gold);color:#2b2d31;text-decoration:none}
+/* end feature:spotify-btn */
+
+/* feature:ms-alert (Nov 10, 2026) — remove with milestone-alert.js */
+.ms-alert{margin:0 0 14px;padding:12px 16px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.ms-alert[hidden]{display:none}
+.ms-alert-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.ms-alert-title{font-size:.95rem;color:var(--text)}
+.ms-alert-est{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(240,198,116,.45);border-radius:999px;padding:2px 8px}
+.ms-alert-list{list-style:none;margin:0;padding:0}
+.ms-alert-list li{padding:2px 0;line-height:1.45}
+.ms-alert-list a{font-weight:700}
+.ms-alert-date{color:var(--muted)}
+.ms-alert-note{margin:4px 0 0;font-size:.82rem;color:var(--muted)}
+.ms-alert-more{display:inline-block;margin-top:4px;font-size:.88rem}
+/* end feature:ms-alert */
+
+/* feature:recap (Nov 10, 2026) — remove with weekly-recap.js */
+.recap .recap-body{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:16px}
+.recap .recap-grid{margin:0 0 14px}
+.recap-tile strong.recap-total{font-size:1.7rem;letter-spacing:-.02em}
+.recap-tile strong.recap-song{font-size:1.1rem;line-height:1.25;overflow-wrap:anywhere}
+.recap-tile strong.recap-song a{color:var(--text)}
+.recap-tile small{color:var(--muted)}
+.recap-tile small.chg-up{color:var(--green)}.recap-tile small.chg-down{color:var(--red)}
+.recap-list{list-style:none;margin:6px 0 0;padding:0;font-size:.92rem;line-height:1.5}
+.recap-list a{font-weight:700}
+.recap-chart{padding:8px 8px 4px}
+.recap-chart-title{margin:4px 6px 0;font-size:.95rem;color:var(--muted);font-weight:600}
+.recap-src{margin:10px 2px 0}
+@media(max-width:600px){.recap-tile strong.recap-total{font-size:1.3rem}.recap .recap-body{padding:12px}}
+@media(min-width:900px){.recap .recap-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.recap-chart .chart{display:block;margin:0 auto;width:100%;max-width:640px;max-height:none}.recap-chart .barc{fill:#8f98a8}.recap-chart .barc:hover{fill:#b7bfcc}
+/* end feature:recap */
+
+/* perf (Nov 10, 2026): skip rendering of below-the-fold blocks until needed */
+#world,#milestones,#top,.cal-grid-month{content-visibility:auto;contain-intrinsic-size:auto 640px}
+/* end perf */

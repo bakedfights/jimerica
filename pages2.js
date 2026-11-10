@@ -29,12 +29,16 @@ function songCover(title){
   if(/^with you\b/.test(n)){const r=DISC.find(x=>/With you/.test(x.t)); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
   return null;
 }
+// Spotify serves each cover at 64px (ab67616d00004851), 300px (ab67616d00001e02) and 640px (ab67616d0000b273); ask for the smallest that is sharp enough.
+function coverSized(src,px){ return src.replace('ab67616d0000b273','ab67616d0000'+(px<=64?'4851':px<=300?'1e02':'b273')); }
 function coverImg(title, className, size){
   const c=songCover(title); if(!c) return null;
   const im=document.createElement('img');
-  im.src=c.src; im.alt=c.alt; im.loading='lazy'; im.decoding='async';
+  const n=size||40;
+  im.src=coverSized(c.src,n<=40?64:300); im.alt=c.alt; im.loading='lazy'; im.decoding='async';
   if(className) im.className=className;
-  const n=size||40; im.width=n; im.height=n;
+  im.width=n; im.height=n;
+  if(n>40){ im.srcset=coverSized(c.src,300)+' 300w, '+c.src+' 640w'; im.sizes=n+'px'; }
   return im;
 }
 
@@ -45,7 +49,7 @@ function discPage(){
   for(const k of ['album','single','feat']){
     const g=document.getElementById(k==='album'?'disc-albums':k==='single'?'disc-singles':'disc-feat');
     for(const r of DISC.filter(x=>x.k===k)){
-      const c=mk('article','disc-card'); c.id='disc-'+r.t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); const im=mk('img'); im.src=IMG+r.img; im.alt=r.t+' cover art'; im.loading='lazy';
+      const c=mk('article','disc-card'); c.id='disc-'+r.t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); const im=mk('img'); im.src=coverSized(IMG+r.img,300); im.srcset=coverSized(IMG+r.img,300)+' 300w, '+IMG+r.img+' 640w'; im.sizes='(max-width:640px) 92vw, 300px'; im.alt=r.t+' cover art'; im.width=300; im.height=300; im.loading='lazy'; im.decoding='async';
       const b=mk('div','body'); b.append(mk('h3',null,r.t),mk('div','meta',r.type+' · '+fmtD(r.d)));
       if(r.note) b.append(mk('div','meta',r.note));
       if(r.prod||r.tracks){const dt=mk('details');dt.append(mk('summary','ui-t',r.tracks?'Tracks':'Credits'));
