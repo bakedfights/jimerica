@@ -1,6 +1,5 @@
 "use strict";
-// Extra features: search, song detail, trends charts, milestones, share. Reads data.js (+ history.js where present).
-const slug = t => t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+// Extra features: search, song detail, trends charts, milestones, share. Reads data.js (+ history.js where present). Uses slug() from app.js.
 const addDays = (iso, n) => { const d = new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); };
 const short = n => n>=1e9 ? (n/1e9).toFixed(2)+'B' : n>=1e6 ? (n/1e6).toFixed(n>=1e8?0:1)+'M' : n>=1e3 ? Math.round(n/1e3)+'K' : String(n);
 const el = id => document.getElementById(id);
@@ -36,7 +35,7 @@ function histDaily(vals){ return vals.slice(1).map((v,i)=>v!=null&&vals[i]!=null
 function share(){
   document.querySelectorAll('[data-share]').forEach(b=>{
     b.addEventListener('click',async()=>{
-      const url=location.href, text=b.dataset.share||document.title;
+      const url=b.dataset.shareUrl||location.href, text=b.dataset.share||document.title;
       if(b.dataset.kind==='x'){window.open('https://x.com/intent/post?text='+encodeURIComponent(text)+'&url='+encodeURIComponent(url),'_blank','noopener');return;}
       try{await navigator.clipboard.writeText(url);b.textContent='Link copied ✓';}catch{b.textContent='Copy failed';}
       setTimeout(()=>b.textContent='Copy link',2000);
@@ -47,7 +46,7 @@ function songsPage(){
   const q=el('song-search'); if(!q) return;
   const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const show=!v||(tr.cells[0].querySelector('a')||tr.cells[0]).textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
   q.addEventListener('input',apply);
-  const link=()=>{document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(td.querySelector('a'))return;const t=td.firstChild.textContent;const a=node('a',t);a.href='./song.html?id='+slug(t);td.firstChild.replaceWith(a);});const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const a=tr.cells[0].querySelector('a');if(!a||tr.cells[0].querySelector('.ms-badge'))return;const r=MS.get(a.textContent);if(!r)return;const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));tr.cells[0].append(b);});document.querySelectorAll('#song-rows tr').forEach(tr=>{if(tr.cells.length<5){const a=tr.cells[0].querySelector('a');const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';const c=node('td');c.append(v);tr.append(c);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change','Trend'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
+  const link=()=>{const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];if(!td.querySelector('a')){const t=td.firstChild.textContent;const a=node('a',t);a.href='./song/'+slug(t)+'.html';td.firstChild.replaceWith(a);}const a=td.querySelector('a');if(!a)return;if(!td.querySelector('.ms-badge')){const r=MS.get(a.textContent);if(r){const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));td.append(b);}}if(!td.querySelector('.trend-link')){const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';td.append(v);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
 function songPage(){
@@ -63,6 +62,8 @@ function songPage(){
   const vals=(typeof HIST_SONGS!=='undefined'&&HIST_SONGS[s[0]])||[]; const d=histDaily(vals);
   if(d.some(v=>v!=null)){const sv=svgChart(HIST_DATES.slice(1),d,{kind:'line',title:'Daily streams'});el('song-chart').replaceChildren(sv);interactive(sv,el('song-chart'),HIST_DATES.slice(1),d);el('song-chart-cap').textContent=`Daily streams ${HIST_DATES[1]} to ${HIST_DATES.at(-1)}. Hover or tap a point for the exact figure.`;}
   else el('song-chart-cap').textContent='Not enough history yet for a chart.';
+  const shareUrl='https://jimerica.wiki/song/'+slug(s[0])+'.html';
+  document.querySelectorAll('#song-detail [data-share]').forEach(b=>b.dataset.shareUrl=shareUrl);
   el('share-x').dataset.share=`"${s[0]}" by Jimin has ${format(s[1])} streams on Spotify${s[2]?` (+${format(s[2])} on ${longDate(UPDATED)})`:''}. Next: ${short(nm)}${days?` in ~${format(days)} days`:''}. via @JIMERICA`;
 }
 function trendsPage(){
@@ -73,7 +74,7 @@ function trendsPage(){
   el('trend-cum').replaceChildren(svgChart(HIST_DATES,sum,{kind:'line',title:'All-time total streams',fmt:format}));
   el('trend-cap').textContent=`${HIST_DATES.length} daily snapshots, ${HIST_DATES[0]} to ${HIST_DATES.at(-1)}. Daily = change in total play counts since the previous snapshot. History grows by one point each day.`;
   const top=SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,6);
-  el('trend-songs').replaceChildren(...top.map(s=>{const c=node('div',null,'metric chart-card');const h=node('a',s[0]);h.href='./song.html?id='+slug(s[0]);c.append(h);c.append(svgChart(HIST_DATES.slice(1),histDaily(HIST_SONGS[s[0]]||[]),{title:s[0]+' daily streams'}));return c;}));
+  el('trend-songs').replaceChildren(...top.map(s=>{const c=node('div',null,'metric chart-card');const h=node('a',s[0]);h.href='./song/'+slug(s[0])+'.html';c.append(h);c.append(svgChart(HIST_DATES.slice(1),histDaily(HIST_SONGS[s[0]]||[]),{title:s[0]+' daily streams'}));return c;}));
   if(typeof WHO_HIST!=='undefined'){const tot=WHO_HIST_DATES.map((_,i)=>Object.values(WHO_HIST).reduce((n,v)=>n+(v[i]??0),0));const cnt=WHO_HIST_DATES.map((_,i)=>Object.values(WHO_HIST).filter(v=>v[i]!=null).length);
     el('trend-who').replaceChildren(svgChart(WHO_HIST_DATES,tot,{title:'Who daily streams across charting countries'}));
     el('trend-who-cap').textContent=`"Who" daily streams summed over the country charts it appears on (${cnt.map((c,i)=>WHO_HIST_DATES[i].slice(5)+': '+c+' countries').join(', ')}).`;}
@@ -83,7 +84,7 @@ function milestonesPage(){
   if(!el('ms-rows')) return;
   const rows=msRows();
   el('ms-cap').textContent=`Projected from each song's average daily streams over the last ${Math.max(...rows.map(r=>r[3].n),1)} days (up to 7) as of ${longDate(UPDATED)}, assuming that pace continues. These are estimates, not predictions or official figures. Songs without a daily figure are left out.`;
-  el('ms-rows').replaceChildren(...rows.map(([s,m,d])=>{const tr=node('tr');const a=node('a',s[0]);a.href='./song.html?id='+slug(s[0]);const td=node('td');td.append(a);
+  el('ms-rows').replaceChildren(...rows.map(([s,m,d])=>{const tr=node('tr');const a=node('a',s[0]);a.href='./song/'+slug(s[0])+'.html';const td=node('td');td.append(a);
     const pct=Math.min(100,(s[1]-(m-(m<=1e8?1e7:m<=1e9?5e7:1e8)))/(m<=1e8?1e7:m<=1e9?5e7:1e8)*100);
     const prog=node('td',null,'prog');const bar=node('div',null,'pbar');const f=node('span');f.style.width=pct+'%';bar.append(f);prog.append(bar);
     tr.append(td,node('td',format(s[1]),'gold'),node('td',short(m),'gold'),node('td',format(m-s[1])),node('td',format(d)),node('td','≈ '+longDate(addDays(UPDATED,d))),prog);

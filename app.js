@@ -4,6 +4,14 @@ const format = n => n.toLocaleString('en-US');
 const billions = n => (n / 1e9).toFixed(2) + 'B';
 // Parse at noon as a calendar date: no UTC-midnight shift to the previous PT day.
 const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+const slug = t => t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const songNorm = t => t.toLowerCase().replace(/[–—]/g,'-').replace(/\(feat\.[^)]*\)/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+function songPageUrl(title){
+  if(typeof SONGS==='undefined') return null;
+  const n=songNorm(title);
+  const s=SONGS.find(x=>songNorm(x[0])===n) || SONGS.find(x=>songNorm(x[0]).startsWith(n+' ')||n.startsWith(songNorm(x[0])+' '));
+  return s ? './song/'+slug(s[0])+'.html' : null;
+}
 function node(tag, text, className) {
   const el = document.createElement(tag);
   if (text !== undefined && text !== null) el.textContent = text;
@@ -69,12 +77,13 @@ function init() {
   if ($('milestone')) {
   const statement = $('milestone');
   statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(` streams across his solo and featured songs on Spotify as of ${longDate(UPDATED)}`));
-  renderMetrics('totals-metrics', [[billions(TOTALS.streams),'Total streams'],[format(TOTALS.daily),'Streams yesterday'],[billions(TOTALS.solo),'Solo streams'],[String(TOTALS.tracks),'Tracks counted']]);
+  // Solo/feature stream split is hidden: TOTALS.feat matches the 3 feature-flagged songs, but TOTALS.solo comes from a source summary that does not equal total minus features or the sum of the other rows.
+  renderMetrics('totals-metrics', [[billions(TOTALS.streams),'Total streams'],[format(TOTALS.daily),'Streams yesterday'],[String(TOTALS.tracks),'Tracks counted']]);
   }
   if ($('daily-bars')) {
   $('daily-caption').textContent = `Streams gained on ${longDate(UPDATED)}.`;
   if ($('movers')) { const ch = SONGS.map(s=>[s[0],dailyChange(s[0])]).filter(x=>x[1]); if (ch.length) { ch.sort((a,b)=>b[1].delta-a[1].delta); const up=ch[0], dn=ch[ch.length-1], m=$('movers'); m.replaceChildren();
-    const part=(lbl,x,cls)=>{const s=node('span',null,'mover');const a=node('a',x[0]);a.href='./song.html?id='+x[0].toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');s.append(node('span',lbl),document.createTextNode(' '),a,document.createTextNode(' '),node('strong',(x[1].delta>0?'▲ +':'▼ ')+format(x[1].delta),cls));return s;};
+    const part=(lbl,x,cls)=>{const s=node('span',null,'mover');const a=node('a',x[0]);a.href=songPageUrl(x[0])||('./song.html?id='+slug(x[0]));s.append(node('span',lbl),document.createTextNode(' '),a,document.createTextNode(' '),node('strong',(x[1].delta>0?'▲ +':'▼ ')+format(x[1].delta),cls));return s;};
     if (up[1].delta>0) m.append(part('Biggest rise vs day before',up,'chg-up'));
     if (dn[1].delta<0) m.append(part('Biggest drop vs day before',dn,'chg-down'));
     m.hidden = !m.childNodes.length; } }
@@ -121,7 +130,7 @@ function renderChart(k, rows, src) {
   const l = node('a','Spotify Charts'); l.href = src; cap.append(l);
   const best = rows.slice().sort((a,b)=>a[3]-b[3]||b[4]-a[4])[0], longest = rows.slice().sort((a,b)=>b[1]-a[1])[0];
   renderMetrics(k+'-metrics', [['#'+best[3], 'Peak', best[0]], [format(rows.reduce((n,r)=>n+(r[3]===1?r[4]:0),0)), 'Total days at #1'], [format(longest[1]), 'Days charted (longest)', longest[0]], [String(rows.length), 'Solo songs charted']]);
-  $(k+'-rows').replaceChildren(...rows.map(r=>{const tr=node('tr');tr.append(node('td',r[0]),node('td',r[5]?format(r[5]):'–'),node('td','#'+r[3],r[3]===1?'gold':null),node('td',r[4]?format(r[4]):'–'),node('td',r[2]?format(r[2]):'–'),node('td',format(r[1])));return tr;}));
+  $(k+'-rows').replaceChildren(...rows.map(r=>{const tr=node('tr');const name=node('td');const href=songPageUrl(r[0]);if(href){const a=node('a',r[0]);a.href=href;name.append(a);}else name.textContent=r[0];tr.append(name,node('td',r[5]?format(r[5]):'–'),node('td','#'+r[3],r[3]===1?'gold':null),node('td',r[4]?format(r[4]):'–'),node('td',r[2]?format(r[2]):'–'),node('td',format(r[1])));['Song','Total chart streams','Peak','Days at peak','Top 10 days','Days charted'].forEach((l,i)=>tr.cells[i].dataset.label=l);return tr;}));
 }
 if (typeof ACH_US !== 'undefined' && $('us-rows')) {
   renderChart('us', ACH_US, ACH_US_SRC); renderChart('kr', ACH_KR, ACH_KR_SRC);

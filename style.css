@@ -165,9 +165,9 @@ main{animation:fadein .25s ease-out}@keyframes fadein{from{opacity:0;transform:t
  .cards-sm #song-rows td:first-child{grid-column:1/-1;font-size:1rem;margin-bottom:4px}.cards-sm #song-rows td:first-child::before{display:none}
  .cards-sm #song-rows td::before{font-size:.68rem}
  /* achievement tables: stack cells */
- .ach-body .table-wrap table,.ach-body .table-wrap tbody,.ach-body .table-wrap tr,.ach-body .table-wrap td{display:block;width:100%}
- .ach-body .table-wrap thead{display:none}.ach-body .table-wrap tr{padding:10px 12px;border-bottom:1px solid #3a3d42}
- .ach-body .table-wrap td{padding:2px 0;border:0;white-space:normal}.ach-body .table-wrap td+td{color:var(--muted);font-size:.88rem}
+ .ach-body .table-wrap:not(.chart-cards) table,.ach-body .table-wrap:not(.chart-cards) tbody,.ach-body .table-wrap:not(.chart-cards) tr,.ach-body .table-wrap:not(.chart-cards) td{display:block;width:100%}
+ .ach-body .table-wrap:not(.chart-cards) thead{display:none}.ach-body .table-wrap:not(.chart-cards) tr{padding:10px 12px;border-bottom:1px solid #3a3d42}
+ .ach-body .table-wrap:not(.chart-cards) td{padding:2px 0;border:0;white-space:normal}.ach-body .table-wrap:not(.chart-cards) td+td{color:var(--muted);font-size:.88rem}
  .ach-body{padding:0 12px 14px}
  .site-header h1{font-size:clamp(1.8rem,8vw,2.4rem)}
 }
@@ -202,3 +202,23 @@ section[id]{scroll-margin-top:110px}
 .upd-switch .seg{padding:8px 16px;border-radius:999px;color:var(--muted);font-weight:600;text-decoration:none}
 .upd-switch .seg.on{background:var(--gold);color:#1e1f22}
 #official-posts,#jimin-posts{scroll-margin-top:110px}
+
+/* Songs: View trend sits under the title, not as a fifth column */
+#song-rows td:first-child .trend-link{display:block;margin-top:6px;font-size:13px}
+@media(max-width:600px){
+  .cards-sm #song-rows tr{grid-template-columns:repeat(3,1fr)!important}
+  .cards-sm #song-rows td:nth-child(5){display:none!important}
+}
+/* Achievements US/KR chart tables as labeled mobile cards */
+@media(max-width:600px){
+  .chart-cards{border:0;box-shadow:none;overflow:visible}
+  .chart-cards table,.chart-cards tbody{display:block;width:100%}
+  .chart-cards thead{display:none}
+  .chart-cards tr{display:grid!important;grid-template-columns:1fr 1fr;gap:4px 12px;padding:12px;border:1px solid #3a3d42;border-radius:12px;margin:0 0 10px;background:var(--panel);width:100%}
+  .chart-cards td{display:flex;flex-direction:column;align-items:flex-start;padding:2px 0;border:0;white-space:normal;color:var(--text);font-size:.92rem}
+  .chart-cards td:first-child{grid-column:1/-1;font-weight:700;font-size:1rem;margin-bottom:4px}
+  .chart-cards td:first-child::before{display:none}
+  .chart-cards td::before{content:attr(data-label);color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+  .chart-cards td a{color:var(--text)}
+  .chart-cards td a:hover{color:var(--gold)}
+}

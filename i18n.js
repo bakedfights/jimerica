@@ -105,7 +105,7 @@ const PAT=[ // applied after date conversion; full-string patterns
  [/^Album date on Spotify; the VIBE single was released (.+)\.$/,m=>`Spotify 앨범 발매일 기준이며, VIBE 싱글은 ${m[1]} 발매되었습니다.`],
  [/^(\d+) days$/,m=>`${m[1]}일 남음`],
  [/^(.+) · (\d+) yr anniversary$/,m=>`${m[1]} · ${m[2]}주년`],
- [/^(Birthday|Release|Achievement) · (\d{4})$/,m=>`${{Birthday:'생일',Release:'발매',Achievement:'업적'}[m[1]]} · ${m[2]}`],
+ [/^(Birthday|Release|Achievement|Service) · (\d{4})$/,m=>`${{Birthday:'생일',Release:'발매',Achievement:'업적',Service:'복무'}[m[1]]} · ${m[2]}`],
  [/^#1 boy group member brand reputation \((.+)\)$/,m=>`보이그룹 개인 브랜드평판 1위 (${m[1]})`],
  [/^"(.+)" \(TAEYANG feat\. Jimin\)$/,m=>`"${m[1]}" (태양 feat. 지민)`],
  [/^(\d+) posts? · newest (.+)\. Posts load from Instagram\/TikTok; if an embed is blocked, use the link\.$/,m=>`게시물 ${m[1]}개 · 최신 ${m[2]}. 인스타그램/틱톡에서 불러옵니다. 임베드가 막히면 링크를 이용하세요.`],
@@ -601,7 +601,7 @@ const ES_PAT=[
 [/^Album date on Spotify; the VIBE single was released (.+)\.$/,m=>`Fecha del álbum en Spotify; el sencillo VIBE se publicó el ${m[1]}.`],
 [/^(\d+) days$/,m=>`${m[1]} días`],
 [/^(.+) · (\d+) yr anniversary$/,m=>`${m[1]} · ${m[2]}.º aniversario`],
-[/^(Birthday|Release|Achievement) · (\d{4})$/,m=>`${{Birthday:'Cumpleaños',Release:'Lanzamiento',Achievement:'Logro'}[m[1]]} · ${m[2]}`],
+[/^(Birthday|Release|Achievement|Service) · (\d{4})$/,m=>`${{Birthday:'Cumpleaños',Release:'Lanzamiento',Achievement:'Logro',Service:'Servicio'}[m[1]]} · ${m[2]}`],
 [/^#1 boy group member brand reputation \((.+)\)$/,m=>`N.º 1 en reputación de marca individual de integrantes de grupos masculinos (${m[1]})`],
 [/^"(.+)" \(TAEYANG feat\. Jimin\)$/,m=>`"${m[1]}" (TAEYANG con Jimin)`],
 [/^(\d+) posts? · newest (.+)\. Posts load from Instagram\/TikTok; if an embed is blocked, use the link\.$/,m=>`${m[1]} publicaciones · la más reciente: ${m[2]}. Las publicaciones se cargan desde Instagram/TikTok; si el contenido incrustado está bloqueado, usa el enlace.`],
@@ -625,6 +625,9 @@ Object.assign(KO,{"Updates": "소식", "Jimin's posts": "지민 게시물", "Off
 Object.assign(ES,{"Updates": "Novedades", "Jimin's posts": "Publicaciones de Jimin", "Official": "Oficial", "Jimin's own posts and official announcements about him, in one place.": "Las publicaciones de Jimin y los anuncios oficiales sobre él, en un solo lugar.", "Source: Jimin's accounts and official accounts": "Fuente: cuentas de Jimin y cuentas oficiales", "See all updates →": "Ver todas las novedades →", "Show updates": "Mostrar novedades"});
 Object.assign(KO,{"Total chart streams":"차트 누적 스트리밍"});
 Object.assign(ES,{"Total chart streams":"Reproducciones totales en la lista"});
+
+Object.assign(KO,{"Service":"복무","Jimin enlisted for military service":"지민 입대","Jimin discharged from military service":"지민 전역","\"Like Crazy\" No. 1 on the Billboard Hot 100":"\"Like Crazy\" 빌보드 핫100 1위","Dates use Pacific time (PT). \"Promise\" was posted December 31, 2018, 00:01 KST, which is December 30 in PT.":"날짜는 태평양 시간(PT) 기준입니다. \"Promise\"는 2018년 12월 31일 00:01(한국 시간)에 공개되었으며, PT로는 12월 30일입니다.","\"Christmas Love\"":"\"Christmas Love\"","\"Promise\"":"\"Promise\""});
+Object.assign(ES,{"Service":"Servicio","Jimin enlisted for military service":"Jimin se alistó en el servicio militar","Jimin discharged from military service":"Jimin recibió la baja del servicio militar","\"Like Crazy\" No. 1 on the Billboard Hot 100":"\"Like Crazy\" n.º 1 en el Billboard Hot 100","Dates use Pacific time (PT). \"Promise\" was posted December 31, 2018, 00:01 KST, which is December 30 in PT.":"Las fechas usan la hora del Pacífico (PT). \"Promise\" se publicó el 31 de diciembre de 2018 a las 00:01 KST, que es el 30 de diciembre en PT.","\"Christmas Love\"":"\"Christmas Love\"","\"Promise\"":"\"Promise\""});
 const ES_TEMPLATES=Object.entries(ES).filter(([k])=>k.includes('{')&&!/^\{month\}/.test(k)).map(([k,v])=>{
  const names=[];let pattern='',pos=0;const re=/\{(\w+)\}/g;let m;const esc=x=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
  while((m=re.exec(k))){pattern+=esc(k.slice(pos,m.index))+'(.+?)';names.push(m[1]);pos=m.index+m[0].length;}pattern+=esc(k.slice(pos));return [new RegExp('^'+pattern+'$'),v,names];
