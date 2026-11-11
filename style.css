@@ -479,28 +479,28 @@ h1{font-size:clamp(1.55rem,3.2vw,2.15rem);margin:8px 0 10px;font-weight:800}
 #world,#milestones,#top,.cal-grid-month{content-visibility:auto;contain-intrinsic-size:auto 640px}
 /* end perf */
 
-/* feature:light-theme (Nov 11, 2026) — optional light mode; dark grey/gold stays the default. Remove with theme.js, the head snippet and toggle button on each page. */
+/* feature:light-theme (Nov 11, 2026; light became the DEFAULT, t248u) — dark grey/gold is the optional theme: data-theme="dark"; light = every html:not([data-theme=dark]) rule below. Remove with theme.js, the head snippet and toggle button on each page. */
 .theme-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin-left:8px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--gold);font:inherit;font-size:1.05rem;line-height:1;cursor:pointer;flex:none}
 .theme-btn:hover{border-color:var(--gold)}
 .theme-btn .ti-moon{display:none}
 @media(max-width:480px){.toprow .lang-pick label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.theme-btn{width:32px;height:32px;margin-left:6px}}
-html[data-theme=light] .theme-btn .ti-sun{display:none}html[data-theme=light] .theme-btn .ti-moon{display:inline}
-html[data-theme=light]{color-scheme:light;--on-gold:#fff;--field:#fff;--seg-on:#e7e2d3;--bg-a:rgba(247,245,239,.92);--bg-0:rgba(247,245,239,0);--h1a:#1f2024;--h1b:#4a4d57;
+html:not([data-theme=dark]) .theme-btn .ti-sun{display:none}html:not([data-theme=dark]) .theme-btn .ti-moon{display:inline}
+html:not([data-theme=dark]){color-scheme:light;--on-gold:#fff;--field:#fff;--seg-on:#e7e2d3;--bg-a:rgba(247,245,239,.92);--bg-0:rgba(247,245,239,0);--h1a:#1f2024;--h1b:#4a4d57;
  --bg:#f7f5ef;--panel:#fff;--panel2:#f0ede4;--line:#d6d1c2;--text:#1f2024;--muted:#555a65;--gold:#8a5f00;--green:#17703f;--red:#b4232f;--blue:#1c58b8}
-html[data-theme=light] body{background:radial-gradient(1200px 500px at 50% -200px,rgba(240,198,116,.22),transparent 70%),var(--bg);background-repeat:no-repeat;background-color:var(--bg)}
-html[data-theme=light] .chg-up{color:#17703f!important}html[data-theme=light] .chg-down{color:#b4232f!important}
-html[data-theme=light] .upd-badge::before{background:#17703f}
-html[data-theme=light] .reentry{color:#7a3fc0}
-html[data-theme=light] .topbar{box-shadow:0 2px 12px rgba(60,50,20,.12)}
-html[data-theme=light] .navmenu,html[data-theme=light] #site-search-results,html[data-theme=light] .to-top{box-shadow:0 10px 30px rgba(60,50,20,.18)}
-html[data-theme=light] .recap-chart .barc{fill:#6d7585}html[data-theme=light] .recap-chart .barc:hover{fill:#4a5160}
-html[data-theme=light] .bar-fill{background:linear-gradient(90deg,#8a93a3,#5d6577)}
-html[data-theme=light] .bar:first-child .bar-fill,html[data-theme=light] #daily-bars .bar-fill,html[data-theme=light] .pbar span{background:linear-gradient(90deg,#d7ab45,var(--gold))}
-html[data-theme=light] .tl-single .tl-dot{border-color:#6d7585}
-html[data-theme=light] .link-cards a:hover{border-color:var(--gold)}
-html[data-theme=light] .wm-r1{fill-opacity:1}html[data-theme=light] .wm-r0{fill:#e4dfd0}
-html[data-theme=light] .daily-cell[style]{background:linear-gradient(90deg,transparent calc(100% - var(--w)),rgba(138,95,0,.16) calc(100% - var(--w)));background-size:100% 60%;background-repeat:no-repeat;background-position:center}
-@media(max-width:600px){html[data-theme=light] .cards-sm .daily-cell[style]{background:none}}
-html[data-theme=light] tbody tr:nth-child(even){background:rgba(60,50,20,.035)}
-html[data-theme=light] ::selection{background:rgba(138,95,0,.25)}
+html:not([data-theme=dark]) body{background:radial-gradient(1200px 500px at 50% -200px,rgba(240,198,116,.22),transparent 70%),var(--bg);background-repeat:no-repeat;background-color:var(--bg)}
+html:not([data-theme=dark]) .chg-up{color:#17703f!important}html:not([data-theme=dark]) .chg-down{color:#b4232f!important}
+html:not([data-theme=dark]) .upd-badge::before{background:#17703f}
+html:not([data-theme=dark]) .reentry{color:#7a3fc0}
+html:not([data-theme=dark]) .topbar{box-shadow:0 2px 12px rgba(60,50,20,.12)}
+html:not([data-theme=dark]) .navmenu,html:not([data-theme=dark]) #site-search-results,html:not([data-theme=dark]) .to-top{box-shadow:0 10px 30px rgba(60,50,20,.18)}
+html:not([data-theme=dark]) .recap-chart .barc{fill:#6d7585}html:not([data-theme=dark]) .recap-chart .barc:hover{fill:#4a5160}
+html:not([data-theme=dark]) .bar-fill{background:linear-gradient(90deg,#8a93a3,#5d6577)}
+html:not([data-theme=dark]) .bar:first-child .bar-fill,html:not([data-theme=dark]) #daily-bars .bar-fill,html:not([data-theme=dark]) .pbar span{background:linear-gradient(90deg,#d7ab45,var(--gold))}
+html:not([data-theme=dark]) .tl-single .tl-dot{border-color:#6d7585}
+html:not([data-theme=dark]) .link-cards a:hover{border-color:var(--gold)}
+html:not([data-theme=dark]) .wm-r1{fill-opacity:1}html:not([data-theme=dark]) .wm-r0{fill:#e4dfd0}
+html:not([data-theme=dark]) .daily-cell[style]{background:linear-gradient(90deg,transparent calc(100% - var(--w)),rgba(138,95,0,.16) calc(100% - var(--w)));background-size:100% 60%;background-repeat:no-repeat;background-position:center}
+@media(max-width:600px){html:not([data-theme=dark]) .cards-sm .daily-cell[style]{background:none}}
+html:not([data-theme=dark]) tbody tr:nth-child(even){background:rgba(60,50,20,.035)}
+html:not([data-theme=dark]) ::selection{background:rgba(138,95,0,.25)}
 /* end feature:light-theme */
