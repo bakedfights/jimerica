@@ -353,6 +353,10 @@ h1{font-size:clamp(1.55rem,3.2vw,2.15rem);margin:8px 0 10px;font-weight:800}
 @media(min-width:900px){.recap .recap-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .recap-chart .chart{display:block;margin:0 auto;width:100%;max-width:640px;max-height:none}.recap-chart .barc{fill:#8f98a8}.recap-chart .barc:hover{fill:#b7bfcc}
 /* end feature:recap */
+/* feature:mrecap (Nov 11, 2026) — remove with monthly-recap.js */
+.mrecap-sample{margin:0 0 12px;padding:8px 12px;border:1px dashed var(--gold);border-radius:10px;color:var(--gold);font-weight:700;font-size:.9rem;text-align:center}
+.recap-partial{color:var(--gold)}
+/* end feature:mrecap */
 
 /* feature:otd (Nov 11, 2026) — remove with on-this-day.js */
 .otd{margin:0 0 14px;padding:14px 16px;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
