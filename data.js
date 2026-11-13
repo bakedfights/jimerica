@@ -2,206 +2,206 @@
 // REFRESHED is the Pacific (America/Los_Angeles) calendar date the daily routine last published this file.
 // SONGS: [title, total streams, daily gain or null, is feature]
 // WHO: [country code, rank, movement, peak or null, daily streams, daily change or null]
-const UPDATED = "2026-11-11";
-const REFRESHED = "2026-11-12";
+const UPDATED = "2026-11-12";
+const REFRESHED = "2026-11-13";
 const TOTALS = {
-  "streams": 8752505514,
-  "daily": 2218053,
+  "streams": 8754891324,
+  "daily": 2385810,
   "tracks": 34,
-  "solo": 7207557901,
-  "feat": 670880696
+  "solo": 7209608870,
+  "feat": 671002804
 };
 const SONGS = [
   [
     "Who",
-    2585640368,
-    773585,
+    2586466631,
+    826263,
     false
   ],
   [
     "Like Crazy",
-    1492070776,
-    192058,
+    1492269701,
+    198925,
     false
   ],
   [
     "Set Me Free Pt.2",
-    495472540,
-    134790,
+    495624055,
+    151515,
     false
   ],
   [
     "Be Mine",
-    420711132,
-    203339,
+    420940301,
+    229169,
     false
   ],
   [
     "Like Crazy (English Version)",
-    408154638,
-    57088,
+    408220135,
+    65497,
     false
   ],
   [
     "Closer Than This",
-    343453151,
-    79582,
+    343538746,
+    85595,
     false
   ],
   [
     "With you",
-    331583264,
-    44487,
+    331630006,
+    46742,
     false
   ],
   [
     "Smeraldo Garden Marching Band (feat. Loco)",
-    284248264,
-    74371,
+    284324680,
+    76416,
     false
   ],
   [
     "VIBE (feat. Jimin of BTS)",
-    282965434,
-    51902,
+    283018688,
+    53254,
     true
   ],
   [
     "Angel Pt. 1 (feat. Kodak Black, NLE Choppa, Jimin of BTS, JVKE & Muni Long)",
-    250824946,
-    32889,
+    250859136,
+    34190,
     true
   ],
   [
     "Face-off",
-    173820493,
-    45997,
+    173871196,
+    50703,
     false
   ],
   [
     "Alone",
-    160320372,
-    42885,
+    160366619,
+    46247,
     false
   ],
   [
     "Promise",
-    157671130,
-    69337,
+    157745269,
+    74139,
     false
   ],
   [
     "Slow Dance (feat. Sofia Carson)",
-    156851297,
-    73637,
+    156928250,
+    76953,
     false
   ],
   [
     "Rebirth (Intro)",
-    148611247,
-    65964,
+    148681096,
+    69849,
     false
   ],
   [
     "Angel Pt. 2 (feat. Jimin of BTS & JVKE feat. Charlie Puth & Muni Long)",
-    137090316,
-    33577,
+    137124980,
+    34664,
     true
   ],
   [
     "Interlude : Showtime",
-    130315297,
-    43800,
+    130363315,
+    48018,
     false
   ],
   [
     "Interlude : Dive",
-    128786068,
-    16799,
+    128804929,
+    18861,
     false
   ],
   [
     "Who - Rock Remix",
-    82247135,
-    38771,
+    82295703,
+    48568,
     false
   ],
   [
     "Who - Acoustic Remix",
-    78649486,
-    35350,
+    78681776,
+    32290,
     false
   ],
   [
     "Who - Shibuyakei Remix",
-    63838194,
-    17217,
+    63856296,
+    18102,
     false
   ],
   [
     "Who - Instrumental",
-    62633277,
-    15696,
+    62650348,
+    17071,
     false
   ],
   [
     "Who - Funky Remix",
-    61336654,
-    16530,
+    61353365,
+    16711,
     false
   ],
   [
     "Who - Beautiful Mind Remix",
-    61080460,
-    16034,
+    61097650,
+    17190,
     false
   ],
   [
     "Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Trailer Version",
-    55813465,
-    5661,
+    55819370,
+    5905,
     false
   ],
   [
     "Christmas Love",
-    51137235,
-    14113,
+    51154981,
+    17746,
     false
   ],
   [
     "Like Crazy (Deep House Remix)",
-    38289010,
-    6056,
+    38296981,
+    7971,
     false
   ],
   [
     "Like Crazy (UK Garage Remix)",
-    36441039,
-    5771,
+    36446548,
+    5509,
     false
   ],
   [
     "Like Crazy (Instrumental)",
-    26878199,
-    4775,
+    26883229,
+    5030,
     false
   ],
   [
     "With you - Instrumental",
-    22047803,
-    1283,
+    22049144,
+    1341,
     false
   ],
   [
     "Angel Pt. 2 - Acoustic Version",
-    8338670,
-    2200,
+    8341438,
+    2768,
     false
   ],
   [
     "Angel (feat. Muni Long, JVKE, NLE Choppa) (Anniversary Edition)",
-    5801606,
-    1462,
+    5803024,
+    1418,
     false
   ],
   [
@@ -212,67 +212,67 @@ const SONGS = [
   ],
   [
     "Angel Pt. 2 - Sped Up",
-    4299244,
-    1047,
+    4300434,
+    1190,
     false
   ]
 ];
-const WHO_DATE = "2026-11-10";
+const WHO_DATE = "2026-11-11";
 const WHO = [
   [
     "BY",
     2,
     "same",
     1,
-    11711,
-    1013
+    10979,
+    -732
+  ],
+  [
+    "VE",
+    5,
+    "re",
+    1,
+    18946,
+    null
   ],
   [
     "KR",
-    6,
-    "same",
+    7,
+    "down 1",
     1,
-    70079,
-    -1436
+    71297,
+    1218
   ],
   [
     "SG",
-    23,
-    "down 14",
+    10,
+    "up 13",
     1,
-    18058,
-    -3810
+    23025,
+    4967
   ],
   [
     "CR",
-    47,
-    "down 20",
+    25,
+    "up 22",
     1,
-    11349,
-    -1195
+    14066,
+    2717
   ],
   [
     "JP",
     77,
     "same",
     1,
-    78791,
-    796
+    79942,
+    1151
   ],
   [
     "KZ",
-    111,
-    "down 46",
+    113,
+    "down 2",
     1,
-    5854,
-    -1588
-  ],
-  [
-    "CZ",
-    149,
-    "down 14",
-    1,
-    11923,
-    -159
+    5870,
+    16
   ]
 ];
