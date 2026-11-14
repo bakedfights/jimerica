@@ -7,8 +7,9 @@ const ACH_KR = [["Who", 847, 789, 1, 548, 109030735], ["Like Crazy", 1104, 580, 
 const ACH_KR_SRC = "https://charts.spotify.com/charts/view/regional-kr-daily/latest";
 // Korean Business Research Institute boy group member brand reputation: [month, rank, index, source url, published]
 const ACH_BRAND = [
+ ["November 2026",1,4733558,"https://www.soompi.com/article/1886853wpp/november-boy-group-member-brand-reputation-rankings-announced-8","2026-11-14"],
  ["October 2026",1,4822962,"https://www.soompi.com/article/1879096wpp/october-boy-group-member-brand-reputation-rankings-announced-8","2026-10-17"],
  ["September 2026",1,3905514,"https://www.starnewskorea.com/music/2026/09/19/2026091908430512782","2026-09-19"],
  ["August 2026",1,3992107,"https://www.starnewskorea.com/music/2026/08/19/2026081907380080934","2026-08-19"]
 ];
-const ACH_BRAND_NOTE = ["61 total #1s, a record, as reported after the August 2026 ranking (StarNews/TopStarNews). The September and October reports did not restate the cumulative count.","https://www.topstarnews.net/news/articleView.html?idxno=16166992"];
+const ACH_BRAND_NOTE = ["61 total #1s, a record, as reported after the August 2026 ranking (StarNews/TopStarNews). The September, October, and November reports did not restate the cumulative count.","https://www.topstarnews.net/news/articleView.html?idxno=16166992"];
