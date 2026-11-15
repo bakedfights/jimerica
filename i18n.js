@@ -118,6 +118,7 @@ const PAT=[ // applied after date conversion; full-string patterns
  [/^Data updated (.+)$/,m=>`데이터 업데이트 ${m[1]}`],
  [/^Total streams: (.+)$/,m=>`총 스트리밍: ${m[1]}`],
  [/^Today's goal \((.+)\): (.+)\+ streams to beat (.+)$/,m=>`오늘 목표 (${m[1]}): ${m[2]}+ 스트리밍으로 ${m[3]} 넘어서기`],
+ [/^(.+) streams to go$/,m=>`${m[1]} 스트리밍 남음`],[/^(.+)% of the way from (.+) to (.+)$/,m=>`${m[2]}에서 ${m[3]}까지 ${m[1]}% 달성`],
  [/^(.+) was bigger$/,m=>`${m[1]}이 더 높음`],
  [/^passed (.+)$/,m=>`${m[1]} 돌파`],
 ];
@@ -628,6 +629,7 @@ const ES_PAT=[
 [/^Data updated (.+)$/,m=>`Datos actualizados el ${m[1]}`],
 [/^Total streams: (.+)$/,m=>`Reproducciones totales: ${m[1]}`],
 [/^Today's goal \((.+)\): (.+)\+ streams to beat (.+)$/,m=>`Objetivo de hoy (${m[1]}): ${m[2]}+ reproducciones para superar el ${m[3]}`],
+[/^(.+) streams to go$/,m=>`${m[1]} reproducciones restantes`],[/^(.+)% of the way from (.+) to (.+)$/,m=>`${m[1]}% del camino de ${m[2]} a ${m[3]}`],
 [/^(.+) was bigger$/,m=>`${m[1]} fue mayor`],
 [/^passed (.+)$/,m=>`superó los ${m[1]}`],
 [/^(.+) daily streams$/,m=>`Reproducciones diarias de ${m[1]}`],

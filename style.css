@@ -531,3 +531,5 @@ html:not([data-theme=dark]) .daily-cell[style]{background:linear-gradient(90deg,
 html:not([data-theme=dark]) tbody tr:nth-child(even){background:rgba(60,50,20,.035)}
 html:not([data-theme=dark]) ::selection{background:rgba(138,95,0,.25)}
 /* end feature:light-theme */
+
+.g-bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:6px}.g-bar-fill{display:block;height:100%;background:var(--gold);border-radius:999px}.g-togo{color:var(--text,inherit);font-weight:600}.g-bar-cap{font-size:12px}
