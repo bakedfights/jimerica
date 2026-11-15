@@ -91,7 +91,7 @@ function init() {
   statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(' streams across his solo and featured songs on Spotify.'));
   // Solo/feature stream split is hidden: TOTALS.feat matches the 3 feature-flagged songs, but TOTALS.solo comes from a source summary that does not equal total minus features or the sum of the other rows.
   // Total and data date live here (hero + the page's "Data updated" badge), not also in the glance strip.
-  renderMetrics('totals-metrics', [[format(TOTALS.daily),'Streams yesterday'],[String(TOTALS.tracks),'Tracks counted']]);
+  renderMetrics('totals-metrics', [[format(TOTALS.daily),'All songs streams yesterday'],[String(TOTALS.tracks),'Tracks counted']]);
   }
   if ($('daily-bars')) {
   $('daily-caption').textContent = `Streams gained on ${longDate(UPDATED)}.`;
