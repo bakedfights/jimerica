@@ -252,7 +252,7 @@ function glance(){
   const g=el('glance'); if(!g) return;
   const item=(label,value,cls,...sub)=>{const d=node('div',null,'g-item');d.append(node('span',label,'g-label'),node('strong',value,cls||''));if(sub.length){const s=node('span',null,'g-sub');sub.forEach((x,i)=>{if(i)s.append(' · ');s.append(x);});d.append(s);}return d;};
   const card=node('div',null,'g-item');
-  card.append(node('span','All songs streams yesterday','g-label'));
+  card.append(node('span','Streams yesterday (All songs)','g-label'));
   card.append(node('strong','+'+short(TOTALS.daily),'green'));
   const prevDate=addDays(UPDATED,-1);
   const prev=dailyTotalOn(prevDate);
