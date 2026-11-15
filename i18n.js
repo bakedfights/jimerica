@@ -779,6 +779,7 @@ function applyLang(lang){
     b.setAttribute('aria-label',lab);
   });
 }
+Object.assign(KO,{"Every Jimin song on Spotify, solo and features, with total streams and daily gains.":"지민의 Spotify 솔로·피처링 전곡의 총 스트리밍과 일일 증가.","streams across his solo and featured songs on Spotify.":"돌파 (Spotify 솔로·피처링곡)"});
 window.applyLang=applyLang; window.translateStr=translateStr; window.translateEs=translateEs;
 window.addEventListener('load',()=>{
   let lang='en'; try{lang=localStorage.getItem('jimerica-lang')||'en';}catch{}

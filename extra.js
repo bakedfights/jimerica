@@ -287,7 +287,7 @@ function glance(){
 }
 function newThisWeek(){
   const box=el('new-list'); if(!box) return;
-  const lang=()=>{let l=el('lang-select')?.value;if(!l){try{l=localStorage.getItem('jimerica-lang');}catch{}}return ['ko','es'].includes(l)?l:'en';};
+  const lang=()=>{let l=null;try{l=localStorage.getItem('jimerica-lang');}catch{}if(!l)l=el('lang-select')?.value;return ['ko','es'].includes(l)?l:'en';};
   const all=[...(typeof FEED!=='undefined'?FEED:[]).map(f=>({date:f.date,url:f.url,src:f.platform==='tiktok'?'Jimin on TikTok':f.platform==='x'?'Jimin on X':'Jimin on Instagram',title:{en:f.title||(f.platform==='tiktok'?'New TikTok video':f.platform==='x'?'New X post':'New Instagram post'),ko:f.title_ko,es:f.title_es},kind:'sns'})),
     ...(typeof OFFICIAL!=='undefined'?OFFICIAL:[]).map(f=>({date:f.date,url:f.url,src:(f.platform==='x'?'X':'Instagram')+' · @'+f.account,title:{en:f.title,ko:f.title_ko,es:f.title_es},kind:'official',ts:f.created_at_utc||''}))]
     .sort((a,b)=>b.date.localeCompare(a.date)||(b.ts||'').localeCompare(a.ts||''));
