@@ -35,17 +35,19 @@ function histDaily(vals){ return vals.slice(1).map((v,i)=>v!=null&&vals[i]!=null
 
 function sparkline(title){
   if(typeof HIST_SONGS==='undefined'||!HIST_SONGS[title]) return null;
-  const d=histDaily(HIST_SONGS[title]).slice(-7);
+  const d=histDaily(HIST_SONGS[title]).slice(-30);
   const nums=d.filter(v=>v!=null); if(nums.length<2) return null;
-  const W=84,H=24,P=2, ns='http://www.w3.org/2000/svg';
+  const W=120,H=28,P=2, ns='http://www.w3.org/2000/svg';
   let lo=Math.min(...nums), hi=Math.max(...nums); if(hi===lo){hi+=1;lo=Math.max(0,lo-1);}
   const svg=document.createElementNS(ns,'svg');
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
   svg.setAttribute('class','spark'); svg.setAttribute('role','img');
-  const t=document.createElementNS(ns,'title'); t.textContent='7-day trend'; svg.append(t);
+  const t=document.createElementNS(ns,'title'); t.textContent='Daily streams, last 30 days'; svg.append(t);
   const x=i=>P+i*(W-2*P)/Math.max(1,d.length-1), y=v=>H-P-(H-2*P)*((v-lo)/(hi-lo));
   const pts=d.map((v,i)=>v==null?null:x(i)+','+y(v)).filter(Boolean).join(' ');
   const pl=document.createElementNS(ns,'polyline'); pl.setAttribute('points',pts); pl.setAttribute('class','spark-line'); svg.append(pl);
+  const last=d.map((v,i)=>v==null?null:i).filter(i=>i!=null).at(-1);
+  if(last!=null){const c=document.createElementNS(ns,'circle');c.setAttribute('cx',x(last));c.setAttribute('cy',y(d[last]));c.setAttribute('r','2');c.setAttribute('class','spark-dot');svg.append(c);}
   return svg;
 }
 function msRing(s, large){
@@ -293,4 +295,52 @@ function newThisWeek(){
     a.append(meta,t,node('span','Open ↗','new-open'));return a;}));};
   render(); const sel=el('lang-select'); if(sel) sel.addEventListener('change',()=>setTimeout(render,0));
 }
-glance(); newThisWeek();
+
+// Overview "What changed today" banner: biggest rise/drop vs the day before (all songs, same logic as #movers)
+// plus any round-number milestone crossed on the data day. Hidden when the prior calendar day is missing.
+function crossedMilestones(dates){
+  dates=dates||(typeof HIST_DATES!=='undefined'?HIST_DATES:null);
+  if(!dates||typeof HIST_SONGS==='undefined'||typeof SONGS==='undefined'||typeof nextMilestone!=='function') return [];
+  const i=dates.indexOf(UPDATED);
+  if(i<1||dates[i-1]!==addDays(UPDATED,-1)) return [];
+  const out=[];
+  for(const s of SONGS){
+    const v=HIST_SONGS[s[0]];
+    if(!v||v[i]==null||v[i-1]==null) continue;
+    let n=v[i-1], curr=v[i];
+    while(true){
+      const m=nextMilestone(n);
+      if(m>curr) break;
+      out.push({song:s[0], mark:m});
+      n=m;
+    }
+  }
+  return out;
+}
+function todayChangeData(dates){
+  dates=dates||(typeof HIST_DATES!=='undefined'?HIST_DATES:null);
+  const i=dates?dates.indexOf(UPDATED):-1;
+  const hasPrev=!!dates&&typeof addDays==='function'&&i>=1&&dates[i-1]===addDays(UPDATED,-1);
+  if(!hasPrev) return {hasPrev:false, up:null, dn:null, crossed:[]};
+  const movers=typeof biggestMovers==='function'?biggestMovers():{up:null,dn:null};
+  return {hasPrev:true, up:movers.up, dn:movers.dn, crossed:crossedMilestones(dates)};
+}
+function todayChange(dates){
+  const box=el('today-change'); if(!box) return;
+  const data=todayChangeData(dates);
+  box.replaceChildren();
+  if(!data.hasPrev||(!data.up&&!data.dn&&!data.crossed.length)){ box.hidden=true; return; }
+  const title=node('strong','What changed today','today-change-label');
+  const line=node('p',null,'today-change-line');
+  const songLink=name=>{const a=node('a',name,'no-tr');a.href=(typeof songPageUrl==='function'&&songPageUrl(name))||('./song.html?id='+slug(name));return a;};
+  const mover=(lbl,x,cls)=>{const s=node('span',null,'mover');s.append(node('span',lbl),' ',songLink(x[0]),' ',node('strong',(x[1].delta>0?'▲ +':'▼ ')+format(x[1].delta),cls));return s;};
+  const bits=[];
+  if(data.up) bits.push(mover('Biggest rise vs day before',data.up,'chg-up'));
+  if(data.dn) bits.push(mover('Biggest drop vs day before',data.dn,'chg-down'));
+  for(const c of data.crossed){const s=node('span',null,'today-ms');s.append(songLink(c.song),' ',node('span','passed '+short(c.mark)));bits.push(s);}
+  bits.forEach((b,i)=>{if(i) line.append(node('span',' · ','today-change-sep')); line.append(b);});
+  box.append(title,line);
+  box.hidden=false;
+}
+window.todayChangeData=todayChangeData; window.todayChange=todayChange;
+glance(); todayChange(); newThisWeek();

@@ -75,6 +75,13 @@ function movement(m) {
   if (m === 'new') return ['NEW','reentry'];
   return m.startsWith('up ') ? ['▲ '+m.slice(3),'positive'] : ['▼ '+m.slice(5),'negative'];
 }
+function biggestMovers(){
+  if (typeof SONGS === 'undefined') return {up:null, dn:null};
+  const ch = SONGS.map(s=>[s[0],dailyChange(s[0])]).filter(x=>x[1]);
+  if (!ch.length) return {up:null, dn:null};
+  ch.sort((a,b)=>b[1].delta-a[1].delta);
+  return {up: ch[0][1].delta>0 ? ch[0] : null, dn: ch[ch.length-1][1].delta<0 ? ch[ch.length-1] : null};
+}
 const $ = id => document.getElementById(id);
 function init() {
   if ($('summary')) 
@@ -88,11 +95,11 @@ function init() {
   }
   if ($('daily-bars')) {
   $('daily-caption').textContent = `Streams gained on ${longDate(UPDATED)}.`;
-  if ($('movers')) { const ch = SONGS.map(s=>[s[0],dailyChange(s[0])]).filter(x=>x[1]); if (ch.length) { ch.sort((a,b)=>b[1].delta-a[1].delta); const up=ch[0], dn=ch[ch.length-1], m=$('movers'); m.replaceChildren();
+  if ($('movers')) { const {up,dn}=biggestMovers(), m=$('movers'); m.replaceChildren();
     const part=(lbl,x,cls)=>{const s=node('span',null,'mover');const a=node('a',x[0]);a.href=songPageUrl(x[0])||('./song.html?id='+slug(x[0]));s.append(node('span',lbl),document.createTextNode(' '),a,document.createTextNode(' '),node('strong',(x[1].delta>0?'▲ +':'▼ ')+format(x[1].delta),cls));return s;};
-    if (up[1].delta>0) m.append(part('Biggest rise vs day before',up,'chg-up'));
-    if (dn[1].delta<0) m.append(part('Biggest drop vs day before',dn,'chg-down'));
-    m.hidden = !m.childNodes.length; } }
+    if (up) m.append(part('Biggest rise vs day before',up,'chg-up'));
+    if (dn) m.append(part('Biggest drop vs day before',dn,'chg-down'));
+    m.hidden = !m.childNodes.length; }
   const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,10);
   $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right');r.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));l.append(name,r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
   }
