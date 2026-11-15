@@ -1,6 +1,7 @@
 // Jimin social posts, newest first. Maintained by /workspace/jimin/update_feed.py (verified URLs only).
-// Each: {platform: "instagram"|"tiktok", url, date: "YYYY-MM-DD"}
-const FEED_PROFILES = {"instagram": "https://www.instagram.com/j.m/", "tiktok": "https://www.tiktok.com/@jimin"};
+// Instagram/TikTok: {platform, url, date}. X: Jimin-signed posts on @bts_bighit only
+// ({platform:"x", url, id, date PT, created_at_utc, title, title_ko, title_es, summary, summary_ko, summary_es, image?}).
+const FEED_PROFILES = {"instagram": "https://www.instagram.com/j.m/", "tiktok": "https://www.tiktok.com/@jimin", "x": "https://x.com/bts_bighit"};
 const FEED = [
  {
   "platform": "instagram",

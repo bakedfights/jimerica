@@ -143,7 +143,7 @@ function feedPage(){
   const QS=new URLSearchParams(location.search),SHOW=QS.get('show');const filter=SHOW==='jimin'?QS.get('p'):null;showSwitch(SHOW);
   const items=FEED.filter(f=>!filter||f.platform===filter);
   document.querySelectorAll('[data-feed-filter]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.feedFilter||null)===filter)));
-  el('feed-cap').textContent=`${items.length} post${items.length===1?'':'s'} · newest ${items[0]?longDate(items[0].date):'–'}. Each card links to the original Instagram or TikTok post.`;
+  el('feed-cap').textContent=`${items.length} post${items.length===1?'':'s'} · newest ${items[0]?longDate(items[0].date):'–'}. Each card links to the original Instagram, TikTok or X post.`;
   g.innerHTML='';
   const PAGE=9; let shown=0; const more=document.createElement('button'); more.type='button'; more.className='cta show-more'; more.textContent='Show more';
   const renderNext=()=>{ const batch=items.slice(shown,shown+PAGE); shown+=batch.length; renderItems(batch); more.hidden=shown>=items.length; };
@@ -151,13 +151,13 @@ function feedPage(){
   function renderItems(list){
   for(const f of list){
     const card=node('div',null,'feed-card'); const meta=node('div',null,'feed-meta');
-    const who=f.platform==='instagram'?'Instagram · @j.m':f.platform==='x'?'X · @JIMERICA':'TikTok · @jimin';
+    const who=f.platform==='instagram'?'Instagram · @j.m':f.platform==='x'?'X · @bts_bighit':'TikTok · @jimin';
     meta.append(node('span',who,'feed-tag '+f.platform),node('span',longDate(f.date)));
     const a=document.createElement('a');a.href=f.url;a.target='_blank';a.rel='noopener';a.className='feed-link';
-    const caption=f.text||f.caption||'';
-    const title=f.title||(f.platform==='instagram'?'New Instagram post':f.platform==='tiktok'?'New TikTok video':'Post');
-    if(title&&!caption) a.append(node('strong',title));
-    if(caption) a.append(node('p',caption,'x-text no-tr'));
+    const title=f.title||(f.platform==='instagram'?'New Instagram post':f.platform==='tiktok'?'New TikTok video':f.platform==='x'?'New X post':'Post');
+    const sum=f.summary||f.text||f.caption||'';
+    if(title) a.append(node('strong',title));
+    if(sum) a.append(node('p',sum, f.platform==='x'?'x-text':'x-text no-tr'));
     // Photos only when a stable image URL is already in the data (none are stored for Jimin's Instagram/TikTok posts).
     if(f.image){const im=document.createElement('img');im.src=f.image;im.alt=title||('Image from '+who);im.loading='lazy';im.decoding='async';a.append(im);}
     a.append(node('span','Open post ↗','feed-open'));
@@ -282,7 +282,7 @@ function glance(){
 function newThisWeek(){
   const box=el('new-list'); if(!box) return;
   const lang=()=>{let l=el('lang-select')?.value;if(!l){try{l=localStorage.getItem('jimerica-lang');}catch{}}return ['ko','es'].includes(l)?l:'en';};
-  const all=[...(typeof FEED!=='undefined'?FEED:[]).map(f=>({date:f.date,url:f.url,src:f.platform==='tiktok'?'Jimin on TikTok':'Jimin on Instagram',title:{en:f.platform==='tiktok'?'New TikTok video':'New Instagram post'},kind:'sns'})),
+  const all=[...(typeof FEED!=='undefined'?FEED:[]).map(f=>({date:f.date,url:f.url,src:f.platform==='tiktok'?'Jimin on TikTok':f.platform==='x'?'Jimin on X':'Jimin on Instagram',title:{en:f.title||(f.platform==='tiktok'?'New TikTok video':f.platform==='x'?'New X post':'New Instagram post'),ko:f.title_ko,es:f.title_es},kind:'sns'})),
     ...(typeof OFFICIAL!=='undefined'?OFFICIAL:[]).map(f=>({date:f.date,url:f.url,src:(f.platform==='x'?'X':'Instagram')+' · @'+f.account,title:{en:f.title,ko:f.title_ko,es:f.title_es},kind:'official',ts:f.created_at_utc||''}))]
     .sort((a,b)=>b.date.localeCompare(a.date)||(b.ts||'').localeCompare(a.ts||''));
   const today=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
@@ -291,7 +291,7 @@ function newThisWeek(){
   el('new-cap').textContent=fresh.length?'The newest posts from Jimin and official accounts in the last 7 days.':'Nothing new this week, so here are the latest posts.';
   const render=()=>{const L=lang();box.replaceChildren(...list.map(x=>{const a=node('a',null,'new-item');a.href=x.url;a.target='_blank';a.rel='noopener';
     const meta=node('span',null,'new-meta');meta.append(node('span',x.src),' · ',node('span',longDate(x.date)));
-    const t=x.kind==='official'?node('strong',x.title[L]||x.title.en,'no-tr'):node('strong',x.title.en);
+    const t=node('strong',x.title[L]||x.title.en, x.kind==='official'||x.title.ko||x.title.es?'no-tr':null);
     a.append(meta,t,node('span','Open ↗','new-open'));return a;}));};
   render(); const sel=el('lang-select'); if(sel) sel.addEventListener('change',()=>setTimeout(render,0));
 }
