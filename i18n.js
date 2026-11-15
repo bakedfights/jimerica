@@ -8,7 +8,7 @@ const KO={
 "Current streams":"현재 스트리밍",
 // nav & chrome
 "Stats":"통계","Music":"음악","Fans":"팬","Overview":"개요","Songs":"곡","Trends":"추이","Milestones":"마일스톤","Achievements":"업적","Who":"Who","Discography":"디스코그래피","Calendar":"캘린더","Feed":"피드","Social Media":"SNS","X · @JIMERICA":"X · @JIMERICA","View on X ↗":"X에서 보기 ↗","Image from @JIMERICA post":"@JIMERICA 게시물 이미지","Streaming guide":"스트리밍 가이드","About":"소개","Menu":"메뉴",
-"Skip to content":"본문으로 건너뛰기","Source: Spotify":"출처: Spotify","Independent fan archive · Not affiliated with Spotify or Jimin.":"독립 팬 아카이브 · Spotify 및 지민과 무관합니다.","Pages":"페이지",
+"Skip to content":"본문으로 건너뛰기","Source: Spotify":"출처: Spotify","Independent fan archive · Not affiliated with Spotify or Jimin.":"독립 팬 아카이브 · Spotify 및 지민과 무관합니다.","Not affiliated with Spotify or Jimin.":"Spotify 및 지민과 무관합니다.","Pages":"페이지",
 // overview
 "Archive of Jimin's Achievements":"지민 업적 아카이브","Jimin by the numbers":"숫자로 보는 지민","Jimin has surpassed":"지민의 누적 스트리밍","Total streams":"총 스트리밍","Streams yesterday":"어제 스트리밍","Solo streams":"솔로 스트리밍","Tracks counted":"집계 곡 수","Top 10 daily gains":"일일 증가 TOP 10","See every song →":"전체 곡 보기 →","Who around the world →":"세계 속 Who →","Top 10 songs by total streams":"총 스트리밍 TOP 10",
 "Please enable JavaScript to see the updated Spotify statistics and song sorting controls. Achievement details and sources remain available below.":"최신 Spotify 통계와 정렬 기능을 보려면 JavaScript를 켜 주세요.",
@@ -155,6 +155,7 @@ const ES={
   "Skip to content": "Saltar al contenido",
   "Source: Spotify": "Fuente: Spotify",
   "Independent fan archive · Not affiliated with Spotify or Jimin.": "Archivo independiente de fans · Sin afiliación con Spotify ni Jimin.",
+  "Not affiliated with Spotify or Jimin.": "Sin afiliación con Spotify ni Jimin.",
   "Pages": "Páginas",
   "Archive of Jimin's Achievements": "Archivo de logros de Jimin",
   "Jimin by the numbers": "Jimin en cifras",
