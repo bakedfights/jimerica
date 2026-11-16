@@ -34,6 +34,7 @@ function lbCompute(hist,dates,updated,limit){
     const tr=el('tr'); const td=(label,...k)=>{const c=el('td'); c.setAttribute('data-label',label); c.append(...k); tr.append(c); return c;};
     const a=el('a','no-tr',x.title); a.href=songPageUrl(x.title)||('./song.html?id='+slug(x.title));
     td('Song',el('span','lb-rank no-tr',String(x.rank)),a);
+    {const so=(typeof SONGS!=='undefined'?SONGS:[]).find(q=>q[0]===x.title); td('Total streams',el('span','lb-total',so?format(so[1]):'–'));}
     td('Streams, last 7 days',el('strong',null,format(x.gain)));
     td('Daily average',el('span',null,format(x.avg)));
     if(r.hasPrev){
