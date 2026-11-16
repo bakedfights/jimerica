@@ -540,3 +540,78 @@ html:not([data-theme=dark]) ::selection{background:rgba(138,95,0,.25)}
 .dg-cols{display:grid;grid-template-columns:9.5em 6.5em 9.5em;gap:0 14px;align-items:baseline}.dg-gain{display:contents}.dg-gain>strong{text-align:right}.dg-gain>small{text-align:left;white-space:nowrap}.dg-head .dg-gain{display:block;grid-column:2/4;text-align:left;padding-left:1.2em}
 @media (max-width:600px){.dg-cols{grid-template-columns:auto auto auto;justify-content:end;width:100%}.dg-head .dg-gain{padding-left:0}}
 .lb-total{font-variant-numeric:tabular-nums;color:var(--gold);font-weight:600}
+
+/* feature:1116-share (Nov 16, 2026) — small "Save image" buttons. They sit in a .share-bar placed BEFORE each section (outside the section's box), so element screenshots of #top-daily/#milestones/#leaderboard never include them; also hidden for ?shot=1 / html.shot. Remove with features1116.js. */
+.share-bar{display:flex;justify-content:flex-end;margin:10px 0 0;min-height:0}
+.share-bar[hidden]{display:none}
+.share-btn{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:.74rem;font-weight:600;line-height:1.4;cursor:pointer;margin:0}
+.share-btn:hover,.share-btn:focus-visible{border-color:var(--gold);color:var(--gold)}
+.share-btn[aria-busy=true]{opacity:.7;cursor:progress}
+.share-btn svg{flex:none}
+.share-row .share-btn.cta{padding:10px 18px;gap:8px;font-size:inherit;line-height:inherit;font-weight:600;color:var(--gold);border-color:rgba(240,198,116,.4)}
+html.shot [data-noshot],html.shot .share-bar{display:none!important}
+@media print{.share-bar,.share-btn{display:none!important}}
+/* /feature:1116-share */
+
+/* feature:1116-fangoal (Nov 16, 2026) — Overview fan goal card. */
+.fan-goal{padding-top:8px}
+.fg-card{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel2));padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.fg-head{display:flex;align-items:center;gap:12px}
+.fg-cover{width:48px;height:48px;border-radius:10px;flex:none}
+.fg-title{margin:0;font-weight:700;font-size:1.05rem;line-height:1.35}
+.fg-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.fg-stat{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.fg-stat strong{font-size:1.2rem;font-variant-numeric:tabular-nums}.fg-stat strong.gold{color:var(--gold)}
+.fg-stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.fg-boost{margin:0;font-size:.9rem;color:var(--text)}
+.fg-note{margin:0;font-size:.78rem}
+.fg-card .g-bar{margin-top:0;height:10px}.fg-card .g-bar-cap{margin:-6px 0 0}
+@media(max-width:600px){.fg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.fg-title{font-size:.98rem}.fg-card{padding:14px}}
+/* /feature:1116-fangoal */
+
+/* feature:1116-sparkle (Nov 16, 2026) — gold sparkle for a milestone crossed on the latest data day. Static (no motion) under prefers-reduced-motion. */
+.sparkle{position:relative;border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold),0 0 18px -4px var(--gold)}
+tr.sparkle{box-shadow:inset 3px 0 0 var(--gold)}
+.sp-star{position:absolute;color:var(--gold);font-size:.8rem;line-height:1;pointer-events:none;opacity:.9}
+.sp-0{top:8px;right:12px}.sp-1{top:22px;right:30px;font-size:.6rem}.sp-2{top:10px;right:46px;font-size:.5rem}
+@media(prefers-reduced-motion:no-preference){
+  .sp-star{animation:jimTwinkle 2.4s ease-in-out 3}.sp-1{animation-delay:.5s}.sp-2{animation-delay:1s}
+  @keyframes jimTwinkle{0%,100%{opacity:.25;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.25) rotate(20deg)}}
+}
+/* /feature:1116-sparkle */
+
+/* feature:1116-album (Nov 16, 2026) — per-album accent on song pages, set from cover art by features1116.js (html[data-album]). Accents only: top bar, chip, chart line, ring, buttons. Remove with features1116.js. */
+html[data-album]:not([data-theme=dark]){--album:var(--album-l);--album-text:var(--album-lt)}
+html[data-album][data-theme=dark]{--album:var(--album-d);--album-text:var(--album-dt)}
+html[data-album] body::before{content:"";display:block;height:5px;background:var(--album)}
+html[data-album] .chart .linec{stroke:var(--album)}
+html[data-album] .chart .dotc{stroke:var(--album)}
+html[data-album] .chart .hov{fill:var(--album)}
+html[data-album] .ms-ring-fg{stroke:var(--album)}
+html[data-album] .cover-lg{box-shadow:0 8px 24px color-mix(in srgb,var(--album) 35%,transparent)}
+html[data-album] #song-detail .cta{color:var(--album-text);border-color:color-mix(in srgb,var(--album) 55%,transparent)}
+html[data-album] #song-detail .cta:hover{border-color:var(--album)}
+html[data-album] #song-metrics .metric{border-top:3px solid var(--album)}
+.album-chip{display:inline-block;margin:0 0 6px;padding:2px 12px;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.02em;color:var(--album-text);background:color-mix(in srgb,var(--album) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--album) 45%,transparent)}
+/* /feature:1116-album */
+
+/* feature:1116-dark (Nov 16, 2026) — dark mode polish. Dark only (html[data-theme=dark]); light mode rules are untouched.
+   Softer gold (was #f6cf67), brighter muted text, visible borders (was #3a3d42, 1.27:1 against the background), a real --panel2 (it was self-referencing, so every panel2 background was transparent in dark), 3:1 borders on form controls. */
+html[data-theme=dark]{--panel:#33363c;--panel2:#3a3e46;--line:#4f545d;--line-ctl:#7a808b;--muted:#c1c5cc;--gold:#e8c675;--green:#7ad8a9;--red:#ff9aa2;--seg-on:#555a63;--field:#25272b}
+html[data-theme=dark] body{background:radial-gradient(1200px 500px at 50% -200px,rgba(232,198,117,.08),transparent 70%),var(--bg);background-repeat:no-repeat;background-color:var(--bg)}
+html[data-theme=dark] .bar-fill{background:linear-gradient(90deg,#8b93a3,#aab1c0)}
+html[data-theme=dark] .bar:first-child .bar-fill,html[data-theme=dark] #daily-bars .bar-fill,html[data-theme=dark] .pbar span,html[data-theme=dark] .chart-cards .bar-fill{background:linear-gradient(90deg,#a98b48,var(--gold))}
+html[data-theme=dark] .cta,html[data-theme=dark] .metric:hover{border-color:rgba(232,198,117,.5)}
+html[data-theme=dark] .site-search input,html[data-theme=dark] .search,html[data-theme=dark] .lang-pick select,html[data-theme=dark] .theme-switch,html[data-theme=dark] .share-btn{border-color:var(--line-ctl)}
+html[data-theme=dark] .site-search input:focus,html[data-theme=dark] .search:focus,html[data-theme=dark] .share-btn:hover,html[data-theme=dark] .share-btn:focus-visible{border-color:var(--gold)}
+html[data-theme=dark] .metric,html[data-theme=dark] .g-item,html[data-theme=dark] .feed-card,html[data-theme=dark] .disc-card,html[data-theme=dark] .table-wrap{box-shadow:0 6px 18px rgba(0,0,0,.28)}
+html[data-theme=dark] tbody tr:nth-child(even){background:rgba(255,255,255,.035)}
+html[data-theme=dark] .g-bar,html[data-theme=dark] .pbar{background:#464b54}
+html[data-theme=dark] .g-bar-fill{background:linear-gradient(90deg,#a98b48,var(--gold))}
+html[data-theme=dark] .chart .grid{stroke:#454a53}
+html[data-theme=dark] .wm-r0{fill:#444952}
+html[data-theme=dark] ::selection{background:rgba(232,198,117,.3)}
+html[data-theme=dark] .sparkle{box-shadow:0 0 0 1px var(--gold),0 0 18px -4px var(--gold)}
+html[data-theme=dark] .daily-cell[style]{background:linear-gradient(90deg,transparent calc(100% - var(--w)),rgba(232,198,117,.15) calc(100% - var(--w)));background-size:100% 60%;background-repeat:no-repeat;background-position:center}
+@media(max-width:600px){html[data-theme=dark] .cards-sm .daily-cell[style]{background:none}}
+/* /feature:1116-dark */
