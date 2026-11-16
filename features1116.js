@@ -7,7 +7,8 @@
 //  2. Count-up on headline numbers (IntersectionObserver, ends on the exact value; off for reduced motion / automation) + gold sparkle on the
 //     Next milestone card and milestone rows of a song that crossed a round-number milestone on the latest data day (crossedMilestones() in extra.js).
 //  3. Album colour themes on song.html (accent colours taken from each cover; contrast-checked for light and dark).
-//  4. Fan goal card on the Overview (#fan-goal) for the soonest milestone (msRows() in extra.js).
+//  Dark mode polish is CSS-only (feature:1116-dark). A planned fan-goal card was dropped as redundant with the Next milestone card;
+//  the useful "About N streams a day needed" line lives in extra.js glance(), not this file.
 // Remove: delete this file, its <script> line in index.html and song.html, the "feature:1116" blocks in style.css and the "Nov 16, 2026" strings at the end of i18n.js.
 (function(){
 const Q=new URLSearchParams(location.search), doc=document.documentElement;
@@ -19,30 +20,6 @@ const tx=s=>{try{return lang()==='ko'&&typeof translateStr==='function'?translat
 const mk=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
 const $1=id=>document.getElementById(id);
 const ready=fn=>document.readyState==='complete'?setTimeout(fn,0):window.addEventListener('load',()=>setTimeout(fn,0));
-
-/* ---------- 4. Fan goal card ---------- */
-function fanGoal(){
-  const anchor=$1('glance-wrap'); if(!anchor||$1('fan-goal')||typeof msRows!=='function') return;
-  const r=msRows()[0]; if(!r) return;
-  const [s,m,d,a]=r, cur=s[1], togo=m-cur, step=m<=1e8?1e7:m<=1e9?5e7:1e8, pct=Math.max(0,Math.min(100,(cur-(m-step))/step*100));
-  const needed=Math.ceil(togo/d), when=longDate(addDays(UPDATED,d));
-  const sec=mk('section'); sec.id='fan-goal'; sec.className='fan-goal';
-  sec.append(mk('h2',null,'Fan goal'));
-  const card=mk('div','fg-card'), head=mk('div','fg-head');
-  const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm fg-cover',48):null; if(im){im.loading='eager';head.append(im);}
-  head.append(mk('p','fg-title',`Help ${s[0]} reach ${short(m)} by ${when} (estimate)`));
-  card.append(head);
-  const stats=mk('div','fg-stats');
-  [[format(cur),'Current streams'],[format(togo),'Streams to go'],[format(needed),'Needed per day'],[format(a.rate),'7-day average']].forEach(([v,l],i)=>{const x=mk('div','fg-stat');x.append(mk('strong',null,v),mk('span',null,l));if(i===1)x.querySelector('strong').className='gold';stats.append(x);});
-  card.append(stats);
-  const bar=mk('div','g-bar'); bar.setAttribute('role','progressbar'); bar.setAttribute('aria-valuemin','0'); bar.setAttribute('aria-valuemax','100'); bar.setAttribute('aria-valuenow',String(Math.round(pct)));
-  const fill=mk('span','g-bar-fill'); fill.style.width=pct.toFixed(1)+'%'; bar.append(fill); card.append(bar);
-  card.append(mk('p','g-sub g-bar-cap',`${pct.toFixed(1)}% of the way from ${short(m-step)} to ${short(m)}`));
-  const faster=Math.ceil(togo/(a.rate*1.1));
-  if(faster<d) card.append(mk('p','fg-boost',`If daily streams rise 10% (about +${format(Math.round(a.rate*.1))} per day), it could land around ${longDate(addDays(UPDATED,faster))} (estimate)`));
-  card.append(mk('p','caption fg-note',`Estimates use the average of the last ${a.n} day${a.n===1?'':'s'} of streams (up to 7), assuming that pace continues. Not a prediction or an official figure.`));
-  sec.append(card); anchor.after(sec);
-}
 
 /* ---------- 3. Album colour themes (song.html) ---------- */
 // Accent colours come from each cover (dominant colour, then lightness adjusted so graphics have >= 3.2:1 contrast and accent text >= 4.5:1 on light and dark panels).
@@ -61,7 +38,7 @@ function albumTheme(){
 /* ---------- 2. Count-up + sparkle ---------- */
 function countUp(){
   if(RM||AUTO||doc.classList.contains('shot')||!('IntersectionObserver' in window)) return;
-  const els=[...document.querySelectorAll('#glance .g-item>strong,#milestone>strong,#totals-metrics .metric>strong,#who-metrics .metric>strong,#song-metrics .metric>strong,#fan-goal .fg-stat>strong')];
+  const els=[...document.querySelectorAll('#glance .g-item>strong,#milestone>strong,#totals-metrics .metric>strong,#who-metrics .metric>strong,#song-metrics .metric>strong')];
   const io=new IntersectionObserver(es=>es.forEach(en=>{
     if(!en.isIntersecting) return; const e=en.target; io.unobserve(e); run(e);
   }),{threshold:.4});
@@ -218,7 +195,7 @@ function wire(btn,getEls,key,dateIso,titleFn){
 const ICON='<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M8 2v7.2M4.8 6.4 8 9.6l3.2-3.2M3 12.5h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 function btn(extraCls){const b=mk('button','share-btn'+(extraCls?' '+extraCls:'')); b.type='button'; b.innerHTML=ICON; b.append(mk('span','share-label','Save image')); b.setAttribute('aria-label','Save an image of this section'); b.title='Save a branded image of this section'; return b;}
 function shareBars(){
-  const defs=[['glance-wrap','glance',()=>UPDATED],['top-daily','top10-daily-gains',()=>UPDATED],['milestones','next-milestones',()=>UPDATED],['leaderboard','weekly-leaderboard',()=>UPDATED],['world','who-charts',()=>WHO_DATE],['fan-goal','fan-goal',()=>UPDATED]];
+  const defs=[['glance-wrap','glance',()=>UPDATED],['top-daily','top10-daily-gains',()=>UPDATED],['milestones','next-milestones',()=>UPDATED],['leaderboard','weekly-leaderboard',()=>UPDATED],['world','who-charts',()=>WHO_DATE]];
   for(const [id,key,date] of defs){
     const sec=$1(id); if(!sec||sec.previousElementSibling&&sec.previousElementSibling.classList.contains('share-bar')) continue;
     const bar=mk('div','share-bar'); bar.setAttribute('data-noshot',''); bar.dataset.for=id; const b=btn(); bar.append(b);
@@ -231,7 +208,6 @@ function shareBars(){
   if(row&&hero){const b=btn('cta'); b.setAttribute('data-noshot',''); (row.querySelector('#share-x')||row.firstChild).after(b); wire(b,()=>[hero,$1('song-detail')],'song-'+(new URLSearchParams(location.search).get('id')||'song'),()=>UPDATED,()=>$1('song-title').textContent);}
 }
 
-try{fanGoal();}catch(e){console.warn('fan goal',e);}
 try{albumTheme();}catch(e){console.warn('album theme',e);}
 try{shareBars();}catch(e){console.warn('share bars',e);}
 ready(()=>{try{countUp();sparkle();}catch(e){console.warn('count-up',e);}});

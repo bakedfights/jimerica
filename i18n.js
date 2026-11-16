@@ -118,7 +118,7 @@ const PAT=[ // applied after date conversion; full-string patterns
  [/^Data updated (.+)$/,m=>`데이터 업데이트 ${m[1]}`],
  [/^Total streams: (.+)$/,m=>`총 스트리밍: ${m[1]}`],
  [/^Today's goal \((.+)\): (.+)\+ streams to beat (.+)$/,m=>`오늘 목표 (${m[1]}): ${m[2]}+ 스트리밍으로 ${m[3]} 넘어서기`],
- [/^(.+) streams to go$/,m=>`${m[1]} 스트리밍 남음`],[/^(.+)% of the way from (.+) to (.+)$/,m=>`${m[2]}에서 ${m[3]}까지 ${m[1]}% 달성`],
+ [/^(.+) streams to go$/,m=>`${m[1]} 스트리밍 남음`],[/^(.+)% of the way from (.+) to (.+)$/,m=>`${m[2]}에서 ${m[3]}까지 ${m[1]}% 달성`],[/^About (.+) streams a day needed$/,m=>`하루 약 ${m[1]} 스트리밍 필요`],
  [/^(.+) was bigger$/,m=>`${m[1]}이 더 높음`],
  [/^passed (.+)$/,m=>`${m[1]} 돌파`],
 ];
@@ -629,7 +629,7 @@ const ES_PAT=[
 [/^Data updated (.+)$/,m=>`Datos actualizados el ${m[1]}`],
 [/^Total streams: (.+)$/,m=>`Reproducciones totales: ${m[1]}`],
 [/^Today's goal \((.+)\): (.+)\+ streams to beat (.+)$/,m=>`Objetivo de hoy (${m[1]}): ${m[2]}+ reproducciones para superar el ${m[3]}`],
-[/^(.+) streams to go$/,m=>`${m[1]} reproducciones restantes`],[/^(.+)% of the way from (.+) to (.+)$/,m=>`${m[1]}% del camino de ${m[2]} a ${m[3]}`],
+[/^(.+) streams to go$/,m=>`${m[1]} reproducciones restantes`],[/^(.+)% of the way from (.+) to (.+)$/,m=>`${m[1]}% del camino de ${m[2]} a ${m[3]}`],[/^About (.+) streams a day needed$/,m=>`Se necesitan unas ${m[1]} reproducciones al día`],
 [/^(.+) was bigger$/,m=>`${m[1]} fue mayor`],
 [/^passed (.+)$/,m=>`superó los ${m[1]}`],
 [/^(.+) daily streams$/,m=>`Reproducciones diarias de ${m[1]}`],
@@ -812,18 +812,12 @@ window.addEventListener('load',()=>{
   t.addEventListener('click',()=>window.scrollTo({top:0}));document.body.append(t);
   const f=()=>t.classList.toggle('show',window.scrollY>600);window.addEventListener('scroll',f,{passive:true});f();
 });
-// Nov 16, 2026 features: share-as-image buttons, fan goal card, count-up/sparkle (remove with features1116.js; see FANSITE.md).
-Object.assign(KO,{"Fan goal":"팬 목표","Needed per day":"하루 필요량","7-day average":"7일 평균","Save image":"이미지 저장","Share image":"이미지 공유","Preparing…":"준비 중…","Image ready ✓":"이미지 준비 완료 ✓","Could not create the image":"이미지를 만들지 못했습니다","Save an image of this section":"이 섹션을 이미지로 저장","Save a branded image of this section":"이 섹션을 JIMERICA 이미지로 저장"});
-Object.assign(ES,{"Fan goal":"Meta de los fans","Needed per day":"Necesarias por día","7-day average":"Promedio de 7 días","Save image":"Guardar imagen","Share image":"Compartir imagen","Preparing…":"Preparando…","Image ready ✓":"Imagen lista ✓","Could not create the image":"No se pudo crear la imagen","Save an image of this section":"Guardar una imagen de esta sección","Save a branded image of this section":"Guardar una imagen de esta sección con la marca JIMERICA"});
+// Nov 16, 2026 features: share-as-image buttons, count-up/sparkle (remove with features1116.js; see FANSITE.md).
+Object.assign(KO,{"Save image":"이미지 저장","Share image":"이미지 공유","Preparing…":"준비 중…","Image ready ✓":"이미지 준비 완료 ✓","Could not create the image":"이미지를 만들지 못했습니다","Save an image of this section":"이 섹션을 이미지로 저장","Save a branded image of this section":"이 섹션을 JIMERICA 이미지로 저장"});
+Object.assign(ES,{"Save image":"Guardar imagen","Share image":"Compartir imagen","Preparing…":"Preparando…","Image ready ✓":"Imagen lista ✓","Could not create the image":"No se pudo crear la imagen","Save an image of this section":"Guardar una imagen de esta sección","Save a branded image of this section":"Guardar una imagen de esta sección con la marca JIMERICA"});
 PAT.push(
- [/^Help (.+) reach (\S+) by (.+) \(estimate\)$/,m=>`${m[3]}까지 ${m[1]}의 ${m[2]} 달성을 도와주세요 (예상)`],
- [/^If daily streams rise 10% \(about \+([\d,]+) per day\), it could land around (.+) \(estimate\)$/,m=>`일일 스트리밍이 10% 늘면(하루 약 +${m[1]}), ${m[2]} 무렵 달성할 수 있습니다 (예상)`],
- [/^Estimates use the average of the last (\d+) days? of streams \(up to 7\), assuming that pace continues\. Not a prediction or an official figure\.$/,m=>`최근 ${m[1]}일(최대 7일) 평균 스트리밍이 유지된다고 가정한 추정치입니다. 예측이나 공식 수치가 아닙니다.`],
  [/^Data as of (.+) · Source: Spotify$/,m=>`${m[1]} 기준 데이터 · 출처: Spotify`],
  [/^Passed (.+) on (.+)$/,m=>`${m[2]}에 ${m[1]} 돌파`]);
 ES_PAT.push(
- [/^Help (.+) reach (\S+) by (.+) \(estimate\)$/,m=>`Ayuda a ${m[1]} a llegar a ${m[2]} el ${m[3]} (estimación)`],
- [/^If daily streams rise 10% \(about \+([\d,]+) per day\), it could land around (.+) \(estimate\)$/,m=>`Si las reproducciones diarias suben un 10% (unas +${m[1]} por día), podría llegar hacia el ${m[2]} (estimación)`],
- [/^Estimates use the average of the last (\d+) days? of streams \(up to 7\), assuming that pace continues\. Not a prediction or an official figure\.$/,m=>`Las estimaciones usan el promedio de reproducciones de los últimos ${m[1]} días (hasta 7), suponiendo que ese ritmo continúe. No son una predicción ni una cifra oficial.`],
  [/^Data as of (.+) · Source: Spotify$/,m=>`Datos a ${m[1]} · Fuente: Spotify`],
  [/^Passed (.+) on (.+)$/,m=>`Superó ${m[1]} el ${m[2]}`]);

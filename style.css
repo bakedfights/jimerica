@@ -532,7 +532,7 @@ html:not([data-theme=dark]) tbody tr:nth-child(even){background:rgba(60,50,20,.0
 html:not([data-theme=dark]) ::selection{background:rgba(138,95,0,.25)}
 /* end feature:light-theme */
 
-.g-bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:6px}.g-bar-fill{display:block;height:100%;background:var(--gold);border-radius:999px}.g-togo{color:var(--text,inherit);font-weight:600}.g-bar-cap{font-size:12px}
+.g-bar{height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:6px}.g-bar-fill{display:block;height:100%;background:var(--gold);border-radius:999px}.g-togo{color:var(--text,inherit);font-weight:600}.g-bar-cap{font-size:12px}.g-pace{margin-top:4px}
 
 .dg-cols{display:flex;align-items:baseline;gap:18px}.dg-col{text-align:right;font-variant-numeric:tabular-nums}.dg-total{min-width:9.5em;color:var(--text);font-weight:600}.dg-gain{min-width:12em;display:flex;justify-content:flex-end;align-items:baseline;gap:8px;flex-wrap:wrap}
 .dg-head{font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:-8px}
@@ -553,21 +553,6 @@ html.shot [data-noshot],html.shot .share-bar{display:none!important}
 @media print{.share-bar,.share-btn{display:none!important}}
 /* /feature:1116-share */
 
-/* feature:1116-fangoal (Nov 16, 2026) — Overview fan goal card. */
-.fan-goal{padding-top:8px}
-.fg-card{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--panel),var(--panel2));padding:16px 18px;display:flex;flex-direction:column;gap:12px}
-.fg-head{display:flex;align-items:center;gap:12px}
-.fg-cover{width:48px;height:48px;border-radius:10px;flex:none}
-.fg-title{margin:0;font-weight:700;font-size:1.05rem;line-height:1.35}
-.fg-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.fg-stat{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
-.fg-stat strong{font-size:1.2rem;font-variant-numeric:tabular-nums}.fg-stat strong.gold{color:var(--gold)}
-.fg-stat span{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
-.fg-boost{margin:0;font-size:.9rem;color:var(--text)}
-.fg-note{margin:0;font-size:.78rem}
-.fg-card .g-bar{margin-top:0;height:10px}.fg-card .g-bar-cap{margin:-6px 0 0}
-@media(max-width:600px){.fg-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.fg-title{font-size:.98rem}.fg-card{padding:14px}}
-/* /feature:1116-fangoal */
 
 /* feature:1116-sparkle (Nov 16, 2026) — gold sparkle for a milestone crossed on the latest data day. Static (no motion) under prefers-reduced-motion. */
 .sparkle{position:relative;border-color:var(--gold)!important;box-shadow:0 0 0 1px var(--gold),0 0 18px -4px var(--gold)}

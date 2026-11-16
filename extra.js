@@ -67,7 +67,7 @@ function msRing(s, large){
   [bg,fg].forEach(c=>{c.setAttribute('cx',size/2);c.setAttribute('cy',size/2);c.setAttribute('r',rad);c.setAttribute('fill','none');c.setAttribute('stroke-width',sw);});
   fg.setAttribute('stroke-dasharray',String(circ)); fg.setAttribute('stroke-dashoffset',String(circ*(1-pct/100)));
   svg.append(bg,fg); wrap.append(svg);
-  if(large){const lab=node('span',null,'ms-ring-label'); lab.append(document.createTextNode(Math.round(pct)+'% '),node('span','toward '+short(m))); wrap.append(lab);}
+  if(large){wrap.append(node('span',Math.round(pct)+'% toward '+short(m),'ms-ring-label'));}
   return wrap;
 }
 function share(){
@@ -277,11 +277,13 @@ function glance(){
   const items=[card];
   const r=msRows()[0];
   if(r){const sub=[];const im=typeof coverImg==='function'?coverImg(r[0][0],'cover-sm',28):null;if(im)sub.push(im);sub.push(node('span',r[0][0],'no-tr'),node('span','≈ '+longDate(addDays(UPDATED,r[2]))));const it=item('Next milestone',short(r[1]),'',...sub);
-    const m=r[1],cur=r[0][1],step=m<=1e8?1e7:m<=1e9?5e7:1e8,pct=Math.max(0,Math.min(100,(cur-(m-step))/step*100));
-    it.append(node('span',`${format(m-cur)} streams to go`,'g-sub g-togo'));
+    const m=r[1],cur=r[0][1],days=r[2],step=m<=1e8?1e7:m<=1e9?5e7:1e8,pct=Math.max(0,Math.min(100,(cur-(m-step))/step*100));
+    const togo=m-cur, needed=days>0?Math.ceil(togo/days):null;
+    it.append(node('span',`${format(togo)} streams to go`,'g-sub g-togo'));
     const bar=node('div',null,'g-bar');bar.setAttribute('role','progressbar');bar.setAttribute('aria-valuemin','0');bar.setAttribute('aria-valuemax','100');bar.setAttribute('aria-valuenow',String(Math.round(pct)));
     const fill=node('span',null,'g-bar-fill');fill.style.width=pct.toFixed(1)+'%';bar.append(fill);it.append(bar);
     it.append(node('span',`${pct.toFixed(1)}% of the way from ${short(m-step)} to ${short(m)}`,'g-sub g-bar-cap'));
+    if(needed!=null) it.append(node('span',`About ${format(needed)} streams a day needed`,'g-sub g-pace'));
     items.push(it);}
   g.replaceChildren(...items);
 }
