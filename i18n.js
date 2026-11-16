@@ -812,6 +812,11 @@ window.addEventListener('load',()=>{
   t.addEventListener('click',()=>window.scrollTo({top:0}));document.body.append(t);
   const f=()=>t.classList.toggle('show',window.scrollY>600);window.addEventListener('scroll',f,{passive:true});f();
 });
+// Discography album/EP combined streams (pages2.js albumTrackTotal).
+Object.assign(KO,{"Combined streams are the sum of each album's songs. Source: Spotify.":"합계는 각 앨범 수록곡 스트리밍을 더한 값입니다. 출처: Spotify."});
+Object.assign(ES,{"Combined streams are the sum of each album's songs. Source: Spotify.":"Las reproducciones combinadas son la suma de las canciones de cada álbum. Fuente: Spotify."});
+PAT.push([/^(.+)% of all Jimin streams$/,m=>`지민 전체 스트리밍의 ${m[1]}%`]);
+ES_PAT.push([/^(.+)% of all Jimin streams$/,m=>`${m[1]}% de todas las reproducciones de Jimin`]);
 // Nov 16, 2026 features: share-as-image buttons, count-up/sparkle (remove with features1116.js; see FANSITE.md).
 Object.assign(KO,{"Save image":"이미지 저장","Share image":"이미지 공유","Preparing…":"준비 중…","Image ready ✓":"이미지 준비 완료 ✓","Could not create the image":"이미지를 만들지 못했습니다","Save an image of this section":"이 섹션을 이미지로 저장","Save a branded image of this section":"이 섹션을 JIMERICA 이미지로 저장"});
 Object.assign(ES,{"Save image":"Guardar imagen","Share image":"Compartir imagen","Preparing…":"Preparando…","Image ready ✓":"Imagen lista ✓","Could not create the image":"No se pudo crear la imagen","Save an image of this section":"Guardar una imagen de esta sección","Save a branded image of this section":"Guardar una imagen de esta sección con la marca JIMERICA"});

@@ -96,6 +96,12 @@ h1{background:none;-webkit-background-clip:initial;background-clip:initial;color
 .disc-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.disc-card .body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
 .disc-card h3{margin:0;font-size:1.05rem}.disc-card .meta{color:var(--muted);font-size:.85rem}.disc-card details{font-size:.85rem;color:var(--muted)}.disc-card summary{cursor:pointer;color:var(--text)}
 .disc-card ol{margin:6px 0 0;padding-left:20px}.disc-card a.sp{margin-top:auto;color:var(--gold);font-weight:600}
+.disc-total{display:flex;flex-direction:column;gap:4px;margin:8px 0 4px}
+.disc-total strong{font-size:1.15rem;font-variant-numeric:tabular-nums;line-height:1.2}
+.disc-total-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.disc-total .g-bar{margin-top:2px;height:8px}
+.disc-total-cap{font-size:.8rem;color:var(--muted)}
+@media(max-width:600px){.disc-total{margin:10px 0 6px}.disc-total strong{font-size:1.2rem}}
 .cal-months{display:grid;gap:14px}.cal-month{background:var(--panel);border:1px solid var(--line);border-radius:14px}.cal-month summary{cursor:pointer;padding:14px 18px;font-weight:700}
 .cal-month ul{list-style:none;margin:0;padding:0 18px 12px}.cal-month li{display:flex;gap:14px;padding:10px 0;border-top:1px solid var(--line)}.cal-day{color:var(--gold);font-weight:800;min-width:44px}
 .cal-kind{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.cal-month li a{color:var(--muted);font-size:.8rem}

@@ -44,6 +44,16 @@ function coverImg(title, className, size){
 
 const fmtD=iso=>new Date(iso+'T12:00:00').toLocaleDateString(document.documentElement.lang==='ko'?'ko-KR':'en-US',{year:'numeric',month:'long',day:'numeric'});
 function mk(t,c,txt){const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e;}
+// Combined streams for an album/EP: sum of each listed track that is in SONGS. All listed tracks must match so the total is not silently short. Share is of TOTALS.streams (every song on the site).
+function albumTrackTotal(r){
+  if(!r||!r.tracks||!r.tracks.length||typeof SONGS==='undefined') return null;
+  const rows=r.tracks.map(t=>SONGS.find(s=>s[0]===t));
+  if(rows.some(s=>!s)) return null;
+  const total=rows.reduce((a,s)=>a+s[1],0);
+  const all=(typeof TOTALS!=='undefined'&&TOTALS.streams)||0;
+  if(!all||!total) return null;
+  return {total, n:rows.length, pct:Math.max(0,Math.min(100,total/all*100))};
+}
 function discPage(){
   if(!document.getElementById('disc-albums')) return;
   for(const k of ['album','single','feat']){
@@ -52,6 +62,14 @@ function discPage(){
       const c=mk('article','disc-card'); c.id='disc-'+r.t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); const im=mk('img'); im.src=coverSized(IMG+r.img,300); im.srcset=coverSized(IMG+r.img,300)+' 300w, '+IMG+r.img+' 640w'; im.sizes='(max-width:640px) 92vw, 300px'; im.alt=r.t+' cover art'; im.width=300; im.height=300; im.loading='lazy'; im.decoding='async';
       const b=mk('div','body'); b.append(mk('h3',null,r.t),mk('div','meta',r.type+' · '+fmtD(r.d)));
       if(r.note) b.append(mk('div','meta',r.note));
+      const tot=albumTrackTotal(r);
+      if(tot){const box=mk('div','disc-total');
+        const lab=mk('span','disc-total-label','Tracks combined');
+        box.append(mk('strong','gold',(typeof format==='function'?format:n=>n.toLocaleString('en-US'))(tot.total)),lab);
+        const bar=mk('div','g-bar'); bar.setAttribute('role','progressbar'); bar.setAttribute('aria-valuemin','0'); bar.setAttribute('aria-valuemax','100'); bar.setAttribute('aria-valuenow',String(Math.round(tot.pct))); bar.setAttribute('aria-label',tot.pct.toFixed(1)+'% of all Jimin streams');
+        const fill=mk('span','g-bar-fill'); fill.style.width=tot.pct.toFixed(1)+'%'; bar.append(fill); box.append(bar);
+        box.append(mk('span','disc-total-cap',tot.pct.toFixed(1)+'% of all Jimin streams'));
+        b.append(box);}
       if(r.prod||r.tracks){const dt=mk('details');dt.append(mk('summary','ui-t',r.tracks?'Tracks':'Credits'));
         if(r.tracks){const ol=mk('ol');r.tracks.forEach(t=>{const li=mk('li');const s=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===t);if(s){const a=mk('a','no-tr',t);a.href='./song/'+t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.html';li.append(a);}else li.textContent=t;ol.append(li);});dt.append(ol);}
         if(r.prod) dt.append(mk('p',null,'Label: '+r.label+' · Producers: '+r.prod));b.append(dt);}
