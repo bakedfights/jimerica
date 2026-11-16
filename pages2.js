@@ -1,5 +1,5 @@
 "use strict";
-// Discography + calendar. Facts: release dates/covers from Spotify album pages; credits from published album credits (Wikipedia-cited).
+// Discography + calendar. Facts: release dates/covers from Spotify album pages.
 const SP='https://open.spotify.com/album/', IMG='https://i.scdn.co/image/';
 const DISC=[
  {k:'album',t:'MUSE',type:'Album',d:'2024-07-19',id:'15XcLhiVMlSOipUddTNDnr',img:'ab67616d0000b273f02c451189a709b9a952aaec',label:'Big Hit Music',prod:'Pdogg, Ghstloop, Jimin, Evan, Tommy Brown, Mr. Franks, Arcades, Jon Bellion, Pete Nappi, Tenroc, Ayo the Producer, Kofo',tracks:['Rebirth (Intro)','Interlude : Showtime','Smeraldo Garden Marching Band (feat. Loco)','Slow Dance (feat. Sofia Carson)','Be Mine','Who','Closer Than This']},
@@ -70,9 +70,13 @@ function discPage(){
         const fill=mk('span','g-bar-fill'); fill.style.width=tot.pct.toFixed(1)+'%'; bar.append(fill); box.append(bar);
         box.append(mk('span','disc-total-cap',tot.pct.toFixed(1)+'% of all Jimin streams'));
         b.append(box);}
-      if(r.prod||r.tracks){const dt=mk('details');dt.append(mk('summary','ui-t',r.tracks?'Tracks':'Credits'));
-        if(r.tracks){const ol=mk('ol');r.tracks.forEach(t=>{const li=mk('li');const s=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===t);if(s){const a=mk('a','no-tr',t);a.href='./song/'+t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.html';li.append(a);}else li.textContent=t;ol.append(li);});dt.append(ol);}
-        if(r.prod) dt.append(mk('p',null,'Label: '+r.label+' · Producers: '+r.prod));b.append(dt);}
+      if(r.tracks){const wrap=mk('div','disc-tracks'); wrap.append(mk('h4','disc-tracks-head','Tracks'));
+        const ol=mk('ol'); const fmtN=typeof format==='function'?format:n=>n.toLocaleString('en-US');
+        r.tracks.forEach(t=>{const li=mk('li'); const s=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===t);
+          if(s){const a=mk('a','no-tr',t); a.href='./song/'+t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.html'; li.append(a, mk('span','disc-track-streams',fmtN(s[1])));}
+          else li.textContent=t; // no stream figure unless the song is in SONGS
+          ol.append(li);});
+        wrap.append(ol); b.append(wrap);}
       const a=mk('a','sp ui-t','Listen on Spotify ↗'); a.href=SP+r.id; a.target='_blank'; a.rel='noopener'; b.append(a);
       c.append(im,b); g.append(c);
     }

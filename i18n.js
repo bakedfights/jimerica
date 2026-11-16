@@ -49,7 +49,7 @@ const KO={
 "61 total #1s, a record, as reported after the August 2026 ranking (StarNews/TopStarNews). The September, October, and November reports did not restate the cumulative count.":"2026년 8월 순위 발표 후 보도 기준 통산 61회 1위로 최다 기록 (스타뉴스/톱스타뉴스). 9월·10월·11월 보도에는 누적 횟수가 다시 언급되지 않았습니다.",
 "US daily chart":"미국 일간 차트","KR daily chart":"한국 일간 차트","Achievement, Source table":"업적·출처 표","Date, Show, Song, Era table":"날짜·프로그램·곡·활동 표","Award, Year, Category, Result table":"시상식·연도·부문·결과 표","Streaming milestones table":"스트리밍 마일스톤 표",
 // discography
-"Jimin's solo albums, singles and featured releases on Spotify.":"Spotify에 있는 지민의 솔로 앨범, 싱글, 피처링 작품.","Albums":"앨범","Singles":"싱글","Featured releases":"피처링","Tracks":"수록곡","Credits":"크레딧","Listen on Spotify ↗":"Spotify에서 듣기 ↗","10 tracks":"10곡","7 tracks":"7곡","Compilation date on Spotify.":"Spotify 컴필레이션 발매일 기준.","Release dates and cover art from Spotify album pages; production credits from the albums' published credits.":"발매일과 커버는 Spotify 앨범 페이지, 프로듀싱 크레딧은 앨범 공식 크레딧 기준입니다.",
+"Jimin's solo albums, singles and featured releases on Spotify.":"Spotify에 있는 지민의 솔로 앨범, 싱글, 피처링 작품.","Albums":"앨범","Singles":"싱글","Featured releases":"피처링","Tracks":"수록곡","Credits":"크레딧","Listen on Spotify ↗":"Spotify에서 듣기 ↗","10 tracks":"10곡","7 tracks":"7곡","Compilation date on Spotify.":"Spotify 컴필레이션 발매일 기준.","Release dates and cover art from Spotify album pages.":"발매일과 커버는 Spotify 앨범 페이지 기준입니다.",
 // calendar
 "Birthday, release anniversaries and achievement dates.":"생일, 발매 기념일, 업적 날짜.","Coming up":"다가오는 날","All dates":"전체 날짜","Today":"오늘","Jimin's birthday":"지민 생일","source":"출처",
 "FACE (first solo album) and \"Like Crazy\"":"FACE(첫 솔로 앨범)와 \"Like Crazy\"","MUSE and \"Who\"":"MUSE와 \"Who\"","MUSE (WANDER / WONDER ver.) and Who (Remixes)":"MUSE (WANDER / WONDER ver.)와 Who (Remixes)","\"Angel Pt. 1\" (FAST X soundtrack)":"\"Angel Pt. 1\" (FAST X OST)","\"Set Me Free Pt.2\" pre-release single":"\"Set Me Free Pt.2\" 선공개 싱글",
@@ -355,7 +355,7 @@ const ES={
   "10 tracks": "10 canciones",
   "7 tracks": "7 canciones",
   "Compilation date on Spotify.": "Fecha de la recopilación en Spotify.",
-  "Release dates and cover art from Spotify album pages; production credits from the albums' published credits.": "Fechas de lanzamiento y portadas tomadas de las páginas de los álbumes en Spotify; créditos de producción tomados de los créditos publicados de los álbumes.",
+  "Release dates and cover art from Spotify album pages.": "Fechas de lanzamiento y portadas tomadas de las páginas de los álbumes en Spotify.",
   "Birthday, release anniversaries and achievement dates.": "Cumpleaños, aniversarios de lanzamientos y fechas de logros.",
   "Coming up": "Próximamente",
   "All dates": "Todas las fechas",
