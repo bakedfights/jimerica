@@ -82,7 +82,6 @@
     else bits.push('Percent change in total streams since the day before the first day shown.');
     note.replaceChildren(el('span',null,bits[0]));
     if(none.length){ note.append(document.createTextNode(' ')); note.append(el('span',null,'No daily data yet for one of these songs.')); }
-    if(A==='Who'||B==='Who'){ note.append(document.createTextNode(' ')); note.append(el('span',null,'Some "Who" remix and instrumental versions show very large daily gains while "Who" itself shows none. This is probably because Spotify links these versions to one track, so the original\'s daily plays are counted under them. The numbers are shown exactly as Spotify\'s play counts show them.')); }
     // data table, newest day first (last 30 days)
     const dates=HIST_DATES.slice(1), da=histDaily(hist(A)), db=histDaily(hist(B)), lo=Math.max(0,dates.length-WINDOW), rows=[];
     for(let i=dates.length-1;i>=lo;i--){

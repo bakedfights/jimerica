@@ -101,7 +101,8 @@ function init() {
     if (dn) m.append(part('Biggest drop vs day before',dn,'chg-down'));
     m.hidden = !m.childNodes.length; }
   const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,10);
-  $('daily-bars').replaceChildren(...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right');r.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));l.append(name,r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
+  const hd=node('div',null,'bar-label dg-head');const hr=node('span',null,'bar-right dg-cols');hr.append(node('span','Total streams','dg-col dg-total'),node('span','Daily gain','dg-col dg-gain'));hd.append(node('span','Song'),hr);
+  $('daily-bars').replaceChildren(hd,...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right dg-cols');const tot=node('span',format(s[1]),'dg-col dg-total');const g=node('span',null,'dg-col dg-gain');g.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));r.append(tot,g);const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));l.append(name,r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
   }
   if ($('top-bars')) {
   const top = SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,10);
