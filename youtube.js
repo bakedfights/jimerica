@@ -10,7 +10,7 @@ if(Q.get('shot')==='1') doc.classList.add('shot');
 const L=()=>doc.lang==='ko'||doc.lang==='es'?doc.lang:'en';
 const S={
  en:{views:'views',likes:'likes',combined:'Combined YouTube views',across:n=>`across ${n} official Jimin videos`,gainSince:d=>`since ${d}`,
-     noGain:d=>`Daily gains start ${d}`,noGainShort:'Gain from tomorrow',totalLikes:'Combined likes',videos:'Videos tracked',topVid:'Most viewed',
+     noGain:d=>`Daily gains start ${d}`,noGainShort:d=>`Gain from ${d}`,totalLikes:'Combined likes',videos:'Videos tracked',topVid:'Most viewed',
      mvTitle:'Official music videos',mvSub:'Ranked by total views on YouTube.',topTitle:'Every tracked video',topSub:'Official music videos, performances and visualizers from HYBE LABELS and BANGTANTV.',
      sortBy:'Sort videos',sViews:'Views',sGain:'Daily gain',sLikes:'Likes',sNew:'Newest',sAZ:'A–Z',filt:'Filter videos',fAll:'All',fMv:'Music videos',fPerf:'Performances',fVis:'Visualizers & more',
      read:(d,t)=>`Views read from YouTube on ${d} at ${t} PT.`,gainNote:(a,b)=>`Daily gain = views now minus the reading on ${a}.`,
@@ -19,7 +19,7 @@ const S={
      wm:(d,t)=>`Views as of ${d}, ${t} PT · Source: YouTube`,watch:'Watch on YouTube',on:'on',published:'Released',shown:n=>`${n} videos`,noViews:'Not available',
      k:{mv:'Official MV',track:'Track video',live:'Live clip',dance:'Dance practice',perf:'TV performance',visualizer:'Visualizer',song:'Song video'}},
  ko:{views:'조회수',likes:'좋아요',combined:'유튜브 누적 조회수',across:n=>`지민 공식 영상 ${n}개 합계`,gainSince:d=>`${d} 대비`,
-     noGain:d=>`일일 증가는 ${d}부터 표시됩니다`,noGainShort:'내일부터 증가 표시',totalLikes:'좋아요 합계',videos:'추적 영상',topVid:'최다 조회',
+     noGain:d=>`일일 증가는 ${d}부터 표시됩니다`,noGainShort:d=>`${d}부터 증가 표시`,totalLikes:'좋아요 합계',videos:'추적 영상',topVid:'최다 조회',
      mvTitle:'공식 뮤직비디오',mvSub:'유튜브 누적 조회수 순위입니다.',topTitle:'추적 중인 모든 영상',topSub:'HYBE LABELS와 BANGTANTV의 공식 뮤직비디오, 무대, 비주얼라이저.',
      sortBy:'영상 정렬',sViews:'조회수',sGain:'일일 증가',sLikes:'좋아요',sNew:'최신순',sAZ:'가나다',filt:'영상 필터',fAll:'전체',fMv:'뮤직비디오',fPerf:'무대·퍼포먼스',fVis:'비주얼라이저 등',
      read:(d,t)=>`${d} ${t}(PT)에 유튜브에서 읽은 조회수입니다.`,gainNote:(a,b)=>`일일 증가 = 현재 조회수 − ${a} 기록.`,
@@ -28,7 +28,7 @@ const S={
      wm:(d,t)=>`${d} ${t}(PT) 기준 조회수 · 출처: YouTube`,watch:'유튜브에서 보기',on:'',published:'공개',shown:n=>`영상 ${n}개`,noViews:'정보 없음',
      k:{mv:'공식 뮤직비디오',track:'트랙 비디오',live:'라이브 클립',dance:'안무 연습',perf:'TV 무대',visualizer:'비주얼라이저',song:'노래 영상'}},
  es:{views:'vistas',likes:'me gusta',combined:'Vistas combinadas en YouTube',across:n=>`en ${n} videos oficiales de Jimin`,gainSince:d=>`desde el ${d}`,
-     noGain:d=>`Los aumentos diarios empiezan el ${d}`,noGainShort:'Aumento desde mañana',totalLikes:'Me gusta combinados',videos:'Videos seguidos',topVid:'Más visto',
+     noGain:d=>`Los aumentos diarios empiezan el ${d}`,noGainShort:d=>`Aumento desde el ${d}`,totalLikes:'Me gusta combinados',videos:'Videos seguidos',topVid:'Más visto',
      mvTitle:'Videoclips oficiales',mvSub:'Ordenados por vistas totales en YouTube.',topTitle:'Todos los videos seguidos',topSub:'Videoclips oficiales, actuaciones y visualizers de HYBE LABELS y BANGTANTV.',
      sortBy:'Ordenar videos',sViews:'Vistas',sGain:'Aumento diario',sLikes:'Me gusta',sNew:'Más recientes',sAZ:'A–Z',filt:'Filtrar videos',fAll:'Todos',fMv:'Videoclips',fPerf:'Actuaciones',fVis:'Visualizers y más',
      read:(d,t)=>`Vistas leídas en YouTube el ${d} a las ${t} PT.`,gainNote:(a,b)=>`Aumento diario = vistas actuales menos la lectura del ${a}.`,
@@ -47,6 +47,7 @@ function fd(iso,long){ if(!iso) return ''; const [y,m,d]=iso.slice(0,10).split('
   return long===false?`${MONL_EN[m-1]} ${d}`:`${MONL_EN[m-1]} ${d}, ${y}`; }
 function fdShort(iso){ const [y,m,d]=iso.slice(0,10).split('-').map(Number); const l=L();
   return l==='ko'?`${y}. ${m}. ${d}.`:l==='es'?`${d} ${MON_ES[m-1]} ${y}`:`${MON_EN[m-1]} ${d}, ${y}`; }
+function fdShort2(iso,short){ if(!short) return fd(iso,false); const [y,m,d]=iso.split('-').map(Number); const l=L(); return l==='ko'?`${m}월 ${d}일`:l==='es'?`${d} ${MON_ES[m-1]}`:`${MON_EN[m-1]} ${d}`; }
 function ft(iso){ const [h,mi]=iso.slice(11,16).split(':').map(Number); const l=L();
   if(l==='en') return `${(h%12)||12}:${String(mi).padStart(2,'0')} ${h<12?'AM':'PM'}`;
   if(l==='ko') return `${h<12?'오전':'오후'} ${(h%12)||12}:${String(mi).padStart(2,'0')}`;
@@ -64,23 +65,23 @@ const hasGain=rows.some(v=>v.gain!=null), gainFrom=(rows.find(v=>v.gain_from)||{
 let sort=Q.get('sort')||'views', filt=Q.get('type')||'all';
 const GROUP={mv:'mv',track:'mv',live:'perf',dance:'perf',perf:'perf',visualizer:'vis',song:'vis'};
 
-function chip(v,t){
+function chip(v,t,short){
   const c=mk('span','yt-chip');
   if(v.gain!=null){ c.classList.add(v.gain>0?'up':'flat'); c.append(mk('b',null,(v.gain>=0?'+':'−')+n(Math.abs(v.gain))), mk('span',null,' '+t.gainSince(fd(v.gain_from,false)))); }
-  else { c.classList.add('pending'); c.textContent=v.read_date&&v.read_date!==YT_UPDATED?t.stale(fd(v.read_date,false)):t.noGain(fd(nextDay(YT_FIRST),false)); }
+  else { c.classList.add('pending'); c.textContent=v.read_date&&v.read_date!==YT_UPDATED?t.stale(fd(v.read_date,false)):(short?t.noGainShort:t.noGain)(fdShort2(nextDay(YT_FIRST),short)); }
   return c;
 }
 function card(v,rank,t,big){
   const a=mk('a','yt-card'+(big?' big':'')); a.href='https://www.youtube.com/watch?v='+v.id; a.target='_blank'; a.rel='noopener';
   a.setAttribute('aria-label',`${title(v)} · ${t.k[v.kind]} · ${n(v.views)} ${t.views} · ${t.watch}`);
-  const th=mk('div','yt-thumb'); const img=mk('img'); img.src=thumb(v.id); img.alt=''; img.loading=rank>6?'lazy':'eager'; img.width=480; img.height=360; img.crossOrigin='anonymous'; th.append(img);
+  const th=mk('div','yt-thumb'); const img=mk('img'); img.src=thumb(v.id); img.alt=''; img.loading='eager'; img.width=480; img.height=360; img.crossOrigin='anonymous'; th.append(img);
   th.append(mk('span','yt-rank',String(rank)), mk('span','yt-kind',t.k[v.kind]));
   const body=mk('div','yt-body');
   body.append(mk('strong','yt-title',title(v)));
   body.append(mk('span','yt-meta',`${v.channel} · ${fdShort(v.published||'')}`));
   const st=mk('div','yt-stats'); const vw=mk('span','yt-views'); vw.append(mk('b',null,n(v.views)),mk('small',null,' '+t.views)); st.append(vw);
   if(v.likes!=null) st.append(mk('span','yt-likes',`♥ ${compact(v.likes)} ${t.likes}`));
-  body.append(st, chip(v,t));
+  body.append(st, chip(v,t,true));
   a.append(th,body); return a;
 }
 function wm(t){ const w=mk('p','yt-wm'); w.append(mk('strong',null,'@JIMERICA'), mk('span',null,t.wm(fd(YT_UPDATED),ft(YT_TAKEN)))); return w; }
@@ -131,6 +132,7 @@ function heads(t){
 function render(){ const t=S[L()]; heads(t); hero(t); mvs(t); list(t); notes(t); }
 document.querySelectorAll('[data-yt-sort]').forEach(b=>b.addEventListener('click',()=>{sort=b.dataset.ytSort; list(S[L()]);}));
 document.querySelectorAll('[data-yt-type]').forEach(b=>b.addEventListener('click',()=>{filt=b.dataset.ytType; list(S[L()]);}));
+{const h=document.querySelector('.site-header'); if(h&&!document.querySelector('.upd-badge')){const b=mk('div','upd-badge'); const [y,m,d]=YT_UPDATED.split('-').map(Number); b.textContent='Data updated '+MONL_EN[m-1]+' '+d+', '+y; h.append(b);}} // YouTube reading date, not the Spotify date
 render();
 new MutationObserver(render).observe(doc,{attributes:true,attributeFilter:['lang']});
 window.JIMYT={render,shots:['yt-hero','yt-mv','yt-top']};
