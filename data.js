@@ -13,7 +13,7 @@ const TOTALS = {
 };
 const SONGS = [
   [
-    "Who",
+    "WHO",
     2589673858,
     769802,
     false
@@ -121,37 +121,37 @@ const SONGS = [
     false
   ],
   [
-    "Who - Rock Remix",
+    "WHO - Rock Remix",
     82462999,
     30203,
     false
   ],
   [
-    "Who - Acoustic Remix",
+    "WHO - Acoustic Remix",
     78771453,
     17010,
     false
   ],
   [
-    "Who - Shibuyakei Remix",
+    "WHO - Shibuyakei Remix",
     63907123,
     8316,
     false
   ],
   [
-    "Who - Instrumental",
+    "WHO - Instrumental",
     62695792,
     7481,
     false
   ],
   [
-    "Who - Funky Remix",
+    "WHO - Funky Remix",
     61400553,
     7587,
     false
   ],
   [
-    "Who - Beautiful Mind Remix",
+    "WHO - Beautiful Mind Remix",
     61145131,
     7833,
     false

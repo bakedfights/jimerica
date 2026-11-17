@@ -120,8 +120,8 @@ function trendsPage(){
   const top=SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,6);
   el('trend-songs').replaceChildren(...top.map(s=>{const c=node('div',null,'metric chart-card');const h=node('a',s[0]);h.href='./song/'+slug(s[0])+'.html';c.append(h);c.append(svgChart(HIST_DATES.slice(1),histDaily(HIST_SONGS[s[0]]||[]),{title:s[0]+' daily streams'}));return c;}));
   if(typeof WHO_HIST!=='undefined'){const tot=WHO_HIST_DATES.map((_,i)=>Object.values(WHO_HIST).reduce((n,v)=>n+(v[i]??0),0));const cnt=WHO_HIST_DATES.map((_,i)=>Object.values(WHO_HIST).filter(v=>v[i]!=null).length);
-    el('trend-who').replaceChildren(svgChart(WHO_HIST_DATES,tot,{title:'Who daily streams across charting countries'}));
-    el('trend-who-cap').textContent=`"Who" daily streams summed over the country charts it appears on (${cnt.map((c,i)=>WHO_HIST_DATES[i].slice(5)+': '+c+' countries').join(', ')}).`;}
+    el('trend-who').replaceChildren(svgChart(WHO_HIST_DATES,tot,{title:'WHO daily streams across charting countries'}));
+    el('trend-who-cap').textContent=`"WHO" daily streams summed over the country charts it appears on (${cnt.map((c,i)=>WHO_HIST_DATES[i].slice(5)+': '+c+' countries').join(', ')}).`;}
 }
 function msRows(){ return SONGS.map(s=>[s,avg7(s)]).filter(([s,a])=>a.rate>0).map(([s,a])=>{const m=nextMilestone(s[1]);const d=Math.ceil((m-s[1])/a.rate);return [s,m,d,a];}).sort((a,b)=>a[2]-b[2]); }
 function milestonesPage(){

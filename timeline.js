@@ -9,7 +9,7 @@
   const HL={
     like:'“Like Crazy” debuted at No. 1 on the Billboard Hot 100, the first solo No. 1 for a BTS member and the first for a South Korean soloist',
     face:'FACE debuted at No. 2 on the Billboard 200 with 164,000 units, the highest-charting album by a Korean soloist at the time',
-    who:'“Who” debuted at No. 1 on the Billboard Global 200 and Global Excl. US and held both spots for two weeks',
+    who:'“WHO” debuted at No. 1 on the Billboard Global 200 and Global Excl. US and held both spots for two weeks',
     muse:'MUSE spent 34 weeks on the Billboard 200, the longest-charting K-pop solo album'
   };
   // big = full era card; otherwise a compact single. album = DISC title (cover, tracks, Spotify link); img for releases not on the Discography page.

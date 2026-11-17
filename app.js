@@ -5,6 +5,8 @@ const billions = n => (n / 1e9).toFixed(2) + 'B';
 // Parse at noon as a calendar date: no UTC-midnight shift to the previous PT day.
 const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
 const slug = t => t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+// WHO in all caps (isaac, Nov 17, 2026). build_history.py already writes WHO into data.js/history.js; this keeps the display right if a daily data.js still carries Spotify's "Who".
+if(typeof SONGS!=='undefined') for(const s of SONGS) if(s&&typeof s[0]==='string') s[0]=s[0].replace(/^Who(?=$| - | \()/,'WHO');
 const songNorm = t => t.toLowerCase().replace(/[–—]/g,'-').replace(/\(feat\.[^)]*\)/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 function songPageUrl(title){
   if(typeof SONGS==='undefined') return null;
@@ -128,7 +130,7 @@ function init() {
   renderSongs();
   }
   if ($('who-rows')) {
-  document.getElementById('who-caption').textContent=`"Who" on Spotify's daily country charts for ${WHO_DATE}. Source: Spotify charts. Each chart keeps its own verified date.`;
+  document.getElementById('who-caption').textContent=`"WHO" on Spotify's daily country charts for ${WHO_DATE}. Source: Spotify charts. Each chart keeps its own verified date.`;
   renderMetrics('who-metrics', [[String(WHO.length),'Countries charting'],[String(WHO.filter(w=>w[1]<=10).length),'Top 10 spots'],[format(WHO.reduce((n,w)=>n+w[4],0)),'Daily streams on these charts']]);
   document.getElementById('who-rows').replaceChildren(...WHO.map(w=>{
     const row=node('tr');

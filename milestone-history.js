@@ -10,9 +10,9 @@ const MS_RECORDS=[
   // song/artist, mark, date as the source gives it, optional dateNote (when the date is an announcement date), optional days (the day count exactly as the report prints it; reports may count the release day),
   // start date + what the start is (release or Spotify solo debut), asOf (the report says "as of this date"; the crossing may be earlier), source
   {song:'Like Crazy',mark:1e9,date:'2024-04-05',dateNote:'Spotify announcement',days:377,from:'2023-03-24',fromKind:'release',src:'https://www.soompi.com/article/1653366wpp/btss-jimin-sets-spotify-record-for-fastest-korean-language-song-to-surpass-1-billion-streams',srcName:'Soompi'},
-  {song:'Who',mark:1e9,date:'2024-11-13',days:118,from:'2024-07-19',fromKind:'release',src:'https://www.kstartrend.com/2024/11/16/btss-jimins-who-hits-1-billion-streams-on-spotify-sets-record-for-fastest-male-solo-song-to-reach-the-milestone',srcName:'KStarTrend'},
-  {song:'Who',mark:2e9,date:'2025-09-18',from:'2024-07-19',fromKind:'release',src:'https://www.kedglobal.com/k-pop/newsView/ked202509220003',srcName:'KED Global'},
-  {song:'Who',mark:2.5e9,date:'2026-08-01',from:'2024-07-19',fromKind:'release',asOf:true,src:'https://www.starnewskorea.com/en/music/2026/08/02/2026080207465823102',srcName:'StarNews'},
+  {song:'WHO',mark:1e9,date:'2024-11-13',days:118,from:'2024-07-19',fromKind:'release',src:'https://www.kstartrend.com/2024/11/16/btss-jimins-who-hits-1-billion-streams-on-spotify-sets-record-for-fastest-male-solo-song-to-reach-the-milestone',srcName:'KStarTrend'},
+  {song:'WHO',mark:2e9,date:'2025-09-18',from:'2024-07-19',fromKind:'release',src:'https://www.kedglobal.com/k-pop/newsView/ked202509220003',srcName:'KED Global'},
+  {song:'WHO',mark:2.5e9,date:'2026-08-01',from:'2024-07-19',fromKind:'release',asOf:true,src:'https://www.starnewskorea.com/en/music/2026/08/02/2026080207465823102',srcName:'StarNews'},
   {artist:'All his solo songs on Spotify, combined',mark:1e9,date:'2023-05-22',days:393,from:'2022-04-24',fromKind:'debut',src:'https://www.guinnessworldrecords.com/world-records/746518-fastest-solo-k-pop-artist-to-reach-1-billion-streams-on-spotify-male',srcName:'Guinness World Records'},
   {artist:'22 solo-only tracks, combined',mark:7e9,date:'2026-08-02',from:'2022-04-24',fromKind:'debut',asOf:true,src:'https://www.starnewskorea.com/en/music/2026/08/02/2026080207465823102',srcName:'StarNews'}
 ];

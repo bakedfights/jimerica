@@ -2,12 +2,12 @@
 // Discography + calendar. Facts: release dates/covers from Spotify album pages.
 const SP='https://open.spotify.com/album/', IMG='https://i.scdn.co/image/';
 const DISC=[
- {k:'album',t:'MUSE',type:'Album',d:'2024-07-19',id:'15XcLhiVMlSOipUddTNDnr',img:'ab67616d0000b273f02c451189a709b9a952aaec',label:'Big Hit Music',prod:'Pdogg, Ghstloop, Jimin, Evan, Tommy Brown, Mr. Franks, Arcades, Jon Bellion, Pete Nappi, Tenroc, Ayo the Producer, Kofo',tracks:['Rebirth (Intro)','Interlude : Showtime','Smeraldo Garden Marching Band (feat. Loco)','Slow Dance (feat. Sofia Carson)','Be Mine','Who','Closer Than This']},
+ {k:'album',t:'MUSE',type:'Album',d:'2024-07-19',id:'15XcLhiVMlSOipUddTNDnr',img:'ab67616d0000b273f02c451189a709b9a952aaec',label:'Big Hit Music',prod:'Pdogg, Ghstloop, Jimin, Evan, Tommy Brown, Mr. Franks, Arcades, Jon Bellion, Pete Nappi, Tenroc, Ayo the Producer, Kofo',tracks:['Rebirth (Intro)','Interlude : Showtime','Smeraldo Garden Marching Band (feat. Loco)','Slow Dance (feat. Sofia Carson)','Be Mine','WHO','Closer Than This']},
  {k:'album',t:'FACE',type:'Album',d:'2023-03-24',id:'4xc3Lc9yASZgEJGH7acWMB',img:'ab67616d0000b2732b46078245d0120690eb560d',label:'Big Hit Music',prod:'Pdogg, Ghstloop, Evan',tracks:['Face-off','Interlude : Dive','Like Crazy','Alone','Set Me Free Pt.2','Like Crazy (English Version)']},
  {k:'album',t:'MUSE (WANDER ver.)',type:'Album version',d:'2024-07-23',id:'4wfwJUghbK2z2iaz65U7VS',img:'ab67616d0000b27382601539d4a27061ad90eacb',note:'10 tracks'},
  {k:'album',t:'MUSE (WONDER ver.)',type:'Album version',d:'2024-07-23',id:'5AQc0yFXRcdUdko4sZ1fW9',img:'ab67616d0000b273f150d9f2e5e8148e5032fd7d',note:'10 tracks'},
  {k:'single',t:'Be Mine (English Version)',type:'Single',d:'2024-08-02',id:'7EGoWlfxvnwpTamkoOhWcb',img:'ab67616d0000b27319655636129722b4bd720dbc'},
- {k:'single',t:'Who (Remixes)',type:'Single',d:'2024-07-23',id:'7KIwUrSiA0gc9WlI7AYIfZ',img:'ab67616d0000b2737f35adfbec3bb2bc8256802b',note:'7 tracks'},
+ {k:'single',t:'WHO (Remixes)',type:'Single',d:'2024-07-23',id:'7KIwUrSiA0gc9WlI7AYIfZ',img:'ab67616d0000b2737f35adfbec3bb2bc8256802b',note:'7 tracks'},
  {k:'single',t:'Smeraldo Garden Marching Band (feat. Loco)',type:'Pre-release single',d:'2024-06-28',id:'2PcM535knJOZb6MUth8axj',img:'ab67616d0000b27338881a83135ef5b4ace418ba',label:'Big Hit Music',prod:'Mr. Franks, Pdogg, Ghstloop, Tommy Brown'},
  {k:'single',t:'Closer Than This',type:'Single',d:'2023-12-22',id:'3auDI7RSdoJr99qMNXimP4',img:'ab67616d0000b273e3dbc03f538633dbb40adf37'},
  {k:'feat',t:'Angel Pt. 1 — FAST X (Original Motion Picture Soundtrack)',type:'Soundtrack · Kodak Black, NLE Choppa feat. Jimin, JVKE & Muni Long',d:'2023-05-19',id:'04qe48XDdDs4hdurvRDsCF',img:'ab67616d0000b2731aa0427818a335a27fba086e'},
@@ -22,7 +22,7 @@ function songCover(title){
   const exactTitle=DISC.find(r=>norm(r.t)===n);
   if(exactTitle) return {src:IMG+exactTitle.img, alt:title+' cover art', album:exactTitle.t};
   for(const r of DISC){ if((r.tracks||[]).some(t=>t===title||norm(t)===n)) return {src:IMG+r.img, alt:title+' cover art', album:r.t}; }
-  if(/^who\b/.test(n)&&/remix|instrumental/.test(n)){const r=DISC.find(x=>x.t==='Who (Remixes)'); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
+  if(/^who\b/.test(n)&&/remix|instrumental/.test(n)){const r=DISC.find(x=>x.t==='WHO (Remixes)'); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
   if(/^like crazy\b/.test(n)){const r=DISC.find(x=>x.t==='FACE'); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
   if(/^vibe\b/.test(n)){const r=DISC.find(x=>/VIBE/.test(x.t)); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
   if(/^angel pt\.? 1\b/.test(n)){const r=DISC.find(x=>/Angel Pt\. 1/.test(x.t)); if(r) return {src:IMG+r.img, alt:title+' cover art', album:r.t};}
@@ -93,8 +93,8 @@ const CAL=[
  ['12-12',2023,'Service','Jimin enlisted for military service','https://en.yna.co.kr/view/AEN20231211008652315'],
  ['12-22',2023,'Release','"Closer Than This"',SP+'3auDI7RSdoJr99qMNXimP4'],
  ['06-28',2024,'Release','"Smeraldo Garden Marching Band (feat. Loco)"',SP+'2PcM535knJOZb6MUth8axj'],
- ['07-19',2024,'Release','MUSE and "Who"',SP+'15XcLhiVMlSOipUddTNDnr'],
- ['07-23',2024,'Release','MUSE (WANDER / WONDER ver.) and Who (Remixes)',SP+'7KIwUrSiA0gc9WlI7AYIfZ'],
+ ['07-19',2024,'Release','MUSE and "WHO"',SP+'15XcLhiVMlSOipUddTNDnr'],
+ ['07-23',2024,'Release','MUSE (WANDER / WONDER ver.) and WHO (Remixes)',SP+'7KIwUrSiA0gc9WlI7AYIfZ'],
  ['08-02',2024,'Release','"Be Mine (English Version)"',SP+'7EGoWlfxvnwpTamkoOhWcb'],
  ['01-13',2023,'Release','"VIBE" (TAEYANG feat. Jimin)','https://en.wikipedia.org/wiki/Vibe_(Taeyang_song)'],
  ['05-18',2023,'Release','"Angel Pt. 1" (FAST X soundtrack)','https://en.wikipedia.org/wiki/Angel_Pt._1'],

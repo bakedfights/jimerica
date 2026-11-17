@@ -1,5 +1,5 @@
 "use strict";
-// Feature: world map of the Who country charts, inside the Overview "Who around the world" section (#who-map). Self-contained (Nov 11, 2026); see FANSITE.md for removal.
+// Feature: world map of the WHO country charts, inside the Overview "WHO around the world" section (#who-map). Self-contained (Nov 11, 2026); see FANSITE.md for removal.
 // Data: WHO / WHO_DATE from data.js (Spotify daily country charts, refreshed by the daily routine). Shape data: world-map.js (Natural Earth, public domain),
 // loaded only when the section nears the screen, so it never slows the first paint. Countries on the chart are shaded by rank bucket and numbered; hover, focus or tap
 // shows rank, movement, peak, daily streams and change. A chip row (also tappable) covers countries too small to hit on a phone, and the "Global" chart, which has no map shape.
@@ -14,11 +14,11 @@
   const nameOf=c=>(typeof COUNTRY_NAMES!=='undefined'&&COUNTRY_NAMES[c])||c;
   let sel=null, svg=null;
   // ---- shell (immediate): placeholder with the map's aspect ratio, legend, chips, detail panel ----
-  const stage=el('div','wm-stage'); stage.setAttribute('role','group'); stage.setAttribute('aria-label','World map of the countries where Who charts');
+  const stage=el('div','wm-stage'); stage.setAttribute('role','group'); stage.setAttribute('aria-label','World map of the countries where WHO charts');
   const legend=el('div','wm-legend'); legend.append(el('span','wm-legend-title','Rank on Spotify\'s daily country charts'));
   [[1,'#1–10'],[2,'#11–50'],[3,'#51–100'],[4,'#101+']].forEach(([b,t])=>{const k=el('span','wm-key'); k.append(el('i','wm-sw wm-r'+b),el('b','no-tr',t)); legend.append(k);});
   const off=el('span','wm-key'); off.append(el('i','wm-sw wm-r0'),el('b',null,'Not on the chart')); legend.append(off);
-  const chips=el('div','wm-chips'); chips.setAttribute('role','group'); chips.setAttribute('aria-label','Countries where Who charts');
+  const chips=el('div','wm-chips'); chips.setAttribute('role','group'); chips.setAttribute('aria-label','Countries where WHO charts');
   const panel=el('div','wm-panel'); panel.setAttribute('aria-live','polite');
   box.append(stage,legend,chips,panel);
   function show(code,from){

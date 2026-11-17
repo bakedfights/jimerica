@@ -2,7 +2,7 @@
  "id": "/",
  "name": "JIMERICA",
  "short_name": "JIMERICA",
- "description": "Jimin's Spotify totals, daily gains, Who charts and upcoming milestones, updated daily. By @JIMERICA.",
+ "description": "Jimin's Spotify totals, daily gains, WHO charts and upcoming milestones, updated daily. By @JIMERICA.",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",

@@ -2,7 +2,7 @@
 // Every ID was verified on Nov 10, 2026 via https://open.spotify.com/oembed (title returned matched the song title).
 // A song missing here simply gets no button. Add new songs only after verifying the ID. Remove the feature: see FANSITE.md.
 const SPOTIFY_TRACKS = {
-  "Who": "7tI8dRuH2Yc6RuoTjxo4dU",
+  "WHO": "7tI8dRuH2Yc6RuoTjxo4dU",
   "Like Crazy": "3Ua0m0YmEjrMi9XErKcNiR",
   "Set Me Free Pt.2": "1fpj1CJPxY3YvN3AMAEYvt",
   "Be Mine": "3LWVXp636uLT356Rj08Jaz",
@@ -20,12 +20,12 @@ const SPOTIFY_TRACKS = {
   "Angel Pt. 2 (feat. Jimin of BTS & JVKE feat. Charlie Puth & Muni Long)": "3gSobY1JXFJn6wh1ON35ni",
   "Interlude : Showtime": "45zLrK0668WQ5JFMyiYmCS",
   "Interlude : Dive": "2qg2jy3v50RwfV5FAqG3a2",
-  "Who - Rock Remix": "1MC8JLPV4fbvVBqvGSLoDf",
-  "Who - Acoustic Remix": "10I5rhhFoWZDIN3kEc6Dbo",
-  "Who - Shibuyakei Remix": "1ySWoGgrduSzvtJ3PUzO41",
-  "Who - Instrumental": "1Px44tw80Q4rcCl8FxDGOi",
-  "Who - Funky Remix": "7KZNgri6Jxw88FAfATw6i9",
-  "Who - Beautiful Mind Remix": "2isRbZIIU4PqPrECffn7QO",
+  "WHO - Rock Remix": "1MC8JLPV4fbvVBqvGSLoDf",
+  "WHO - Acoustic Remix": "10I5rhhFoWZDIN3kEc6Dbo",
+  "WHO - Shibuyakei Remix": "1ySWoGgrduSzvtJ3PUzO41",
+  "WHO - Instrumental": "1Px44tw80Q4rcCl8FxDGOi",
+  "WHO - Funky Remix": "7KZNgri6Jxw88FAfATw6i9",
+  "WHO - Beautiful Mind Remix": "2isRbZIIU4PqPrECffn7QO",
   "Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Trailer Version": "2rgCR1PPHPGJBppdBOqor0",
   "Christmas Love": "5oaQsszgxYAdABuXoWEOUe",
   "Like Crazy (Deep House Remix)": "6D90VTeGEWYX5AkAtjHZh1",
