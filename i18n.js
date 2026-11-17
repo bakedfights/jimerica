@@ -914,10 +914,16 @@ PAT.push(
  [/^between (.+) and (.+)$/,m=>`${m[1]}~${m[2]} 사이`],
  [/^Also in (\d{4}), as reported$/,m=>`${m[1]}년 기타 기록 (보도 기준)`],
  [/^([+−][\d,]+) since (.+)$/,m=>`${m[2]} 대비 ${m[1]}`],
- [/^No change since (.+)$/,m=>`${m[1]} 대비 변동 없음`]);
+ [/^No change since (.+)$/,m=>`${m[1]} 대비 변동 없음`],
+ [/^(\d{4}) daily average$/,m=>`${m[1]}년 일평균`],
+ [/^Daily average since (.+)$/,m=>`${m[1]} 이후 일평균`],
+ [/^Best day since (.+)$/,m=>`${m[1]} 이후 최고의 날`]);
 ES_PAT.push(
  [/^Counts start from each song's Spotify stream count on (.+), from an archived snapshot\. JIMERICA's own daily totals begin (.+), so Best day and Best days cover (.+)\. The page updates every morning\.$/,m=>`El conteo parte de las reproducciones de cada canción en Spotify el ${m[1]}, según una copia archivada. Los totales diarios de JIMERICA empiezan el ${m[2]}, así que Mejor día y Mejores días cubren ${m[3]}. La página se actualiza cada mañana.`],
  [/^between (.+) and (.+)$/,m=>`entre el ${m[1]} y el ${m[2]}`],
  [/^Also in (\d{4}), as reported$/,m=>`También en ${m[1]}, según la prensa`],
  [/^([+−][\d,]+) since (.+)$/,m=>`${m[1]} desde el ${m[2]}`],
- [/^No change since (.+)$/,m=>`Sin cambios desde el ${m[1]}`]);
+ [/^No change since (.+)$/,m=>`Sin cambios desde el ${m[1]}`],
+ [/^(\d{4}) daily average$/,m=>`Promedio diario de ${m[1]}`],
+ [/^Daily average since (.+)$/,m=>`Promedio diario desde el ${m[1]}`],
+ [/^Best day since (.+)$/,m=>`Mejor día desde el ${m[1]}`]);

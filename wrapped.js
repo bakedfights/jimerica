@@ -55,10 +55,15 @@
   // Cards
   const grid=mk('section','wr-grid'); grid.id='wr-cards';
   grid.append(card('All-time streams',format(TOTALS.streams),`As of ${longDate(UPDATED)}`,'gold'));
-  grid.append(card('Daily average',format(Math.round(total/(B?span:days.length))),B?`${shortDate(start)} – ${shortDate(UPDATED)}`:`${shortDate(first)} – ${shortDate(last)}`));
-  if(best[0]) grid.append(card('Best day',format(best[0][1]),longDate(best[0][0])));
-  if(typeof LISTENERS!=='undefined'&&LISTENERS.length){const L=LISTENERS[LISTENERS.length-1]; const P=LISTENERS.length>1&&LISTENERS[LISTENERS.length-2][0]===addDays(L[0],-1)?LISTENERS[LISTENERS.length-2]:null, dl=P?L[1]-P[1]:null;
-    grid.append(card('Monthly listeners',format(L[1]),dl==null?`As of ${longDate(L[0])}`:`${dl>0?'+'+format(dl):dl<0?'−'+format(-dl):'No change'} since ${shortDate(P[0])}`));}
+  // With the Jan 1 baseline the yearly average and the daily-snapshot cards cover different ranges, so each label names its range
+  // and the Best day sits next to an average over the same Nov 3+ days (isaac found Best day < yearly average confusing).
+  const addListeners=()=>{if(typeof LISTENERS!=='undefined'&&LISTENERS.length){const L=LISTENERS[LISTENERS.length-1]; const P=LISTENERS.length>1&&LISTENERS[LISTENERS.length-2][0]===addDays(L[0],-1)?LISTENERS[LISTENERS.length-2]:null, dl=P?L[1]-P[1]:null;
+    grid.append(card('Monthly listeners',format(L[1]),dl==null?`As of ${longDate(L[0])}`:`${dl>0?'+'+format(dl):dl<0?'−'+format(-dl):'No change'} since ${shortDate(P[0])}`));}};
+  if(B){ grid.append(card(`${YEAR} daily average`,format(Math.round(total/span)),`${shortDate(start)} – ${shortDate(UPDATED)}`)); addListeners(); // keeps the same-range pair below on one row
+    grid.append(card(`Daily average since ${shortDate(first)}`,format(Math.round(dailySum/days.length)),`${shortDate(first)} – ${shortDate(last)}`));
+    if(best[0]) grid.append(card(`Best day since ${shortDate(first)}`,format(best[0][1]),longDate(best[0][0]))); }
+  else{ grid.append(card('Daily average',format(Math.round(total/days.length)),`${shortDate(first)} – ${shortDate(last)}`));
+    if(best[0]) grid.append(card('Best day',format(best[0][1]),longDate(best[0][0]))); addListeners(); }
   const billion=SONGS.filter(s=>s[1]>=1e9).length; grid.append(card('Songs over 1B',String(billion),`As of ${longDate(UPDATED)}`));
   if(crossed.length) grid.append(card('Milestones crossed',String(crossed.length),range));
   else{const nx=msRows()[0]; if(nx){const c=card('Next milestone',short(nx[1]),null);const s=mk('span','wr-sub');s.append(songLink(nx[0][0]),` · est. ${longDate(addDays(UPDATED,nx[2]))}`);c.append(s);grid.append(c);}}
