@@ -9,33 +9,33 @@ const doc=document.documentElement, Q=new URLSearchParams(location.search);
 if(Q.get('shot')==='1') doc.classList.add('shot');
 const L=()=>doc.lang==='ko'||doc.lang==='es'?doc.lang:'en';
 const S={
- en:{views:'views',likes:'likes',combined:'Combined YouTube views',across:n=>`across ${n} official MVs and audio uploads`,gainSince:d=>`since ${d}`,
-     noGain:d=>`Daily gains start ${d}`,noGainShort:d=>`Gain from ${d}`,totalLikes:'Combined likes',videos:'Videos tracked',split:(m,a)=>`${m} MVs · ${a} official audio`,songs:(n,t)=>`${n} of ${t} songs`,songsL:'Songs covered',topVid:'Most viewed',
-     mvTitle:'Official music videos',mvSub:'Ranked by total views on YouTube.',topTitle:'Every official MV and audio',topSub:'One official audio per song (Jimin - Topic or the label upload) plus every official MV, from HYBE LABELS, BANGTANTV and Jimin - Topic.',
+ en:{views:'views',likes:'likes',combined:'Combined YouTube views',across:n=>`across ${n} official videos and audio uploads`,gainSince:d=>`since ${d}`,
+     noGain:d=>`Daily gains start ${d}`,noGainShort:d=>`Gain from ${d}`,totalLikes:'Combined likes',videos:'Videos tracked',split:(m,l,a)=>[`${m} MVs`,l?`${l} lyric video${l>1?'s':''}`:'',`${a} official audio`].filter(Boolean).join(' · '),songs:(n,t)=>`${n} of ${t} songs`,songsL:'Songs covered',topVid:'Most viewed',
+     mvTitle:'Official music videos',mvSub:'Official MVs and lyric video, ranked by total views on YouTube.',topTitle:'Every official MV and audio',topSub:'One official audio per song (Jimin - Topic or the label upload) plus every official MV and lyric video, from official channels only: HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT and JVKE.',
      sortBy:'Sort videos',sViews:'Views',sGain:'Daily gain',sLikes:'Likes',sNew:'Newest',sAZ:'A–Z',filt:'Filter videos',fAll:'All',fMv:'MV',fAud:'Audio',
      read:(d,t)=>`Views read from YouTube on ${d} at ${t} PT.`,gainNote:(a,b)=>`Daily gain = views now minus the reading on ${a}.`,
      firstNote:(d)=>`Tracking started ${d}. Daily gains appear from the second daily reading; until then no gain is shown.`,
      stale:d=>`Could not be read today; showing the last reading from ${d}.`,
      wm:(d,t)=>`Views as of ${d}, ${t} PT · Source: YouTube`,watch:'Watch on YouTube',on:'on',published:'Released',shown:n=>`${n} videos`,noViews:'Not available',
-     k:{mv:'Official MV',audio:'Official audio'}},
- ko:{views:'조회수',likes:'좋아요',combined:'유튜브 누적 조회수',across:n=>`공식 뮤직비디오·오디오 ${n}개 합계`,gainSince:d=>`${d} 대비`,
-     noGain:d=>`일일 증가는 ${d}부터 표시됩니다`,noGainShort:d=>`${d}부터 증가 표시`,totalLikes:'좋아요 합계',videos:'추적 영상',split:(m,a)=>`뮤직비디오 ${m} · 공식 오디오 ${a}`,songs:(n,t)=>`${t}곡 중 ${n}곡`,songsL:'포함된 곡',topVid:'최다 조회',
-     mvTitle:'공식 뮤직비디오',mvSub:'유튜브 누적 조회수 순위입니다.',topTitle:'모든 공식 뮤직비디오와 오디오',topSub:'곡마다 공식 오디오 1개(Jimin - Topic 또는 레이블 업로드)와 모든 공식 뮤직비디오. HYBE LABELS, BANGTANTV, Jimin - Topic 채널.',
+     k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
+ ko:{views:'조회수',likes:'좋아요',combined:'유튜브 누적 조회수',across:n=>`공식 영상·오디오 ${n}개 합계`,gainSince:d=>`${d} 대비`,
+     noGain:d=>`일일 증가는 ${d}부터 표시됩니다`,noGainShort:d=>`${d}부터 증가 표시`,totalLikes:'좋아요 합계',videos:'추적 영상',split:(m,l,a)=>[`뮤비 ${m}`,l?`가사 영상 ${l}`:'',`오디오 ${a}`].filter(Boolean).join(' · '),songs:(n,t)=>`${t}곡 중 ${n}곡`,songsL:'포함된 곡',topVid:'최다 조회',
+     mvTitle:'공식 뮤직비디오',mvSub:'공식 뮤직비디오와 가사 영상의 유튜브 누적 조회수 순위입니다.',topTitle:'모든 공식 뮤직비디오와 오디오',topSub:'곡마다 공식 오디오 1개(Jimin - Topic 또는 레이블 업로드)와 모든 공식 뮤직비디오·가사 영상. 공식 채널만 집계: HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE.',
      sortBy:'영상 정렬',sViews:'조회수',sGain:'일일 증가',sLikes:'좋아요',sNew:'최신순',sAZ:'가나다',filt:'영상 필터',fAll:'전체',fMv:'뮤직비디오',fAud:'오디오',
      read:(d,t)=>`${d} ${t}(PT)에 유튜브에서 읽은 조회수입니다.`,gainNote:(a,b)=>`일일 증가 = 현재 조회수 − ${a} 기록.`,
      firstNote:(d)=>`${d}부터 추적을 시작했습니다. 일일 증가는 두 번째 기록부터 표시되며, 그전에는 표시하지 않습니다.`,
      stale:d=>`오늘은 읽지 못해 ${d} 기록을 표시합니다.`,
      wm:(d,t)=>`${d} ${t}(PT) 기준 조회수 · 출처: YouTube`,watch:'유튜브에서 보기',on:'',published:'공개',shown:n=>`영상 ${n}개`,noViews:'정보 없음',
-     k:{mv:'공식 뮤직비디오',audio:'공식 오디오'}},
- es:{views:'vistas',likes:'me gusta',combined:'Vistas combinadas en YouTube',across:n=>`en ${n} videoclips y audios oficiales`,gainSince:d=>`desde el ${d}`,
-     noGain:d=>`Los aumentos diarios empiezan el ${d}`,noGainShort:d=>`Aumento desde el ${d}`,totalLikes:'Me gusta combinados',videos:'Videos seguidos',split:(m,a)=>`${m} videoclips · ${a} audios oficiales`,songs:(n,t)=>`${n} de ${t} canciones`,songsL:'Canciones incluidas',topVid:'Más visto',
-     mvTitle:'Videoclips oficiales',mvSub:'Ordenados por vistas totales en YouTube.',topTitle:'Todos los videoclips y audios oficiales',topSub:'Un audio oficial por canción (Jimin - Topic o la subida del sello) y cada videoclip oficial, de HYBE LABELS, BANGTANTV y Jimin - Topic.',
+     k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
+ es:{views:'vistas',likes:'me gusta',combined:'Vistas combinadas en YouTube',across:n=>`en ${n} videos y audios oficiales`,gainSince:d=>`desde el ${d}`,
+     noGain:d=>`Los aumentos diarios empiezan el ${d}`,noGainShort:d=>`Aumento desde el ${d}`,totalLikes:'Me gusta combinados',videos:'Videos seguidos',split:(m,l,a)=>[`${m} videoclips`,l?`${l} video${l>1?'s':''} con letra`:'',`${a} audios oficiales`].filter(Boolean).join(' · '),songs:(n,t)=>`${n} de ${t} canciones`,songsL:'Canciones incluidas',topVid:'Más visto',
+     mvTitle:'Videoclips oficiales',mvSub:'Videoclips y video con letra oficiales, ordenados por vistas totales en YouTube.',topTitle:'Todos los videoclips y audios oficiales',topSub:'Un audio oficial por canción (Jimin - Topic o la subida del sello) y cada videoclip y video con letra oficial, solo de canales oficiales: HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT y JVKE.',
      sortBy:'Ordenar videos',sViews:'Vistas',sGain:'Aumento diario',sLikes:'Me gusta',sNew:'Más recientes',sAZ:'A–Z',filt:'Filtrar videos',fAll:'Todos',fMv:'Videoclips',fAud:'Audio',
      read:(d,t)=>`Vistas leídas en YouTube el ${d} a las ${t} PT.`,gainNote:(a,b)=>`Aumento diario = vistas actuales menos la lectura del ${a}.`,
      firstNote:(d)=>`El seguimiento empezó el ${d}. Los aumentos diarios aparecen desde la segunda lectura diaria; hasta entonces no se muestra ninguno.`,
      stale:d=>`No se pudo leer hoy; se muestra la última lectura del ${d}.`,
      wm:(d,t)=>`Vistas al ${d}, ${t} PT · Fuente: YouTube`,watch:'Ver en YouTube',on:'en',published:'Publicado',shown:n=>`${n} videos`,noViews:'No disponible',
-     k:{mv:'Videoclip oficial',audio:'Audio oficial'}}
+     k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
 };
 const TITLE_KO={'Promise':'Promise (약속)'};
 const TITLE_ES={};
@@ -63,7 +63,7 @@ const thumb=id=>`https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 const rows=YT_VIDEOS.slice();
 const hasGain=rows.some(v=>v.gain!=null), gainFrom=(rows.find(v=>v.gain_from)||{}).gain_from;
 let sort=Q.get('sort')||'views', filt=Q.get('type')||'all';
-const GROUP={mv:'mv',audio:'audio'}, SONG_TOTAL=(typeof SONGS!=='undefined'?SONGS.length:34);
+const GROUP={mv:'mv',lyric:'mv',audio:'audio'}, SONG_TOTAL=(typeof SONGS!=='undefined'?SONGS.length:34);
 
 function chip(v,t,short){
   const c=mk('span','yt-chip');
@@ -97,8 +97,8 @@ function hero(t){
   main.append(gc);
   const side=mk('div','yt-hero-side');
   const stat=(k,v,s)=>{const d=mk('div','yt-stat'); d.append(mk('span',null,k),mk('strong',null,v)); if(s) d.append(mk('small',null,s)); return d;};
-  const nm=ok.filter(v=>v.kind==='mv').length, na=ok.filter(v=>v.kind==='audio').length, ns=new Set(ok.map(v=>v.song)).size;
-  side.append(stat(t.videos,String(ok.length),t.split(nm,na)), stat(t.songsL,t.songs(ns,SONG_TOTAL)), stat(t.totalLikes,n(likes)));
+  const nm=ok.filter(v=>v.kind==='mv').length, nl=ok.filter(v=>v.kind==='lyric').length, na=ok.filter(v=>v.kind==='audio').length, ns=new Set(ok.map(v=>v.song)).size;
+  side.append(stat(t.videos,String(ok.length),t.split(nm,nl,na)), stat(t.songsL,t.songs(ns,SONG_TOTAL)), stat(t.totalLikes,n(likes)));
   if(top) side.append(stat(t.topVid,title(top),`${t.k[top.kind]} · ${n(top.views)} ${t.views}`));
   box.append(main,side,wm(t));
 }
