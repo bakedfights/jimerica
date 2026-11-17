@@ -110,7 +110,36 @@ function songPage(){
   const shareUrl='https://jimerica.wiki/song/'+slug(s[0])+'.html';
   document.querySelectorAll('#song-detail [data-share]').forEach(b=>b.dataset.shareUrl=shareUrl);
   el('share-x').dataset.share=`"${s[0]}" by Jimin has ${format(s[1])} streams on Spotify${s[2]?` (+${format(s[2])} on ${longDate(UPDATED)})`:''}. Next: ${short(nm)}${days?` in ~${format(days)} days`:''}. via @JIMERICA`;
+  songYouTube(s);
 }
+function ytSongKey(t){ return String(t).replace(/^Who(?=$| - | \()/,'WHO'); }
+function songYouTube(s){
+  const box=el('song-yt'); if(!box) return;
+  const lang=document.documentElement.lang==='ko'||document.documentElement.lang==='es'?document.documentElement.lang:'en';
+  const T={
+    en:{h:'YouTube',views:'YouTube views',all:'All official videos →',none:'No official upload on the channels the YouTube page tracks, so this song is not listed there.',k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
+    ko:{h:'유튜브',views:'유튜브 조회수',all:'모든 공식 영상 보기 →',none:'이 곡은 유튜브 페이지가 집계하는 공식 채널에 공식 영상이 없어 그 목록에 없습니다.',k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
+    es:{h:'YouTube',views:'Vistas en YouTube',all:'Todos los videos oficiales →',none:'No hay una subida oficial en los canales que cuenta la página de YouTube, así que esta canción no aparece allí.',k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
+  }[lang];
+  box.textContent='';
+  box.append(node('h2',T.h));
+  const missing=s[0]==='Angel Pt. 1 (feat. Kodak Black, NLE Choppa, Jimin of BTS, JVKE & Muni Long)'||s[0]==='Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Sped Up';
+  const vids=(typeof YT_VIDEOS==='undefined'?[]:YT_VIDEOS).filter(v=>ytSongKey(v.song)===s[0]||ytSongKey(v.title)===s[0]);
+  if(vids.length){
+    const list=node('div',null,'song-yt-list');
+    for(const v of vids){
+      const a=node('a',null,'song-yt-row'); a.href='https://www.youtube.com/watch?v='+v.id; a.target='_blank'; a.rel='noopener';
+      a.append(node('span',T.k[v.kind]||v.kind,'song-yt-kind'), node('strong',v.views==null?'–':Number(v.views).toLocaleString('en-US')), node('span',' '+T.views,'song-yt-unit'));
+      list.append(a);
+    }
+    box.append(list);
+  } else if(missing){
+    box.append(node('p',T.none,'caption'));
+  }
+  const more=node('a',T.all); more.href='./youtube.html'; box.append(more);
+  if(!box.dataset.wired){ box.dataset.wired='1'; new MutationObserver(()=>songYouTube(s)).observe(document.documentElement,{attributes:true,attributeFilter:['lang']}); }
+}
+
 function trendsPage(){
   if(!el('trend-total')) return;
   const titles=Object.keys(HIST_SONGS); const sum=HIST_DATES.map((_,i)=>titles.reduce((n,t)=>n+(HIST_SONGS[t][i]??0),0));

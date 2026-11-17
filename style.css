@@ -688,6 +688,22 @@ html[data-theme=dark] .daily-cell[style]{background:linear-gradient(90deg,transp
 .yt-controls{gap:10px 14px}
 .yt-controls .segmented{flex-wrap:wrap}
 #yt-about .caption{font-size:.84rem;max-width:48rem}
+.yt-gainrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;max-width:100%}
+.yt-badge{display:inline-flex;align-items:center;border-radius:999px;padding:2px 8px;font-size:.68rem;font-weight:700;letter-spacing:.02em;line-height:1.4;background:var(--gold);color:#2b2d31;width:fit-content;max-width:100%}
+.yt-ms{margin:0;color:var(--muted);font-size:.74rem;line-height:1.4;overflow-wrap:anywhere}
+.yt-spark{margin-top:2px;min-height:20px;max-width:100%}
+.yt-spark.pending{color:var(--muted);font-size:.7rem;font-style:normal;line-height:1.35}
+.yt-spark-svg{display:block;width:96px;height:24px}
+.yt-spark-line{fill:none;stroke:var(--gold);stroke-width:1.6;stroke-linejoin:round;stroke-linecap:round}
+.song-yt{margin-top:22px}
+.song-yt h2{margin-bottom:12px}
+.song-yt-list{display:grid;gap:10px;margin:0 0 12px}
+.song-yt-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--panel);color:var(--text)}
+.song-yt-row:hover{border-color:var(--gold);text-decoration:none}
+.song-yt-row .song-yt-kind{color:var(--muted);font-size:.8rem;font-weight:600;min-width:8rem}
+.song-yt-row strong{color:var(--gold);font-size:1.35rem;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.song-yt-row .song-yt-unit{color:var(--muted);font-size:.86rem}
+.song-yt > a{font-size:.9rem}
 html.shot .yt-card:hover{transform:none}
 html.shot .to-top,html.shot .yt-controls{display:none!important}
 html.shot .yt-shot{padding:26px 24px 18px;background:var(--bg);border-bottom:0}
@@ -705,5 +721,12 @@ html.shot .yt-shot{padding:26px 24px 18px;background:var(--bg);border-bottom:0}
  .yt-kind{right:5px;bottom:5px;font-size:.62rem;padding:1px 5px}
  .yt-chip{font-size:.7rem;padding:2px 8px}
  .yt-controls .segmented button{padding:7px 10px;font-size:.8rem}
+ .yt-badge{font-size:.62rem;padding:1px 7px}
+ .yt-ms{font-size:.68rem}
+ .yt-spark.pending{font-size:.64rem}
+ .yt-spark-svg{width:80px;height:20px}
+ .song-yt-row{padding:10px 12px}
+ .song-yt-row strong{font-size:1.15rem}
+ .song-yt-row .song-yt-kind{min-width:0}
 }
 /* end feature:youtube */
