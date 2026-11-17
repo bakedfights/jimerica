@@ -274,6 +274,8 @@ function glance(){
   const todayPT=new Date().toLocaleDateString('en-CA',{timeZone:'America/Los_Angeles'});
   const goalLine=node('span',`Today's goal (${shortDate(todayPT)}): ${format(TOTALS.daily+1)}+ streams to beat ${shortDate(UPDATED)}`,'g-sub g-goal');
   card.append(goalLine);
+  // Streams per minute (Nov 17, 2026 b): yesterday's all-songs total spread over the 1,440 minutes of that day.
+  if(TOTALS.daily>0) card.append(node('span',`About ${format(Math.round(TOTALS.daily/1440))} streams a minute on ${shortDate(UPDATED)}`,'g-sub g-spm'));
   const items=[card];
   const r=msRows()[0];
   if(r){const sub=[];const im=typeof coverImg==='function'?coverImg(r[0][0],'cover-sm',28):null;if(im)sub.push(im);sub.push(node('span',r[0][0],'no-tr'),node('span','≈ '+longDate(addDays(UPDATED,r[2]))));const it=item('Next milestone',short(r[1]),'',...sub);
