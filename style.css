@@ -694,7 +694,7 @@ html.shot .yt-shot{padding:26px 24px 18px;background:var(--bg);border-bottom:0}
 @media (max-width:640px){
  .yt-hero{grid-template-columns:1fr;padding:22px 16px 14px;gap:14px}
  .yt-hero-side{grid-template-columns:1fr 1fr}
- .yt-hero-side .yt-stat:last-child{grid-column:1/-1}
+ .yt-hero-side .yt-stat:nth-child(odd):last-child{grid-column:1/-1}
  .yt-grid,.yt-grid.mv{grid-template-columns:1fr;gap:10px}
  .yt-card{flex-direction:row;border-radius:12px}
  .yt-thumb{flex:0 0 42%;max-width:168px;aspect-ratio:auto;min-height:96px}
