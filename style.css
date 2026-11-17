@@ -648,3 +648,62 @@ html[data-theme=dark] .daily-cell[style]{background:linear-gradient(90deg,transp
 .wr-next{font-weight:600}
 .wr-src{text-align:center;padding-top:10px}
 /* end feature:1117b */
+/* feature:youtube (Nov 17, 2026) — YouTube page (youtube.html + youtube.js + youtube-data.js). Remove this block with those files. */
+.yt-page section{border-bottom:1px solid var(--line)}
+.yt-hero{position:relative;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px 28px;padding:28px 30px 18px;border-radius:18px;border:1px solid rgba(201,162,79,.55);background:radial-gradient(700px 260px at 0% 0%,rgba(240,198,116,.22),transparent 70%),linear-gradient(180deg,var(--panel),var(--panel2,var(--panel)));box-shadow:0 1px 0 rgba(255,255,255,.04) inset}
+.yt-hero::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;border-radius:18px 18px 0 0;background:linear-gradient(90deg,#c9a24f,#f0c674,#c9a24f)}
+.yt-hero-main{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:6px;min-width:0}
+.yt-eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.yt-big{font-size:clamp(2.3rem,7.2vw,4.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;color:var(--gold);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.yt-across{color:var(--muted);font-size:.95rem}
+.yt-hero-side{display:grid;gap:10px;align-content:center}
+.yt-stat{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--panel)}
+.yt-stat span{display:block;color:var(--muted);font-size:.74rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.yt-stat strong{display:block;font-size:1.15rem;line-height:1.35;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.yt-stat small{display:block;color:var(--muted);font-size:.76rem}
+.yt-chip{display:inline-flex;align-items:baseline;flex-wrap:wrap;gap:2px;border-radius:999px;padding:3px 10px;font-size:.78rem;line-height:1.4;border:1px solid var(--line);color:var(--muted);background:transparent;width:fit-content;max-width:100%}
+.yt-chip b{font-variant-numeric:tabular-nums}
+.yt-chip.up{color:var(--green);border-color:color-mix(in srgb,var(--green) 45%,transparent);background:color-mix(in srgb,var(--green) 10%,transparent)}
+.yt-chip.pending{border-style:dashed}
+.yt-chip.lg{font-size:.9rem;padding:5px 14px;margin-top:6px}
+.yt-wm{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:4px 10px;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem;text-align:center}
+.yt-wm strong{color:var(--gold);letter-spacing:.08em;font-size:.9rem}
+.yt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,232px),1fr));gap:16px}
+.yt-grid.mv{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.yt-card{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);color:var(--text);transition:border-color .15s,transform .15s}
+.yt-card:hover{border-color:var(--gold);text-decoration:none;transform:translateY(-1px)}
+.yt-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--line)}
+.yt-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.yt-rank{position:absolute;left:10px;top:10px;min-width:28px;height:28px;padding:0 7px;border-radius:999px;display:grid;place-items:center;background:#f0c674;color:#2b2d31;font-weight:800;font-size:.85rem;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.yt-kind{position:absolute;right:8px;bottom:8px;padding:2px 8px;border-radius:6px;background:rgba(20,20,24,.78);color:#fff;font-size:.7rem;font-weight:600;letter-spacing:.02em}
+.yt-body{display:flex;flex-direction:column;gap:6px;padding:12px 14px 14px;min-width:0;flex:1}
+.yt-title{font-size:.98rem;line-height:1.35;overflow-wrap:anywhere}
+.yt-card.big .yt-title{font-size:1.08rem}
+.yt-meta{color:var(--muted);font-size:.76rem}
+.yt-stats{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 10px;margin-top:auto;padding-top:4px}
+.yt-views b{color:var(--gold);font-size:1.25rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.yt-card.big .yt-views b{font-size:1.45rem}
+.yt-views small{color:var(--muted);font-size:.76rem}
+.yt-likes{color:var(--muted);font-size:.76rem;white-space:nowrap}
+.yt-controls{gap:10px 14px}
+.yt-controls .segmented{flex-wrap:wrap}
+#yt-about .caption{font-size:.84rem;max-width:48rem}
+html.shot .yt-card:hover{transform:none}
+html.shot .to-top,html.shot .yt-controls{display:none!important}
+html.shot .yt-shot{padding:26px 24px 18px;background:var(--bg);border-bottom:0}
+@media (max-width:640px){
+ .yt-hero{grid-template-columns:1fr;padding:22px 16px 14px;gap:14px}
+ .yt-hero-side{grid-template-columns:1fr 1fr}
+ .yt-hero-side .yt-stat:last-child{grid-column:1/-1}
+ .yt-grid,.yt-grid.mv{grid-template-columns:1fr;gap:10px}
+ .yt-card{flex-direction:row;border-radius:12px}
+ .yt-thumb{flex:0 0 42%;max-width:168px;aspect-ratio:auto;min-height:96px}
+ .yt-body{padding:9px 11px 10px;gap:3px}
+ .yt-title,.yt-card.big .yt-title{font-size:.9rem}
+ .yt-views b,.yt-card.big .yt-views b{font-size:1.08rem}
+ .yt-rank{left:6px;top:6px;min-width:22px;height:22px;font-size:.72rem;padding:0 5px}
+ .yt-kind{right:5px;bottom:5px;font-size:.62rem;padding:1px 5px}
+ .yt-chip{font-size:.7rem;padding:2px 8px}
+ .yt-controls .segmented button{padding:7px 10px;font-size:.8rem}
+}
+/* end feature:youtube */

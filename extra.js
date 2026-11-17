@@ -92,6 +92,7 @@ function songPage(){
   const id=new URLSearchParams(location.search).get('id'); const s=SONGS.find(r=>slug(r[0])===id);
   if(!s){el('song-detail').replaceChildren(node('p','Song not found. ','caption'));const a=node('a','Browse all songs →');a.href='./songs.html';el('song-detail').append(a);return;}
   document.title=s[0]+' · JIMERICA'; el('song-title').textContent=s[0];
+  {const cu='https://jimerica.wiki/song.html?id='+encodeURIComponent(id); let c=document.querySelector('link[rel=canonical]'); if(!c){c=document.createElement('link');c.rel='canonical';document.head.append(c);} c.href=cu; const md=document.querySelector('meta[name=description]'); if(md) md.content=`${typeof displayTitle==='function'?displayTitle(s[0]):s[0]} by Jimin: ${s[1].toLocaleString('en-US')} Spotify streams as of ${longDate(UPDATED)}. Daily gains and next milestone on JIMERICA.`;} // SEO (Nov 17, 2026): canonical = this song's own URL
   const rank=SONGS.slice().sort((a,b)=>b[1]-a[1]).indexOf(s)+1, share=s[1]/TOTALS.streams*100;
   el('song-sub').textContent=`${s[3]?'Featured':'Solo'} song · #${rank} of ${SONGS.length} by total streams · data as of ${longDate(UPDATED)}`;
   const hero=el('song-hero');
