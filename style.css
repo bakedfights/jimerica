@@ -730,3 +730,17 @@ html.shot .yt-shot{padding:26px 24px 18px;background:var(--bg);border-bottom:0}
  .song-yt-row .song-yt-kind{min-width:0}
 }
 /* end feature:youtube */
+
+/* YouTube records, total plays, weekly recap YT (Nov 17 2026 evening) */
+.song-yt-total{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;border:1px solid rgba(201,162,79,.55);border-radius:12px;padding:14px 16px;background:var(--panel);margin-bottom:12px}
+.song-yt-total strong{color:var(--gold);font-size:1.5rem;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.song-yt-total .song-yt-kind,.song-yt-total .song-yt-unit{color:var(--muted);font-size:.86rem}
+.recap-yt{margin-top:22px}
+.recap-yt-list{margin:0;padding-left:1.3rem;display:grid;gap:8px}
+.recap-yt-list li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.recap-yt-list span{color:var(--gold);font-variant-numeric:tabular-nums;font-weight:700}
+#yt-records-body .metric strong{font-size:1.2rem;overflow-wrap:anywhere}
+@media(max-width:600px){
+ .song-yt-total{padding:10px 12px}
+ .song-yt-total strong{font-size:1.2rem}
+}

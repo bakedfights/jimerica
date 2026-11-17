@@ -84,7 +84,7 @@ function songsPage(){
   const q=el('song-search'); if(!q) return;
   const apply=()=>{const v=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#song-rows tr').forEach(tr=>{const name=tr.cells[0].querySelector('a.song-link')||tr.cells[0].querySelector('a')||tr.cells[0];const show=!v||name.textContent.toLowerCase().includes(v);tr.hidden=!show;if(show)n++;});el('search-count').textContent=v?`${n} match${n===1?'':'es'}`:'';};
   q.addEventListener('input',apply);
-  const link=()=>{const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];const nameEl=td.querySelector('.song-title-text')||td;if(!td.querySelector('a.song-link')){const src=[...nameEl.childNodes].find(n=>n.nodeType===3||(n.nodeType===1&&!n.classList.contains('feature-label')));if(!src)return;const t=src.textContent;const a=node('a',t,'song-link');a.href='./song/'+slug(t)+'.html';src.replaceWith(a);}const a=td.querySelector('a.song-link');if(!a)return;if(!td.querySelector('.ms-badge')){const r=MS.get(a.textContent);if(r){const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));td.append(b);}}if(!td.querySelector('.song-viz')){const viz=node('div',null,'song-viz');const sp=sparkline(a.textContent);const song=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===a.textContent);const ring=msRing(song);if(sp)viz.append(sp);if(ring)viz.append(ring);if(viz.childNodes.length)td.append(viz);}if(!td.querySelector('.trend-link')){const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';td.append(v);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
+  const link=()=>{const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];const nameEl=td.querySelector('.song-title-text')||td;if(!td.querySelector('a.song-link')){const src=[...nameEl.childNodes].find(n=>n.nodeType===3||(n.nodeType===1&&!n.classList.contains('feature-label')));if(!src)return;const t=src.textContent;const a=node('a',t,'song-link');a.href='./song/'+slug(t)+'.html';src.replaceWith(a);}const a=td.querySelector('a.song-link');if(!a)return;if(!td.querySelector('.ms-badge')){const r=MS.get(a.textContent);if(r){const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));td.append(b);}}if(!td.querySelector('.song-viz')){const viz=node('div',null,'song-viz');const sp=sparkline(a.textContent);const song=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===a.textContent);const ring=msRing(song);if(sp)viz.append(sp);if(ring)viz.append(ring);if(viz.childNodes.length)td.append(viz);}if(!td.querySelector('.trend-link')){const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';td.append(v);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Total plays','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
 function songPage(){
@@ -117,14 +117,19 @@ function songYouTube(s){
   const box=el('song-yt'); if(!box) return;
   const lang=document.documentElement.lang==='ko'||document.documentElement.lang==='es'?document.documentElement.lang:'en';
   const T={
-    en:{h:'YouTube',views:'YouTube views',all:'All official videos →',none:'No official upload on the channels the YouTube page tracks, so this song is not listed there.',k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
-    ko:{h:'유튜브',views:'유튜브 조회수',all:'모든 공식 영상 보기 →',none:'이 곡은 유튜브 페이지가 집계하는 공식 채널에 공식 영상이 없어 그 목록에 없습니다.',k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
-    es:{h:'YouTube',views:'Vistas en YouTube',all:'Todos los videos oficiales →',none:'No hay una subida oficial en los canales que cuenta la página de YouTube, así que esta canción no aparece allí.',k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
+    en:{h:'YouTube',views:'YouTube views',all:'All official videos →',none:'No official upload on HYBE LABELS, BANGTANTV or Jimin - Topic, so this song is not listed on the YouTube page.',total:'Total plays',combo:'Spotify + YouTube',k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
+    ko:{h:'유튜브',views:'유튜브 조회수',all:'모든 공식 영상 보기 →',none:'HYBE LABELS, BANGTANTV, Jimin - Topic에 공식 영상이 없어 유튜브 페이지 목록에 없습니다.',total:'총 재생',combo:'Spotify + 유튜브',k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
+    es:{h:'YouTube',views:'Vistas en YouTube',all:'Todos los videos oficiales →',none:'No hay una subida oficial en HYBE LABELS, BANGTANTV o Jimin - Topic, así que esta canción no aparece en la página de YouTube.',total:'Reproducciones combinadas',combo:'Spotify + YouTube',k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
   }[lang];
   box.textContent='';
   box.append(node('h2',T.h));
-  const missing=s[0]==='Angel Pt. 1 (feat. Kodak Black, NLE Choppa, Jimin of BTS, JVKE & Muni Long)'||s[0]==='Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Sped Up';
+  const missing=['Angel Pt. 1 (feat. Kodak Black, NLE Choppa, Jimin of BTS, JVKE & Muni Long)','Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Sped Up','Angel Pt. 2 (feat. Jimin of BTS & JVKE feat. Charlie Puth & Muni Long)','VIBE (feat. Jimin of BTS)'].includes(s[0]);
   const vids=(typeof YT_VIDEOS==='undefined'?[]:YT_VIDEOS).filter(v=>ytSongKey(v.song)===s[0]||ytSongKey(v.title)===s[0]);
+  const yt=vids.reduce((n,v)=>n+(v.views||0),0);
+  const tot=(s[1]||0)+yt;
+  const tp=node('div',null,'song-yt-total');
+  tp.append(node('span',T.total,'song-yt-kind'), node('strong',tot.toLocaleString('en-US')), node('span',' '+T.combo,'song-yt-unit'));
+  box.append(tp);
   if(vids.length){
     const list=node('div',null,'song-yt-list');
     for(const v of vids){

@@ -74,6 +74,39 @@ function recapCompute(hist,dates,updated){
   const h3=document.createElement('h3');h3.className='recap-chart-title';h3.textContent='Daily streams, all songs';
   chartWrap.append(h3);
   if(typeof svgChart==='function') chartWrap.append(svgChart(week.labels,week.daily,{kind:'bar',title:'All songs daily streams'}));
-  const src=document.createElement('p');src.className='caption recap-src';src.textContent='Source: Spotify. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.';
-  body.replaceChildren(grid,chartWrap,src);
+  const yt=ytWeekGainers();
+  const bits=[grid,chartWrap];
+  if(yt){
+    const lang=document.documentElement.lang==='ko'||document.documentElement.lang==='es'?document.documentElement.lang:'en';
+    const L={en:'Top YouTube gainers this week',ko:'이번 주 유튜브 최다 증가',es:'Mayores aumentos de YouTube esta semana'}[lang];
+    const unit={en:'views',ko:'조회수',es:'vistas'}[lang];
+    const wrap=document.createElement('div');wrap.className='recap-yt no-tr';wrap.id='recap-yt';
+    const h=document.createElement('h3');h.className='recap-chart-title';h.textContent=L;wrap.append(h);
+    const ol=document.createElement('ol');ol.className='recap-yt-list';
+    yt.gainers.forEach(g=>{const li=document.createElement('li');
+      const a=document.createElement('a');a.href='https://www.youtube.com/watch?v='+g.id;a.target='_blank';a.rel='noopener';a.textContent=g.title;
+      const sp=document.createElement('span');sp.textContent=' +'+Number(g.gain).toLocaleString('en-US')+' '+unit;
+      li.append(a,sp);ol.append(li);});
+    wrap.append(ol);
+    bits.push(wrap);
+  }
+  const src=document.createElement('p');src.className='caption recap-src';
+  src.textContent=yt?'Source: Spotify and YouTube. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.':'Source: Spotify. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.';
+  body.replaceChildren(...bits,src);
 })();
+function ytWeekGainers(){
+  if(typeof YT_HISTORY==='undefined'||typeof YT_VIDEOS==='undefined'||typeof YT_UPDATED==='undefined') return null;
+  const end=YT_UPDATED;
+  const start=(()=>{const d=new Date(end+'T12:00:00Z');d.setUTCDate(d.getUTCDate()-7);return d.toISOString().slice(0,10);})();
+  const gainers=[];
+  for(const v of YT_VIDEOS){
+    const pts=(YT_HISTORY[v.id]||[]).filter(p=>p&&p[1]!=null);
+    const a=pts.filter(p=>p[0]<=start).pop();
+    const b=pts.filter(p=>p[0]<=end).pop();
+    if(!a||!b||a[0]!==start) continue;          // need a reading on the day 7 days earlier
+    gainers.push({id:v.id,title:v.title,gain:b[1]-a[1],views:b[1]});
+  }
+  if(!gainers.length) return null;
+  gainers.sort((x,y)=>y.gain-x.gain);
+  return {start,end,gainers:gainers.slice(0,5)};
+}

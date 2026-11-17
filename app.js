@@ -7,6 +7,13 @@ const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', 
 const slug = t => t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 // WHO in all caps (isaac, Nov 17, 2026). build_history.py already writes WHO into data.js/history.js; this keeps the display right if a daily data.js still carries Spotify's "Who".
 if(typeof SONGS!=='undefined') for(const s of SONGS) if(s&&typeof s[0]==='string') s[0]=s[0].replace(/^Who(?=$| - | \()/,'WHO');
+function ytSongKey(t){ return String(t).replace(/^Who(?=$| - | \()/,'WHO'); }
+function ytViewsFor(title){
+  if(typeof YT_VIDEOS==='undefined') return 0;
+  return YT_VIDEOS.filter(v=>ytSongKey(v.song)===title||ytSongKey(v.title)===title).reduce((n,v)=>n+(v.views||0),0);
+}
+function totalPlays(s){ return (s[1]||0)+ytViewsFor(s[0]); }
+
 const songNorm = t => t.toLowerCase().replace(/[–—]/g,'-').replace(/\(feat\.[^)]*\)/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 function songPageUrl(title){
   if(typeof SONGS==='undefined') return null;
@@ -51,6 +58,7 @@ function renderSongs() {
   const rows = SONGS.filter(s => !onlyFeatures || s[3]).slice();
   if (songSort === 'daily') rows.sort((a,b) => (b[2] ?? -1) - (a[2] ?? -1));
   else if (songSort === 'change') rows.sort((a,b) => (dailyChange(b[0])?.delta ?? -Infinity) - (dailyChange(a[0])?.delta ?? -Infinity));
+  else if (songSort === 'plays') rows.sort((a,b) => totalPlays(b) - totalPlays(a));
   else if (songSort === 'title') rows.sort((a,b) => a[0].localeCompare(b[0]));
   else rows.sort((a,b) => b[1] - a[1]);
   const maxDaily = Math.max(0, ...SONGS.map(s => s[2] ?? 0));
@@ -66,7 +74,7 @@ function renderSongs() {
     const daily = node('td', s[2] === null ? '–' : format(s[2]));
     if (s[2] !== null && maxDaily > 0) daily.style.setProperty('--w', Math.max(2, s[2] / maxDaily * 100) + '%');
     daily.className = 'daily-cell';
-    row.append(title, node('td', format(s[1])), daily, changeNode('td', s[0]));
+    row.append(title, node('td', format(s[1])), node('td', format(totalPlays(s))), daily, changeNode('td', s[0]));
     return row;
   }));
   document.getElementById('song-count').textContent = `${rows.length} ${onlyFeatures ? 'featured ' : ''}songs · daily gains for ${UPDATED}`;
