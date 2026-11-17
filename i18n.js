@@ -67,7 +67,7 @@ bio1:"박지민(지민)은 1995년 10월 13일 부산에서 태어난 대한민�
 bio2:"2013년 BTS 멤버로 데뷔했습니다. BTS 이름으로 솔로곡 \"Lie\"(2016), \"Serendipity\"(2017), \"Filter\"(2020)를 발표했고, 첫 공식 솔로곡 \"Promise\"는 2018년 12월 30일에 공개되었습니다.",
 bio3:"첫 솔로 앨범 FACE는 2023년 3월 24일 발매되었고, 수록곡 \"Like Crazy\"는 한국 솔로 가수 최초로 빌보드 핫100 1위에 올랐습니다. 두 번째 앨범 MUSE는 2024년 7월 19일 타이틀곡 \"WHO\"와 함께 발매되었습니다.",
 bio4:"2023년 12월 12일 현역으로 입대해 육군 제5보병사단 포병부대에서 복무했고, 2025년 6월 11일 전역했습니다.",
-site1:"JIMERICA는 지민의 Spotify 스트리밍과 업적을 매일 기록하는 독립 팬 아카이브입니다. 기록과 수상 내역은 <a href=\"./achievements.html\">업적</a> 페이지에서 볼 수 있습니다."};
+site1:"JIMERICA는 지민의 Spotify 스트리밍, 공식 뮤직비디오와 공식 오디오의 유튜브 조회수, 다가오는 마일스톤, 업적, 2026 결산을 한곳에 모은 독립 팬 아카이브입니다. 숫자는 Spotify와 YouTube에 공개된 수치로 매일 업데이트되어, 지민의 기록을 한눈에 따라갈 수 있습니다. 기록과 수상 내역은 <a href=\"./achievements.html\">업적</a>, 영상 조회수는 <a href=\"./youtube.html\">유튜브</a> 페이지에서 볼 수 있고, 처음 오셨다면 <a href=\"./start.html\">처음 오셨나요</a>부터 시작해 보세요. JIMERICA는 팬이 운영하며 지민, BIGHIT MUSIC, HYBE, Spotify, YouTube와 관련이 없습니다."};
 const koDate=(m,d,y)=>`${y}년 ${m}월 ${d}일`;
 const tr=s=>KO[s]!=null?KO[s]:s;
 const RULES=[
@@ -584,7 +584,7 @@ const ES_BLOCK={
   "bio2": "Debutó como miembro de BTS en 2013. Bajo el nombre de BTS lanzó las canciones en solitario \"Lie\" (2016), \"Serendipity\" (2017) y \"Filter\" (2020), y su primera canción acreditada en solitario, \"Promise\", salió el 30 de diciembre de 2018.",
   "bio3": "Su primer álbum solista, FACE, se lanzó el 24 de marzo de 2023; su sencillo \"Like Crazy\" se convirtió en el primer n.º 1 del Billboard Hot 100 de un artista surcoreano en solitario. Su segundo álbum, MUSE, llegó el 19 de julio de 2024, con \"WHO\" como sencillo principal.",
   "bio4": "Jimin se alistó para cumplir el servicio militar obligatorio el 12 de diciembre de 2023. Sirvió como soldado en servicio activo en una unidad de artillería de la 5.ª División de Infantería del Ejército y fue dado de baja el 11 de junio de 2025.",
-  "site1": "JIMERICA es un archivo independiente de fans sobre las reproducciones de Jimin en Spotify y sus logros, actualizado a diario. Consulta la página de <a href=\"./achievements.html\">Logros</a> para conocer sus récords y premios."
+  "site1": "JIMERICA es un archivo independiente hecho por fans sobre la música de Jimin: sus reproducciones en Spotify, las vistas en YouTube de sus videoclips y audios oficiales, sus próximos hitos, sus logros y su Resumen 2026. Las cifras se actualizan cada día con los números públicos de Spotify y YouTube, para que puedas seguir su progreso en un solo lugar. Consulta la página de <a href=\"./achievements.html\">Logros</a> para sus récords y premios, la de <a href=\"./youtube.html\">YouTube</a> para las vistas de sus videos o <a href=\"./start.html\">Empieza aquí</a> si eres nuevo. JIMERICA lo hacen fans y no está afiliado a Jimin, BIGHIT MUSIC, HYBE, Spotify ni YouTube."
 };
 
 const ES_MONTHS=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
