@@ -908,3 +908,16 @@ ES_PAT.push(
  [/^([\d.]+[KMB]), est\. (.+)$/,m=>`${m[1]}, est. ${m[2]}`],
  [/^About (.+) streams a minute on (.+)$/,m=>`Unas ${m[1]} reproducciones por minuto el ${m[2]}`],
  [/^· est\. (.+)$/,m=>`· est. ${m[1]}`]);
+// Nov 17, 2026 (c): 2026 Wrapped counts from the Jan 1, 2026 Spotify counts (wrapped-base.js), listener change on the Wrapped card (isaac t340u).
+PAT.push(
+ [/^Counts start from each song's Spotify stream count on (.+), from an archived snapshot\. JIMERICA's own daily totals begin (.+), so Best day and Best days cover (.+)\. The page updates every morning\.$/,m=>`각 곡의 ${m[1]} Spotify 누적 스트리밍(보관된 스냅샷)부터 집계합니다. JIMERICA의 일일 수치는 ${m[2]}부터 시작되므로 최고의 날과 최고의 날들은 ${m[3]} 기간입니다. 이 페이지는 매일 아침 업데이트됩니다.`],
+ [/^between (.+) and (.+)$/,m=>`${m[1]}~${m[2]} 사이`],
+ [/^Also in (\d{4}), as reported$/,m=>`${m[1]}년 기타 기록 (보도 기준)`],
+ [/^([+−][\d,]+) since (.+)$/,m=>`${m[2]} 대비 ${m[1]}`],
+ [/^No change since (.+)$/,m=>`${m[1]} 대비 변동 없음`]);
+ES_PAT.push(
+ [/^Counts start from each song's Spotify stream count on (.+), from an archived snapshot\. JIMERICA's own daily totals begin (.+), so Best day and Best days cover (.+)\. The page updates every morning\.$/,m=>`El conteo parte de las reproducciones de cada canción en Spotify el ${m[1]}, según una copia archivada. Los totales diarios de JIMERICA empiezan el ${m[2]}, así que Mejor día y Mejores días cubren ${m[3]}. La página se actualiza cada mañana.`],
+ [/^between (.+) and (.+)$/,m=>`entre el ${m[1]} y el ${m[2]}`],
+ [/^Also in (\d{4}), as reported$/,m=>`También en ${m[1]}, según la prensa`],
+ [/^([+−][\d,]+) since (.+)$/,m=>`${m[1]} desde el ${m[2]}`],
+ [/^No change since (.+)$/,m=>`Sin cambios desde el ${m[1]}`]);
