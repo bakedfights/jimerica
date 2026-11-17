@@ -619,16 +619,8 @@ html[data-theme=dark] .daily-cell[style]{background:linear-gradient(90deg,transp
 .start-list li{padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;background:var(--panel);line-height:1.55}
 .start-list li strong{color:var(--text)}
 /* end feature:1117 */
-/* feature:1117b Streams per minute (extra.js glance .g-spm), K-pop soloists table (#soloists, features1117b.js), 2026 Wrapped page (wrapped.html, wrapped.js) */
+/* feature:1117b Streams per minute (extra.js glance .g-spm) and 2026 Wrapped page (wrapped.html, wrapped.js). Soloist table not published. */
 .g-spm{font-size:12px}
-#soloists td.num,#soloists th:nth-child(n+3){text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-#soloists th:first-child,#soloists td:first-child{width:2.5em;color:var(--muted)}
-#soloists td.num:nth-child(3){font-weight:700}
-#soloists .solo-group{color:var(--muted);font-size:.76rem;margin-left:4px}
-#soloists tr.solo-jimin td{background:rgba(201,151,40,.10)}#soloists tr.solo-jimin td:first-child{box-shadow:inset 3px 0 0 var(--gold)}
-#soloists tr.solo-jimin td:nth-child(3){color:var(--gold)}
-#soloists td.muted{color:var(--muted)}
-@media(max-width:600px){#soloists th,#soloists td{padding:10px 8px;font-size:.84rem}#soloists th:nth-child(n){white-space:normal}#soloists .solo-group{display:block;margin:2px 0 0}}
 .wrapped-body{padding:10px 0 20px}
 .wr-hero{text-align:center;padding:42px 20px;margin:16px 0 14px;border:1px solid var(--line);border-radius:18px;background:radial-gradient(600px 260px at 50% 0,rgba(240,198,116,.35),transparent 70%),var(--panel)}
 .wr-kicker{margin:0 0 6px;color:var(--gold);font-weight:800;letter-spacing:.18em;text-transform:uppercase;font-size:.8rem}
