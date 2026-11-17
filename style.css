@@ -611,3 +611,11 @@ html[data-theme=dark] .sparkle{box-shadow:0 0 0 1px var(--gold),0 0 18px -4px va
 html[data-theme=dark] .daily-cell[style]{background:linear-gradient(90deg,transparent calc(100% - var(--w)),rgba(232,198,117,.15) calc(100% - var(--w)));background-size:100% 60%;background-repeat:no-repeat;background-position:center}
 @media(max-width:600px){html[data-theme=dark] .cards-sm .daily-cell[style]{background:none}}
 /* /feature:1116-dark */
+/* feature:1117 Monthly listeners card (extra.js listenersCard) + Start here page (start.html) */
+.g-listeners .g-spark{display:block;width:100%;height:40px;margin:6px 0 2px;overflow:visible}
+.g-listeners .g-spark polyline{stroke:var(--gold);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.g-listeners .g-spark-cap{font-size:12px}
+.start-list{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.start-list li{padding:12px 14px;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:10px;background:var(--panel);line-height:1.55}
+.start-list li strong{color:var(--text)}
+/* end feature:1117 */

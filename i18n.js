@@ -826,3 +826,44 @@ PAT.push(
 ES_PAT.push(
  [/^Data as of (.+) · Source: Spotify$/,m=>`Datos a ${m[1]} · Fuente: Spotify`],
  [/^Passed (.+) on (.+)$/,m=>`Superó ${m[1]} el ${m[2]}`]);
+// Nov 17, 2026 features: Monthly listeners card (extra.js listenersCard + listeners.js) and the Start here page (start.html). See FANSITE.md.
+Object.assign(KO,{"Page":"페이지","Monthly listeners":"월간 리스너","The chart builds as a new reading is added each day.":"매일 새 기록이 추가되며 차트가 만들어집니다.",
+ "Start here":"처음 오셨나요","Start here · Archive of Jimin's Achievements | JIMERICA":"처음 오셨나요 · 지민 업적 아카이브 | JIMERICA",
+ "New to JIMERICA? Here is how the stats work and how to support Jimin on Spotify.":"JIMERICA가 처음이신가요? 통계를 읽는 방법과 Spotify에서 지민을 응원하는 방법을 소개합니다.",
+ "How the stats work":"통계 보는 법","What milestones are":"마일스톤이란","Streaming tips":"스트리밍 팁","Where to go next":"다음으로 볼 곳",
+ "Today's numbers, daily gains and milestones":"오늘의 수치, 일일 증가, 마일스톤","Every song with its total and daily streams":"모든 곡의 총 스트리밍과 일일 스트리밍","Albums, singles and features":"앨범, 싱글, 피처링","Jimin's artist profile":"지민 아티스트 프로필"});
+Object.assign(ES,{"Page":"Página","Monthly listeners":"Oyentes mensuales","The chart builds as a new reading is added each day.":"El gráfico crece con un nuevo registro cada día.",
+ "Start here":"Empieza aquí","Start here · Archive of Jimin's Achievements | JIMERICA":"Empieza aquí · Archivo de logros de Jimin | JIMERICA",
+ "New to JIMERICA? Here is how the stats work and how to support Jimin on Spotify.":"¿Eres nuevo en JIMERICA? Así funcionan las estadísticas y así puedes apoyar a Jimin en Spotify.",
+ "How the stats work":"Cómo funcionan las estadísticas","What milestones are":"Qué son los hitos","Streaming tips":"Consejos para reproducir","Where to go next":"Adónde ir ahora",
+ "Today's numbers, daily gains and milestones":"Las cifras de hoy, las ganancias diarias y los hitos","Every song with its total and daily streams":"Cada canción con sus reproducciones totales y diarias","Albums, singles and features":"Álbumes, sencillos y colaboraciones","Jimin's artist profile":"Perfil de artista de Jimin"});
+PAT.push(
+ [/^vs (.+)$/,m=>`${m[1]} 대비`],
+ [/^As of (.+)$/,m=>`${m[1]} 기준`],
+ [/^(.+) – (.+) · Source: Spotify$/,m=>`${m[1]} – ${m[2]} · 출처: Spotify`],
+ [/^Monthly listeners, (.+) to (.+)$/,m=>`월간 리스너, ${m[1]} ~ ${m[2]}`]);
+ES_PAT.push(
+ [/^vs (.+)$/,m=>`frente al ${m[1]}`],
+ [/^As of (.+)$/,m=>`A fecha de ${m[1]}`],
+ [/^(.+) – (.+) · Source: Spotify$/,m=>`${m[1]} – ${m[2]} · Fuente: Spotify`],
+ [/^Monthly listeners, (.+) to (.+)$/,m=>`Oyentes mensuales, del ${m[1]} al ${m[2]}`]);
+Object.assign(KO_BLOCK,{
+ st1:"<strong>숫자의 출처.</strong> JIMERICA의 모든 스트리밍 수치는 Spotify에서 가져옵니다. 곡별 Spotify 누적 재생수와 \"Who\"의 Spotify 국가별 일간 차트입니다. 다른 앱의 재생은 포함되지 않습니다.",
+ st2:"<strong>매일 업데이트.</strong> 사이트는 매일 아침(태평양 시간) 한 번 갱신됩니다. Spotify 하루치 스트리밍이 끝나야 하므로, 갱신할 때마다 전날 수치를 보여 줍니다.",
+ st3:"<strong>일일 증가.</strong> 곡의 일일 증가는 하루 동안 늘어난 스트리밍 수, 즉 그날 누적에서 전날 누적을 뺀 값입니다. 개요 페이지에서 일일 증가가 큰 곡 순위와 전날보다 늘었는지 줄었는지를 볼 수 있습니다.",
+ st4:"<strong>\"기준 데이터\"와 \"데이터 업데이트\".</strong> \"기준\" 날짜는 Spotify 수치가 해당하는 날입니다. 각 페이지 상단 배지의 \"데이터 업데이트\"는 사이트를 마지막으로 갱신한 날입니다. 보통 하루 차이가 납니다.",
+ st5:"<strong>월간 리스너.</strong> 지민의 Spotify 아티스트 프로필에 표시되는, 최근 28일 동안 지민의 음악을 들은 사람 수입니다. 누적 합계가 아니라 이동 집계이므로 줄어들 수도 있습니다.",
+ st6:"Spotify 이용약관을 지켜 주세요. 봇, 가짜 계정, 유료 스트리밍은 걸러지며 아티스트에게 해가 될 수 있습니다.",
+ sm1:"<strong>마일스톤은 곡이 곧 넘어설 누적 스트리밍의 기준 숫자</strong>입니다(예: 1억, 5억, 10억). 곡이 커질수록 단위도 커집니다. 1억까지는 1천만 단위, 10억까지는 5천만 단위, 그 이후는 1억 단위입니다.",
+ sm2:"<strong>날짜는 예상치입니다.</strong> 예상 날짜는 곡이 최근 7일 평균 일일 스트리밍을 유지한다고 가정해 계산합니다. 예측이나 공식 수치가 아니며, 스트리밍이 늘거나 줄면 바뀝니다.",
+ sm3:"<strong>어디서 보나요.</strong> 개요 페이지의 <a href=\"./#milestones\">다음 마일스톤</a> 표에서 가장 가까운 마일스톤을, 각 곡 페이지에서 그 곡의 다음 마일스톤을 볼 수 있습니다."});
+Object.assign(ES_BLOCK,{
+ st1:"<strong>De dónde salen las cifras.</strong> Todas las reproducciones de JIMERICA vienen de Spotify: el contador total de cada canción y las listas diarias por país de Spotify para \"Who\". No se cuentan otras aplicaciones.",
+ st2:"<strong>Se actualiza cada día.</strong> El sitio se actualiza una vez cada mañana, hora del Pacífico. Cada actualización muestra las cifras del día anterior, porque primero tiene que terminar un día completo de reproducciones en Spotify.",
+ st3:"<strong>Ganancias diarias.</strong> La ganancia diaria de una canción es cuántas reproducciones sumó en un día: su total de ese día menos su total del día anterior. El Resumen ordena las mayores ganancias diarias y muestra si cada canción subió o bajó respecto al día anterior.",
+ st4:"<strong>\"Datos a\" y \"Datos actualizados\".</strong> \"Datos a\" es el día al que corresponden las cifras de Spotify. \"Datos actualizados\", la etiqueta en la parte superior de cada página, es el día en que se actualizó el sitio por última vez. Normalmente hay un día de diferencia.",
+ st5:"<strong>Oyentes mensuales.</strong> El número de personas que escucharon a Jimin en Spotify en los últimos 28 días, tal como aparece en su perfil de artista de Spotify. Es un recuento móvil, no un total acumulado, así que también puede bajar.",
+ st6:"Respeta las condiciones de uso de Spotify. Los bots, las cuentas falsas y las reproducciones pagadas se filtran y pueden perjudicar al artista.",
+ sm1:"<strong>Un hito es una cifra redonda de reproducciones totales</strong> que una canción está a punto de superar, como 100M, 500M o 1B. Los saltos crecen con la canción: cada 10M hasta 100M, cada 50M hasta 1B y luego cada 100M.",
+ sm2:"<strong>Las fechas son estimaciones.</strong> Cada fecha estimada supone que la canción mantiene su promedio de reproducciones diarias de los últimos 7 días. No son predicciones ni cifras oficiales, y cambian cuando las reproducciones suben o bajan.",
+ sm3:"<strong>Dónde verlos.</strong> La tabla de <a href=\"./#milestones\">Siguientes hitos</a> del Resumen muestra los más cercanos, y cada página de canción muestra su próximo hito."});
