@@ -166,13 +166,13 @@ function ytRecords(){
   const box=document.getElementById('yt-records-body'); if(!box) return;
   const lang=document.documentElement.lang==='ko'||document.documentElement.lang==='es'?document.documentElement.lang:'en';
   const T={
-    en:{h:'YouTube records',cap:'Source: YouTube. Figures are from official uploads on HYBE LABELS, BANGTANTV and Jimin - Topic, as of the latest reading.',
+    en:{h:'YouTube records',cap:'Source: YouTube. Figures are from official uploads on HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE and NLE CHOPPA, as of the latest reading.',
         mv:'Most-viewed official MV',aud:'Most-viewed official audio',liked:'Most-liked video',gain:'Fastest gainer today',avg:'Highest average views per day',
         views:'views',likes:'likes',perDay:'views/day',noGain:'Daily gains start Nov 18'},
-    ko:{h:'유튜브 기록',cap:'출처: YouTube. HYBE LABELS, BANGTANTV, Jimin - Topic의 공식 업로드를 최근 기록 기준으로 집계했습니다.',
+    ko:{h:'유튜브 기록',cap:'출처: YouTube. HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE, NLE CHOPPA의 공식 업로드를 최근 기록 기준으로 집계했습니다.',
         mv:'최다 조회 공식 뮤직비디오',aud:'최다 조회 공식 오디오',liked:'최다 좋아요 영상',gain:'오늘 가장 빠른 증가',avg:'공개 이후 일평균 조회 1위',
         views:'조회수',likes:'좋아요',perDay:'일평균 조회수',noGain:'일일 증가는 11월 18일부터 표시됩니다'},
-    es:{h:'Récords de YouTube',cap:'Fuente: YouTube. Cifras de las subidas oficiales en HYBE LABELS, BANGTANTV y Jimin - Topic, según la última lectura.',
+    es:{h:'Récords de YouTube',cap:'Fuente: YouTube. Cifras de las subidas oficiales en HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE y NLE CHOPPA, según la última lectura.',
         mv:'Videoclip oficial más visto',aud:'Audio oficial más visto',liked:'Video con más me gusta',gain:'Mayor aumento de hoy',avg:'Mayor media de vistas por día',
         views:'vistas',likes:'me gusta',perDay:'vistas/día',noGain:'Los aumentos diarios empiezan el 18 de noviembre'}
   }[lang];

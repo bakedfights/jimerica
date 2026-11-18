@@ -117,13 +117,13 @@ function songYouTube(s){
   const box=el('song-yt'); if(!box) return;
   const lang=document.documentElement.lang==='ko'||document.documentElement.lang==='es'?document.documentElement.lang:'en';
   const T={
-    en:{h:'YouTube',views:'YouTube views',all:'All official videos →',none:'No official upload on HYBE LABELS, BANGTANTV or Jimin - Topic, so this song is not listed on the YouTube page.',total:'Total plays',combo:'Spotify + YouTube',k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
-    ko:{h:'유튜브',views:'유튜브 조회수',all:'모든 공식 영상 보기 →',none:'HYBE LABELS, BANGTANTV, Jimin - Topic에 공식 영상이 없어 유튜브 페이지 목록에 없습니다.',total:'총 재생',combo:'Spotify + 유튜브',k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
-    es:{h:'YouTube',views:'Vistas en YouTube',all:'Todos los videos oficiales →',none:'No hay una subida oficial en HYBE LABELS, BANGTANTV o Jimin - Topic, así que esta canción no aparece en la página de YouTube.',total:'Reproducciones combinadas',combo:'Spotify + YouTube',k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
+    en:{h:'YouTube',views:'YouTube views',all:'All official videos →',none:'No official upload on the channels this page tracks, so this song is not listed on the YouTube page.',total:'Total plays',combo:'Spotify + YouTube',k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
+    ko:{h:'유튜브',views:'유튜브 조회수',all:'모든 공식 영상 보기 →',none:'이 페이지가 추적하는 채널에 공식 영상이 없어 유튜브 페이지 목록에 없습니다.',total:'총 재생',combo:'Spotify + 유튜브',k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
+    es:{h:'YouTube',views:'Vistas en YouTube',all:'Todos los videos oficiales →',none:'No hay una subida oficial en los canales que sigue esta página, así que esta canción no aparece en la página de YouTube.',total:'Reproducciones combinadas',combo:'Spotify + YouTube',k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
   }[lang];
   box.textContent='';
   box.append(node('h2',T.h));
-  const missing=['Angel Pt. 1 (feat. Kodak Black, NLE Choppa, Jimin of BTS, JVKE & Muni Long)','Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Sped Up','Angel Pt. 2 (feat. Jimin of BTS & JVKE feat. Charlie Puth & Muni Long)','VIBE (feat. Jimin of BTS)'].includes(s[0]);
+  const missing=['Angel Pt. 1 (feat. Jimin of BTS, JVKE & Muni Long) - Sped Up'].includes(s[0]);
   const vids=(typeof YT_VIDEOS==='undefined'?[]:YT_VIDEOS).filter(v=>ytSongKey(v.song)===s[0]||ytSongKey(v.title)===s[0]);
   const yt=vids.reduce((n,v)=>n+(v.views||0),0);
   const tot=(s[1]||0)+yt;

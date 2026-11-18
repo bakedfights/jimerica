@@ -11,39 +11,42 @@ const L=()=>doc.lang==='ko'||doc.lang==='es'?doc.lang:'en';
 const S={
  en:{views:'views',likes:'likes',combined:'Combined YouTube views',across:n=>`across ${n} official videos and audio uploads`,gainSince:d=>`since ${d}`,
      noGain:d=>`Daily gains start ${d}`,noGainShort:d=>`Gain from ${d}`,totalLikes:'Combined likes',videos:'Videos tracked',split:(m,l,a)=>[`${m} MVs`,l?`${l} lyric video${l>1?'s':''}`:'',`${a} official audio`].filter(Boolean).join(' · '),songs:(n,t)=>`${n} of ${t} songs`,songsL:'Songs covered',topVid:'Most viewed',
-     mvTitle:'Official music videos',mvSub:'Official MVs, ranked by total views on YouTube.',topTitle:'Every official MV and audio',topSub:'Official MVs on HYBE LABELS or BANGTANTV, plus one official audio per song (Jimin - Topic or the label upload on those channels). Only HYBE LABELS, BANGTANTV and Jimin - Topic are counted.',
-     sortBy:'Sort videos',sViews:'Views',sGain:'Daily gain',sLikes:'Likes',sNew:'Newest',sAvg:'Avg. per day',sAZ:'A–Z',filt:'Filter videos',fAll:'All',fMv:'MV',fAud:'Audio',
+     mvTitle:'Official music videos',mvSub:'Official MVs and lyric video, ranked by total views on YouTube.',topTitle:'Every official MV and audio',topSub:'One official audio per song (Jimin - Topic or the label upload) plus every official MV and lyric video, from official channels only: HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE and NLE CHOPPA.',
+     sortBy:'Sort videos',sViews:'Views',sGain:'Daily gain',sLikes:'Likes',sComments:'Comments',sNew:'Newest',sAvg:'Avg. per day',sAZ:'A–Z',filt:'Filter videos',fAll:'All',fMv:'MV',fAud:'Audio',
      read:(d,t)=>`Views read from YouTube on ${d} at ${t} PT.`,gainNote:(a,b)=>`Daily gain = views now minus the reading on ${a}.`,
      firstNote:(d)=>`Tracking started ${d}. Daily gains appear from the second daily reading; until then no gain is shown.`,
      stale:d=>`Could not be read today; showing the last reading from ${d}.`,
-     wm:(d,t)=>`Views as of ${d}, ${t} PT · Source: YouTube`,watch:'Watch on YouTube',on:'on',published:'Released',shown:n=>`${n} videos`,noViews:'Not available',
+     wm:(d,t)=>`Views as of ${d}, ${t} PT · Source: YouTube`,watch:'Watch on YouTube',on:'on',published:'Released',shown:n=>`${n} videos`,noViews:'Not available',comments:'Comments',
+     commentsNote:'Comment counts are YouTube\'s rounded public figures, not exact totals.',
      topGain:'Top gainer today',nextMs:'Next',toGo:n=>`${n} to go`,est:d=>`est. ${d}`,
      trendSoon:'Trend appears after 7 days',
-     missing:'Angel Pt. 1, Angel Pt. 1 - Sped Up, Angel Pt. 2 and VIBE are not listed: they have no official upload on HYBE LABELS, BANGTANTV or Jimin - Topic.',
+     missing:'Angel Pt. 1 - Sped Up is not listed: it has no official upload on the channels this page tracks.',
      k:{mv:'Official MV',lyric:'Official lyric video',audio:'Official audio'}},
  ko:{views:'조회수',likes:'좋아요',combined:'유튜브 누적 조회수',across:n=>`공식 영상·오디오 ${n}개 합계`,gainSince:d=>`${d} 대비`,
      noGain:d=>`일일 증가는 ${d}부터 표시됩니다`,noGainShort:d=>`${d}부터 증가 표시`,totalLikes:'좋아요 합계',videos:'추적 영상',split:(m,l,a)=>[`뮤비 ${m}`,l?`가사 영상 ${l}`:'',`오디오 ${a}`].filter(Boolean).join(' · '),songs:(n,t)=>`${t}곡 중 ${n}곡`,songsL:'포함된 곡',topVid:'최다 조회',
-     mvTitle:'공식 뮤직비디오',mvSub:'공식 뮤직비디오의 유튜브 누적 조회수 순위입니다.',topTitle:'모든 공식 뮤직비디오와 오디오',topSub:'HYBE LABELS 또는 BANGTANTV의 공식 뮤직비디오와, 곡마다 공식 오디오 1개(Jimin - Topic 또는 해당 채널의 레이블 업로드). HYBE LABELS, BANGTANTV, Jimin - Topic만 집계합니다.',
-     sortBy:'영상 정렬',sViews:'조회수',sGain:'일일 증가',sLikes:'좋아요',sNew:'최신순',sAvg:'일평균',sAZ:'가나다',filt:'영상 필터',fAll:'전체',fMv:'뮤직비디오',fAud:'오디오',
+     mvTitle:'공식 뮤직비디오',mvSub:'공식 뮤직비디오와 가사 영상의 유튜브 누적 조회수 순위입니다.',topTitle:'모든 공식 뮤직비디오와 오디오',topSub:'곡마다 공식 오디오 1개(Jimin - Topic 또는 레이블 업로드)와 모든 공식 뮤직비디오·가사 영상. 공식 채널만 집계: HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE, NLE CHOPPA.',
+     sortBy:'영상 정렬',sViews:'조회수',sGain:'일일 증가',sLikes:'좋아요',sComments:'댓글',sNew:'최신순',sAvg:'일평균',sAZ:'가나다',filt:'영상 필터',fAll:'전체',fMv:'뮤직비디오',fAud:'오디오',
      read:(d,t)=>`${d} ${t}(PT)에 유튜브에서 읽은 조회수입니다.`,gainNote:(a,b)=>`일일 증가 = 현재 조회수 − ${a} 기록.`,
      firstNote:(d)=>`${d}부터 추적을 시작했습니다. 일일 증가는 두 번째 기록부터 표시되며, 그전에는 표시하지 않습니다.`,
      stale:d=>`오늘은 읽지 못해 ${d} 기록을 표시합니다.`,
-     wm:(d,t)=>`${d} ${t}(PT) 기준 조회수 · 출처: YouTube`,watch:'유튜브에서 보기',on:'',published:'공개',shown:n=>`영상 ${n}개`,noViews:'정보 없음',
+     wm:(d,t)=>`${d} ${t}(PT) 기준 조회수 · 출처: YouTube`,watch:'유튜브에서 보기',on:'',published:'공개',shown:n=>`영상 ${n}개`,noViews:'정보 없음',comments:'댓글',
+     commentsNote:'댓글 수는 유튜브가 공개하는 반올림 숫자이며, 정확한 합계가 아닙니다.',
      topGain:'오늘 최다 증가',nextMs:'다음',toGo:n=>`${n} 남음`,est:d=>`예상 ${d}`,
      trendSoon:'추이는 7일 후 표시됩니다',
-     missing:'Angel Pt. 1, Angel Pt. 1 - Sped Up, Angel Pt. 2, VIBE는 HYBE LABELS, BANGTANTV, Jimin - Topic에 공식 영상이 없어 목록에 없습니다.',
+     missing:'Angel Pt. 1 - Sped Up는 이 페이지가 추적하는 채널에 공식 영상이 없어 목록에 없습니다.',
      k:{mv:'공식 뮤직비디오',lyric:'공식 가사 영상',audio:'공식 오디오'}},
  es:{views:'vistas',likes:'me gusta',combined:'Vistas combinadas en YouTube',across:n=>`en ${n} videos y audios oficiales`,gainSince:d=>`desde el ${d}`,
      noGain:d=>`Los aumentos diarios empiezan el ${d}`,noGainShort:d=>`Aumento desde el ${d}`,totalLikes:'Me gusta combinados',videos:'Videos seguidos',split:(m,l,a)=>[`${m} videoclips`,l?`${l} video${l>1?'s':''} con letra`:'',`${a} audios oficiales`].filter(Boolean).join(' · '),songs:(n,t)=>`${n} de ${t} canciones`,songsL:'Canciones incluidas',topVid:'Más visto',
-     mvTitle:'Videoclips oficiales',mvSub:'Videoclips oficiales, ordenados por vistas totales en YouTube.',topTitle:'Todos los videoclips y audios oficiales',topSub:'Videoclips oficiales en HYBE LABELS o BANGTANTV, más un audio oficial por canción (Jimin - Topic o la subida del sello en esos canales). Solo se cuentan HYBE LABELS, BANGTANTV y Jimin - Topic.',
-     sortBy:'Ordenar videos',sViews:'Vistas',sGain:'Aumento diario',sLikes:'Me gusta',sNew:'Más recientes',sAvg:'Media diaria',sAZ:'A–Z',filt:'Filtrar videos',fAll:'Todos',fMv:'Videoclips',fAud:'Audio',
+     mvTitle:'Videoclips oficiales',mvSub:'Videoclips y video con letra oficiales, ordenados por vistas totales en YouTube.',topTitle:'Todos los videoclips y audios oficiales',topSub:'Un audio oficial por canción (Jimin - Topic o la subida del sello) y cada videoclip y video con letra oficial, solo de canales oficiales: HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE y NLE CHOPPA.',
+     sortBy:'Ordenar videos',sViews:'Vistas',sGain:'Aumento diario',sLikes:'Me gusta',sComments:'Comentarios',sNew:'Más recientes',sAvg:'Media diaria',sAZ:'A–Z',filt:'Filtrar videos',fAll:'Todos',fMv:'Videoclips',fAud:'Audio',
      read:(d,t)=>`Vistas leídas en YouTube el ${d} a las ${t} PT.`,gainNote:(a,b)=>`Aumento diario = vistas actuales menos la lectura del ${a}.`,
      firstNote:(d)=>`El seguimiento empezó el ${d}. Los aumentos diarios aparecen desde la segunda lectura diaria; hasta entonces no se muestra ninguno.`,
      stale:d=>`No se pudo leer hoy; se muestra la última lectura del ${d}.`,
-     wm:(d,t)=>`Vistas al ${d}, ${t} PT · Fuente: YouTube`,watch:'Ver en YouTube',on:'en',published:'Publicado',shown:n=>`${n} videos`,noViews:'No disponible',
+     wm:(d,t)=>`Vistas al ${d}, ${t} PT · Fuente: YouTube`,watch:'Ver en YouTube',on:'en',published:'Publicado',shown:n=>`${n} videos`,noViews:'No disponible',comments:'Comentarios',
+     commentsNote:'Las cifras de comentarios son las cifras públicas redondeadas de YouTube, no totales exactos.',
      topGain:'Mayor aumento de hoy',nextMs:'Siguiente',toGo:n=>`faltan ${n}`,est:d=>`previsto: ${d}`,
      trendSoon:'La tendencia aparece a los 7 días',
-     missing:'Angel Pt. 1, Angel Pt. 1 - Sped Up, Angel Pt. 2 y VIBE no aparecen porque no tienen una subida oficial en HYBE LABELS, BANGTANTV o Jimin - Topic.',
+     missing:'Angel Pt. 1 - Sped Up no aparece porque no tiene una subida oficial en los canales que sigue esta página.',
      k:{mv:'Videoclip oficial',lyric:'Video con letra oficial',audio:'Audio oficial'}}
 };
 const TITLE_KO={'Promise':'Promise (약속)'};
@@ -148,6 +151,7 @@ function card(v,rank,t,big){
   body.append(mk('span','yt-meta',`${v.channel} · ${fdShort(v.published||'')}`));
   const st=mk('div','yt-stats'); const vw=mk('span','yt-views'); vw.append(mk('b',null,n(v.views)),mk('small',null,' '+t.views)); st.append(vw);
   if(v.likes!=null) st.append(mk('span','yt-likes',`♥ ${compact(v.likes)} ${t.likes}`));
+  const cm=mk('span','yt-comments'); cm.append(mk('b',null,v.comments||'–'), mk('small',null,' '+t.comments)); st.append(cm);
   body.append(st);
   const row=mk('div','yt-gainrow'); row.append(chip(v,t,true));
   if(v.id===topGainId) row.append(mk('span','yt-badge',t.topGain));
@@ -183,7 +187,7 @@ function mvs(t){
 function list(t){
   const g=document.getElementById('yt-grid'); if(!g) return; g.textContent='';
   let r=rows.filter(v=>filt==='all'||GROUP[v.kind]===filt);
-  const by={views:(a,b)=>(b.views??-1)-(a.views??-1),gain:(a,b)=>(b.gain??-Infinity)-(a.gain??-Infinity)||(b.views??-1)-(a.views??-1),likes:(a,b)=>(b.likes??-1)-(a.likes??-1),
+  const by={views:(a,b)=>(b.views??-1)-(a.views??-1),gain:(a,b)=>(b.gain??-Infinity)-(a.gain??-Infinity)||(b.views??-1)-(a.views??-1),likes:(a,b)=>(b.likes??-1)-(a.likes??-1),comments:(a,b)=>(b.comments_n??-1)-(a.comments_n??-1)||(b.views??-1)-(a.views??-1),
     newest:(a,b)=>String(b.published).localeCompare(String(a.published)),avg:(a,b)=>(avgPerDay(b)??-1)-(avgPerDay(a)??-1),az:(a,b)=>title(a).localeCompare(title(b))};
   r.sort(by[sort]||by.views); r.forEach((v,i)=>g.append(card(v,i+1,t)));
   const c=document.getElementById('yt-count'); if(c) c.textContent=t.shown(r.length);
@@ -196,7 +200,7 @@ function list(t){
 }
 function notes(t){
   const p=document.getElementById('yt-notes'); if(!p) return; p.textContent='';
-  p.append(mk('span',null,t.read(fd(YT_UPDATED),ft(YT_TAKEN))+' '), mk('span',null,(hasGain?t.gainNote(fd(gainFrom)):t.firstNote(fd(YT_FIRST)))+' '), mk('span',null,t.missing));
+  p.append(mk('span',null,t.read(fd(YT_UPDATED),ft(YT_TAKEN))+' '), mk('span',null,(hasGain?t.gainNote(fd(gainFrom)):t.firstNote(fd(YT_FIRST)))+' '), mk('span',null,t.commentsNote+' '), mk('span',null,t.missing));
 }
 function heads(t){
   const set=(id,k)=>{const e=document.getElementById(id); if(e) e.textContent=t[k];};

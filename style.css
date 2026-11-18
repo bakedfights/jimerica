@@ -684,7 +684,8 @@ html[data-theme=dark] .daily-cell[style]{background:linear-gradient(90deg,transp
 .yt-views b{color:var(--gold);font-size:1.25rem;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .yt-card.big .yt-views b{font-size:1.45rem}
 .yt-views small{color:var(--muted);font-size:.76rem}
-.yt-likes{color:var(--muted);font-size:.76rem;white-space:nowrap}
+.yt-likes,.yt-comments{color:var(--muted);font-size:.76rem;white-space:nowrap}
+.yt-comments b{font-weight:600;font-variant-numeric:tabular-nums}
 .yt-controls{gap:10px 14px}
 .yt-controls .segmented{flex-wrap:wrap}
 #yt-about .caption{font-size:.84rem;max-width:48rem}
