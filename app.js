@@ -1,6 +1,8 @@
 "use strict";
 const COUNTRY_NAMES = {"Global":"🌍 Global","US":"🇺🇸 United States","TH":"🇹🇭 Thailand","JP":"🇯🇵 Japan","CL":"🇨🇱 Chile","BR":"🇧🇷 Brazil","KR":"🇰🇷 South Korea","PH":"🇵🇭 Philippines","VN":"🇻🇳 Vietnam","SG":"🇸🇬 Singapore","TW":"🇹🇼 Taiwan","MX":"🇲🇽 Mexico","PE":"🇵🇪 Peru","VE":"🇻🇪 Venezuela","PY":"🇵🇾 Paraguay","BY":"🇧🇾 Belarus","PA":"🇵🇦 Panama","CR":"🇨🇷 Costa Rica","KZ":"🇰🇿 Kazakhstan","CZ":"🇨🇿 Czechia","ID":"🇮🇩 Indonesia","MY":"🇲🇾 Malaysia","HK":"🇭🇰 Hong Kong","IN":"🇮🇳 India","GB":"🇬🇧 United Kingdom","CA":"🇨🇦 Canada","AR":"🇦🇷 Argentina","ES":"🇪🇸 Spain","BO":"🇧🇴 Bolivia","UY":"🇺🇾 Uruguay","SV":"🇸🇻 El Salvador","GT":"🇬🇹 Guatemala","HN":"🇭🇳 Honduras","DO":"🇩🇴 Dominican Republic","NI":"🇳🇮 Nicaragua","EC":"🇪🇨 Ecuador","CO":"🇨🇴 Colombia","UA":"🇺🇦 Ukraine","BG":"🇧🇬 Bulgaria","LV":"🇱🇻 Latvia","SA":"🇸🇦 Saudi Arabia","AE":"🇦🇪 UAE","MA":"🇲🇦 Morocco","IE":"🇮🇪 Ireland","HU":"🇭🇺 Hungary","AU":"🇦🇺 Australia","NZ":"🇳🇿 New Zealand","DE":"🇩🇪 Germany","FR":"🇫🇷 France","IT":"🇮🇹 Italy","PL":"🇵🇱 Poland","TR":"🇹🇷 Türkiye","EG":"🇪🇬 Egypt","PK":"🇵🇰 Pakistan","NG":"🇳🇬 Nigeria","ZA":"🇿🇦 South Africa"};
 const format = n => n.toLocaleString('en-US');
+const signedGain = n => (n>0?'+':'') + format(n);
+const gainClass = n => n>0?'chg-up':n<0?'chg-down':'chg-zero';
 const billions = n => (n / 1e9).toFixed(2) + 'B';
 // Parse at noon as a calendar date: no UTC-midnight shift to the previous PT day.
 const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
@@ -29,9 +31,9 @@ function node(tag, text, className) {
 }
 function renderMetrics(id, entries) {
   const container = document.getElementById(id);
-  container.replaceChildren(...entries.map(([value,label,detail]) => {
+  container.replaceChildren(...entries.map(([value,label,detail,cls]) => {
     const metric = node('div', null, 'metric');
-    metric.append(node('strong', value), node('span',label));
+    metric.append(node('strong', value, cls||undefined), node('span',label));
     if (detail) metric.append(node('small', detail));
     return metric;
   }));
@@ -71,9 +73,8 @@ function renderSongs() {
     name.append(document.createTextNode(s[0]));
     if (s[3]) name.append(node('span', '(feature)', 'feature-label'));
     title.append(name);
-    const daily = node('td', s[2] === null ? '–' : format(s[2]));
+    const daily = node('td', s[2] === null ? '–' : format(s[2]), 'daily-cell '+(s[2]==null||s[2]===0?'chg-zero':gainClass(s[2])));
     if (s[2] !== null && maxDaily > 0) daily.style.setProperty('--w', Math.max(2, s[2] / maxDaily * 100) + '%');
-    daily.className = 'daily-cell';
     row.append(title, node('td', format(s[1])), node('td', format(totalPlays(s))), daily, changeNode('td', s[0]));
     return row;
   }));
@@ -112,7 +113,7 @@ function init() {
     m.hidden = !m.childNodes.length; }
   const d = SONGS.filter(s=>s[2]!==null).sort((a,b)=>b[2]-a[2]).slice(0,10);
   const hd=node('div',null,'bar-label dg-head');const hr=node('span',null,'bar-right dg-cols');hr.append(node('span','Total streams','dg-col dg-total'),node('span','Daily gain','dg-col dg-gain'));hd.append(node('span','Song'),hr);
-  $('daily-bars').replaceChildren(hd,...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right dg-cols');const tot=node('span',format(s[1]),'dg-col dg-total');const g=node('span',null,'dg-col dg-gain');g.append(node('strong','+'+format(s[2])),changeNode('small',s[0]));r.append(tot,g);const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));l.append(name,r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
+  $('daily-bars').replaceChildren(hd,...d.map(s=>{const bar=node('div',null,'bar');const l=node('div',null,'bar-label');const r=node('span',null,'bar-right dg-cols');const tot=node('span',format(s[1]),'dg-col dg-total');const g=node('span',null,'dg-col dg-gain');g.append(node('strong',signedGain(s[2]),gainClass(s[2])),changeNode('small',s[0]));r.append(tot,g);const name=node('span',null,'bar-name');const im=typeof coverImg==='function'?coverImg(s[0],'cover-sm',32):null;if(im)name.append(im);name.append(document.createTextNode(s[0]));l.append(name,r);const t=node('div',null,'bar-track');const f=node('div',null,'bar-fill');f.style.width=(s[2]/d[0][2]*100)+'%';t.append(f);bar.append(l,t);return bar;}));
   }
   if ($('top-bars')) {
   const top = SONGS.slice().sort((a,b)=>b[1]-a[1]).slice(0,10);

@@ -56,7 +56,7 @@ function recapCompute(hist,dates,updated){
     const first=r.firstCompare;
     tiles.push(tile('vs previous 7 days','–',{text:'Needs 14 days of history. Available from '+sd(first)+'.'}));
     const t=week.top;
-    const m=tile('Most streamed this week',t?t.title:'–',t?{text:'+'+format(t.gain)+' streams'}:null,'recap-song');
+    const m=tile('Most streamed this week',t?t.title:'–',t?{text:signedGain(t.gain)+' streams',cls:gainClass(t.gain)}:null,'recap-song');
     if(t){const s=m.querySelector('strong');s.replaceChildren(link(t.title));}
     tiles.push(m);
   }
@@ -85,7 +85,7 @@ function recapCompute(hist,dates,updated){
     const ol=document.createElement('ol');ol.className='recap-yt-list';
     yt.gainers.forEach(g=>{const li=document.createElement('li');
       const a=document.createElement('a');a.href='https://www.youtube.com/watch?v='+g.id;a.target='_blank';a.rel='noopener';a.textContent=g.title;
-      const sp=document.createElement('span');sp.textContent=' +'+Number(g.gain).toLocaleString('en-US')+' '+unit;
+      const sp=document.createElement('span');sp.className=gainClass(g.gain);sp.textContent=' '+signedGain(g.gain)+' '+unit;
       li.append(a,sp);ol.append(li);});
     wrap.append(ol);
     bits.push(wrap);

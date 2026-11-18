@@ -61,7 +61,7 @@ function monthlyRecapRender(r,box,opts){
   }else{
     tiles.push(tile('vs previous month','–',{text:'Needs two full months of data. Available from '+ld(r.firstCompare)+'.'}));
   }
-  const t=r.top, tm=tile('Top song of the month',t?t.title:'–',t?{text:'+'+format(t.gain)+' streams'}:null,'recap-song');
+  const t=r.top, tm=tile('Top song of the month',t?t.title:'–',t?{text:signedGain(t.gain)+' streams',cls:gainClass(t.gain)}:null,'recap-song');
   if(t) tm.querySelector('strong').replaceChildren(link(t.title));
   tiles.push(tm);
   tiles.push(tile('Daily average',format(r.avg),{text:'per day over '+r.days.length+' days'}));

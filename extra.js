@@ -102,7 +102,7 @@ function songPage(){
     const ring=msRing(s,true); if(ring) hero.append(ring);
   }
   const nm=nextMilestone(s[1]), a7=avg7(s), days=a7.rate>0?Math.ceil((nm-s[1])/a7.rate):null;
-  renderMetrics('song-metrics',[[format(s[1]),'Total streams'],[s[2]==null?'–':'+'+format(s[2]),'Daily gain',(()=>{const c=dailyChange(s[0]);return c?`${c.delta>0?'▲ +':c.delta<0?'▼ ':''}${format(c.delta)} vs day before`:'';})()],[share.toFixed(1)+'%','Share of all Jimin streams'],[short(nm),'Next milestone',days?`≈ ${longDate(addDays(UPDATED,days))} (estimate)`:'No daily data']]);
+  renderMetrics('song-metrics',[[format(s[1]),'Total streams'],[s[2]==null?'–':signedGain(s[2]),'Daily gain',(()=>{const c=dailyChange(s[0]);return c?`${c.delta>0?'▲ +':c.delta<0?'▼ ':''}${format(c.delta)} vs day before`:'';})(),s[2]==null?'chg-zero':gainClass(s[2])],[share.toFixed(1)+'%','Share of all Jimin streams'],[short(nm),'Next milestone',days?`≈ ${longDate(addDays(UPDATED,days))} (estimate)`:'No daily data']]);
   {const c=dailyChange(s[0]);const sm=document.querySelectorAll('#song-metrics .metric')[1]?.querySelector('small');if(sm&&c)sm.className=c.delta>0?'chg-up':c.delta<0?'chg-down':'chg-zero';}
   const vals=(typeof HIST_SONGS!=='undefined'&&HIST_SONGS[s[0]])||[]; const d=histDaily(vals);
   if(d.some(v=>v!=null)){const sv=svgChart(HIST_DATES.slice(1),d,{kind:'line',title:'Daily streams'});el('song-chart').replaceChildren(sv);interactive(sv,el('song-chart'),HIST_DATES.slice(1),d);el('song-chart-cap').textContent=`Daily streams ${HIST_DATES[1]} to ${HIST_DATES.at(-1)}. Hover or tap a point for the exact figure.`;}

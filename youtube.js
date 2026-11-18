@@ -103,7 +103,7 @@ function avgPerDay(v){
 
 function chip(v,t,short){
   const c=mk('span','yt-chip');
-  if(v.gain!=null){ c.classList.add(v.gain>0?'up':'flat'); c.append(mk('b',null,(v.gain>=0?'+':'−')+n(Math.abs(v.gain))), mk('span',null,' '+t.gainSince(fd(v.gain_from,false)))); }
+  if(v.gain!=null){ c.classList.add(v.gain>0?'up':v.gain<0?'down':'flat'); c.append(mk('b',null,(v.gain>=0?'+':'−')+n(Math.abs(v.gain))), mk('span',null,' '+t.gainSince(fd(v.gain_from,false)))); }
   else { c.classList.add('pending'); c.textContent=v.read_date&&v.read_date!==YT_UPDATED?t.stale(fd(v.read_date,false)):(short?t.noGainShort:t.noGain)(fdShort2(nextDay(YT_FIRST),short)); }
   return c;
 }
@@ -169,7 +169,7 @@ function hero(t){
   const main=mk('div','yt-hero-main');
   main.append(mk('span','yt-eyebrow',t.combined)); const big=mk('strong','yt-big',n(total)); main.append(big);
   main.append(mk('span','yt-across',t.across(ok.length)));
-  const gc=mk('span','yt-chip lg'); if(g!=null){gc.classList.add(g>0?'up':'flat'); gc.append(mk('b',null,(g>=0?'+':'−')+n(Math.abs(g))),mk('span',null,' '+t.gainSince(fd(gainFrom,false))));} else {gc.classList.add('pending'); gc.textContent=t.noGain(fd(nextDay(YT_FIRST),false));}
+  const gc=mk('span','yt-chip lg'); if(g!=null){gc.classList.add(g>0?'up':g<0?'down':'flat'); gc.append(mk('b',null,(g>=0?'+':'−')+n(Math.abs(g))),mk('span',null,' '+t.gainSince(fd(gainFrom,false))));} else {gc.classList.add('pending'); gc.textContent=t.noGain(fd(nextDay(YT_FIRST),false));}
   main.append(gc);
   const side=mk('div','yt-hero-side');
   const stat=(k,v,s)=>{const d=mk('div','yt-stat'); d.append(mk('span',null,k),mk('strong',null,v)); if(s) d.append(mk('small',null,s)); return d;};
