@@ -87,6 +87,69 @@ function songsPage(){
   const link=()=>{const MS=new Map(msRows().map(r=>[r[0][0],r]));document.querySelectorAll('#song-rows tr').forEach(tr=>{const td=tr.cells[0];const nameEl=td.querySelector('.song-title-text')||td;if(!td.querySelector('a.song-link')){const src=[...nameEl.childNodes].find(n=>n.nodeType===3||(n.nodeType===1&&!n.classList.contains('feature-label')));if(!src)return;const t=src.textContent;const a=node('a',t,'song-link');a.href='./song/'+slug(t)+'.html';src.replaceWith(a);}const a=td.querySelector('a.song-link');if(!a)return;if(!td.querySelector('.ms-badge')){const r=MS.get(a.textContent);if(r){const b=node('span',null,'ms-badge');b.append(node('span','Next Milestone'),' ',node('b',short(r[1])),' ',node('span','≈ '+longDate(addDays(UPDATED,r[2]))));td.append(b);}}if(!td.querySelector('.song-viz')){const viz=node('div',null,'song-viz');const sp=sparkline(a.textContent);const song=typeof SONGS!=='undefined'&&SONGS.find(x=>x[0]===a.textContent);const ring=msRing(song);if(sp)viz.append(sp);if(ring)viz.append(ring);if(viz.childNodes.length)td.append(viz);}if(!td.querySelector('.trend-link')){const v=node('a','View trend →','trend-link');v.href=a.getAttribute('href')+'#song-chart';td.append(v);}});document.querySelectorAll('#song-rows tr').forEach(tr=>['Song','Streams','Total plays','Daily','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l)));apply();};
   new MutationObserver(link).observe(el('song-rows'),{childList:true}); link();
 }
+
+function debutRecord(title){
+  if(typeof DEBUT_CHARTS==='undefined'||!title) return null;
+  if(DEBUT_CHARTS[title]) return DEBUT_CHARTS[title];
+  if(typeof displayTitle==='function'){
+    const alt=Object.keys(DEBUT_CHARTS).find(k=>displayTitle(k)===title||displayTitle(k)===displayTitle(title));
+    if(alt) return DEBUT_CHARTS[alt];
+  }
+  return null;
+}
+function debutCountryLabel(code){
+  return (typeof COUNTRY_NAMES!=='undefined'&&COUNTRY_NAMES[code])||code;
+}
+function debutSortName(code){
+  const label=debutCountryLabel(code);
+  return label.replace(/^[^\p{L}\p{N}]+/u,'').trim()||label;
+}
+function renderSongDebut(title){
+  const rec=debutRecord(title);
+  const box=el('debut-charts');
+  if(!box) return;
+  if(!rec){ box.replaceChildren(); box.hidden=true; return; }
+  const h=node('h2','Countries at release');
+  const cap=node('p',`Countries this song entered on Spotify's Daily country charts in its first chart week, from the debut day ${longDate(rec.debut)} through ${longDate(rec.through)}. Source: Spotify Charts.`,'caption');
+  const count=node('p',null,'debut-count');
+  count.append(node('strong',String(rec.countries.length),'gold'), document.createTextNode(' countries'));
+  const ul=document.createElement('ul');
+  ul.className='debut-countries';
+  ul.setAttribute('aria-label','Countries at release');
+  rec.countries.slice().sort((a,b)=>debutSortName(a).localeCompare(debutSortName(b),'en')).forEach(code=>{
+    const li=document.createElement('li');
+    li.textContent=debutCountryLabel(code);
+    ul.append(li);
+  });
+  box.replaceChildren(h, cap, count, ul);
+  if(rec.global) box.append(node('p',`It also entered the Global Daily chart on ${longDate(rec.debut)}.`,'caption'));
+  if(rec.note) box.append(node('p',rec.note,'caption'));
+  box.hidden=false;
+}
+function renderDebutSummary(){
+  const tb=el('debut-rows'); if(!tb||typeof DEBUT_CHARTS==='undefined') return;
+  const rows=Object.entries(DEBUT_CHARTS).map(([title,rec])=>({title,rec})).sort((a,b)=>b.rec.countries.length-a.rec.countries.length||a.title.localeCompare(b.title,'en'));
+  tb.replaceChildren();
+  rows.forEach(({title,rec})=>{
+    const tr=document.createElement('tr');
+    const songTd=document.createElement('td');
+    const a=document.createElement('a');
+    a.className='no-tr';
+    a.textContent=title;
+    a.href=(typeof songPageUrl==='function'&&songPageUrl(title))||('./song/'+slug(title)+'.html');
+    songTd.append(a);
+    const day=document.createElement('td'); day.textContent=longDate(rec.debut);
+    const n=document.createElement('td'); n.textContent=String(rec.countries.length);
+    n.dataset.label='Countries';
+    const g=document.createElement('td'); g.textContent=rec.global?'Yes':'No';
+    day.dataset.label='Debut day';
+    g.dataset.label='Global Daily';
+    songTd.dataset.label='Song';
+    tr.append(songTd, day, n, g);
+    tb.append(tr);
+  });
+}
+
 function songPage(){
   if(!el('song-detail')) return;
   const id=new URLSearchParams(location.search).get('id'); const s=SONGS.find(r=>slug(r[0])===id);
@@ -111,6 +174,7 @@ function songPage(){
   document.querySelectorAll('#song-detail [data-share]').forEach(b=>b.dataset.shareUrl=shareUrl);
   el('share-x').dataset.share=`"${s[0]}" by Jimin has ${format(s[1])} streams on Spotify${s[2]?` (+${format(s[2])} on ${longDate(UPDATED)})`:''}. Next: ${short(nm)}${days?` in ~${format(days)} days`:''}. via @JIMERICA`;
   songYouTube(s);
+  renderSongDebut(s[0]);
 }
 function ytSongKey(t){ return String(t).replace(/^Who(?=$| - | \()/,'WHO'); }
 function songYouTube(s){
@@ -171,7 +235,7 @@ function milestonesPage(){
   const soon=rows[0]; if(soon) renderMetrics('ms-metrics',[[short(soon[1]),'Next milestone to fall',soon[0][0]],['≈ '+longDate(addDays(UPDATED,soon[2])),'Estimated date'],[String(rows.filter(r=>r[2]<=30).length),'Estimated within 30 days']]);
 }
 function whoLabels(){ document.querySelectorAll('#who-rows tr').forEach(tr=>['Country','Rank','Move','Peak','Daily streams','Change'].forEach((l,i)=>tr.cells[i]&&(tr.cells[i].dataset.label=l))); }
-songsPage(); songPage(); trendsPage(); milestonesPage(); whoLabels(); share();
+songsPage(); songPage(); renderDebutSummary(); trendsPage(); milestonesPage(); whoLabels(); share();
 function showSwitch(show){document.querySelectorAll('.upd-switch [data-show]').forEach(a=>{const on=(a.dataset.show||null)===(show||null);on?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current');a.classList.toggle('on',on);});const j=el('jimin-posts'),o=el('official-posts'),t=el('tt-section');if(j)j.hidden=show==='official';if(t)t.hidden=show==='official';if(o)o.hidden=show==='jimin';}
 function feedPage(){
   const g=el('feed-grid'); if(!g||typeof FEED==='undefined') return;

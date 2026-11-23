@@ -746,3 +746,12 @@ html.shot .yt-shot{padding:26px 24px 18px;background:var(--bg);border-bottom:0}
  .song-yt-total{padding:10px 12px}
  .song-yt-total strong{font-size:1.2rem}
 }
+
+/* First-week Spotify Daily country lists (song pages + Achievements summary) */
+.debut-charts{margin:28px 0 8px}
+.debut-charts[hidden]{display:none}
+.debut-count{font-size:1.05rem;margin:8px 0 12px}
+.debut-count strong{font-variant-numeric:tabular-nums;font-size:1.35rem}
+.debut-countries{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.debut-countries li{margin:0;padding:6px 12px;border-radius:999px;border:1px solid color-mix(in srgb,var(--gold) 45%,var(--line));background:color-mix(in srgb,var(--gold) 10%,var(--panel));color:var(--text);font-size:.88rem;line-height:1.3}
+#debut-rows td:nth-child(3){font-variant-numeric:tabular-nums;font-weight:700;color:var(--gold)}

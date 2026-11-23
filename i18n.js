@@ -936,3 +936,39 @@ ES_PAT.push(
  [/^Best day since (.+)$/,m=>`Mejor día desde el ${m[1]}`]);
 Object.assign(KO,{'Top YouTube gainers this week': '이번 주 유튜브 최다 증가', 'YouTube records': '유튜브 기록', 'Most-viewed official MV': '최다 조회 공식 뮤직비디오', 'Most-viewed official audio': '최다 조회 공식 오디오', 'Most-liked video': '최다 좋아요 영상', 'Fastest gainer today': '오늘 가장 빠른 증가', 'Highest average views per day': '공개 이후 일평균 조회 1위', 'Daily gains start Nov 18': '일일 증가는 11월 18일부터 표시됩니다', 'Source: YouTube. Figures are from official uploads on HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE and NLE CHOPPA, as of the latest reading.': '출처: YouTube. HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE, NLE CHOPPA의 공식 업로드를 최근 기록 기준으로 집계했습니다.', "Total plays = Spotify streams plus the views of each song's official YouTube videos on HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE and NLE CHOPPA.": '총 재생 = 스포티파이 스트리밍에 HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE, NLE CHOPPA의 공식 유튜브 조회수를 더한 값입니다.'});
 Object.assign(ES,{'Top YouTube gainers this week': 'Mayores aumentos de YouTube esta semana', 'YouTube records': 'Récords de YouTube', 'Most-viewed official MV': 'Videoclip oficial más visto', 'Most-viewed official audio': 'Audio oficial más visto', 'Most-liked video': 'Video con más me gusta', 'Fastest gainer today': 'Mayor aumento de hoy', 'Highest average views per day': 'Mayor media de vistas por día', 'Daily gains start Nov 18': 'Los aumentos diarios empiezan el 18 de noviembre', 'Source: YouTube. Figures are from official uploads on HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE and NLE CHOPPA, as of the latest reading.': 'Fuente: YouTube. Cifras de las subidas oficiales en HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE y NLE CHOPPA, según la última lectura.', "Total plays = Spotify streams plus the views of each song's official YouTube videos on HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE and NLE CHOPPA.": 'Reproducciones combinadas = reproducciones de Spotify más las vistas de los videos oficiales de cada canción en HYBE LABELS, BANGTANTV, Jimin - Topic, THEBLACKLABEL, YAMYAM ENTERTAINMENT, JVKE y NLE CHOPPA.'});
+Object.assign(KO,{
+"Countries at release":"발매 직후 차트인 국가",
+"Spotify Daily country charts at release":"발매 직후 Spotify 일간 국가 차트",
+"A compact count of countries each song entered on Spotify's Daily country charts in its first chart week, from the debut day through the sixth day after. The full country list is on each song's page. Only songs with a complete verified first week are listed. Source: Spotify Charts.":"각 곡이 Spotify 일간 국가 차트에 처음 오른 주(데뷔일부터 그 후 엿새까지)에 진입한 국가 수입니다. 전체 국가 목록은 각 곡 페이지에 있습니다. 첫 주 기록이 확인된 곡만 실었습니다. 출처: Spotify 차트",
+"The archived daily tables have no positions for March 25–26, 2023, so no additional countries are recorded for those two days.":"보관된 일간 차트에는 2023년 3월 25–26일의 순위가 없어, 그 이틀에 추가된 국가는 기록되지 않았습니다.",
+"Debut day":"데뷔일",
+"Countries":"국가",
+"Global Daily":"글로벌 일간",
+"Yes":"예",
+"No":"아니요",
+" countries":"개 국가",
+" country":"개 국가",
+"Australia":"호주","Austria":"오스트리아","Belgium":"벨기에","Bulgaria":"불가리아","Canada":"캐나다","Czechia":"체코","Denmark":"덴마크","Estonia":"에스토니아","Finland":"핀란드","France":"프랑스","Germany":"독일","Greece":"그리스","Hungary":"헝가리","Ireland":"아일랜드","Israel":"이스라엘","Italy":"이탈리아","Latvia":"라트비아","Lithuania":"리투아니아","Luxembourg":"룩셈부르크","Netherlands":"네덜란드","New Zealand":"뉴질랜드","Nigeria":"나이지리아","Norway":"노르웨이","Pakistan":"파키스탄","Poland":"폴란드","Portugal":"포르투갈","Romania":"루마니아","Slovakia":"슬로바키아","South Africa":"남아프리카 공화국","Spain":"스페인","Sweden":"스웨덴","Switzerland":"스위스","Türkiye":"튀르키예","UAE":"아랍에미리트","United Kingdom":"영국"
+});
+Object.assign(ES,{
+"Countries at release":"Países en las listas al lanzamiento",
+"Spotify Daily country charts at release":"Listas diarias de Spotify por país al lanzamiento",
+"A compact count of countries each song entered on Spotify's Daily country charts in its first chart week, from the debut day through the sixth day after. The full country list is on each song's page. Only songs with a complete verified first week are listed. Source: Spotify Charts.":"Recuento de los países en los que cada canción entró en las listas diarias de Spotify durante su primera semana en lista, desde el día de debut hasta el sexto día siguiente. La lista completa de países está en la página de cada canción. Solo se incluyen las canciones con una primera semana verificada y completa. Fuente: Spotify Charts.",
+"The archived daily tables have no positions for March 25–26, 2023, so no additional countries are recorded for those two days.":"Las tablas diarias conservadas no tienen posiciones del 25 ni del 26 de marzo de 2023, así que no se registran países adicionales en esos dos días.",
+"Debut day":"Día de debut",
+"Countries":"Países",
+"Global Daily":"Lista diaria Global",
+"Yes":"Sí",
+"No":"No",
+" countries":" países",
+" country":" país",
+"Austria":"Austria","Belgium":"Bélgica","Denmark":"Dinamarca","Estonia":"Estonia","Finland":"Finlandia","Greece":"Grecia","Israel":"Israel","Lithuania":"Lituania","Luxembourg":"Luxemburgo","Netherlands":"Países Bajos","Norway":"Noruega","Portugal":"Portugal","Romania":"Rumanía","Slovakia":"Eslovaquia","Sweden":"Suecia","Switzerland":"Suiza"
+});
+PAT.push(
+ [/^Countries this song entered on Spotify's Daily country charts in its first chart week, from the debut day (.+) through (.+)\. Source: Spotify Charts\.$/,m=>`이 곡이 Spotify 일간 국가 차트에 처음 오른 주(데뷔일 ${m[1]}부터 ${m[2]}까지)에 진입한 국가입니다. 출처: Spotify 차트`],
+ [/^It also entered the Global Daily chart on (.+)\.$/,m=>`${m[1]}에는 글로벌 일간 차트에도 올랐습니다.`]
+);
+ES_PAT.push(
+ [/^Countries this song entered on Spotify's Daily country charts in its first chart week, from the debut day (.+) through (.+)\. Source: Spotify Charts\.$/,m=>`Países en los que esta canción entró en las listas diarias de Spotify durante su primera semana en lista, desde el día de debut ${m[1]} hasta el ${m[2]}. Fuente: Spotify Charts`],
+ [/^It also entered the Global Daily chart on (.+)\.$/,m=>`También entró en la lista diaria Global el ${m[1]}.`]
+);
