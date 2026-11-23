@@ -89,13 +89,16 @@ function songsPage(){
 }
 
 function debutRecord(title){
-  if(typeof DEBUT_CHARTS==='undefined'||!title) return null;
-  if(DEBUT_CHARTS[title]) return DEBUT_CHARTS[title];
+  if(typeof CHART_COUNTRIES==='undefined'||!title) return null;
+  if(CHART_COUNTRIES[title]) return CHART_COUNTRIES[title];
   if(typeof displayTitle==='function'){
-    const alt=Object.keys(DEBUT_CHARTS).find(k=>displayTitle(k)===title||displayTitle(k)===displayTitle(title));
-    if(alt) return DEBUT_CHARTS[alt];
+    const alt=Object.keys(CHART_COUNTRIES).find(k=>displayTitle(k)===title||displayTitle(k)===displayTitle(title));
+    if(alt) return CHART_COUNTRIES[alt];
   }
   return null;
+}
+function chartCountriesAsof(){
+  return (typeof CHART_COUNTRIES_ASOF==='undefined'||!CHART_COUNTRIES_ASOF)?'':longDate(CHART_COUNTRIES_ASOF);
 }
 function debutCountryLabel(code){
   return (typeof COUNTRY_NAMES!=='undefined'&&COUNTRY_NAMES[code])||code;
@@ -109,13 +112,14 @@ function renderSongDebut(title){
   const box=el('debut-charts');
   if(!box) return;
   if(!rec){ box.replaceChildren(); box.hidden=true; return; }
-  const h=node('h2','Countries at release');
-  const cap=node('p',`Countries this song entered on Spotify's Daily country charts in its first chart week, from the debut day ${longDate(rec.debut)} through ${longDate(rec.through)}. Source: Spotify Charts.`,'caption');
+  const h=node('h2','Countries charted (all time)');
+  const asof=chartCountriesAsof();
+  const cap=node('p',`Every country this song has entered on Spotify's Daily country charts, with its all-time peak.${asof?` As of ${asof}.`:''} Source: Spotify Charts.`,'caption');
   const count=node('p',null,'debut-count');
   count.append(node('strong',String(rec.countries.length),'gold'), document.createTextNode(' countries'));
   const ul=document.createElement('ul');
   ul.className='debut-countries';
-  ul.setAttribute('aria-label','Countries at release');
+  ul.setAttribute('aria-label','Countries charted (all time)');
   rec.countries.slice().sort((a,b)=>debutSortName(a).localeCompare(debutSortName(b),'en')).forEach(code=>{
     const li=document.createElement('li');
     li.append(document.createTextNode(debutCountryLabel(code)));
@@ -123,25 +127,28 @@ function renderSongDebut(title){
     if(peak!=null){
       const pk=document.createElement('span');
       pk.className='peak';
-      pk.textContent=' #'+peak;
+      pk.textContent=' Peak #'+peak;
       li.append(pk);
     }
     ul.append(li);
   });
   box.replaceChildren(h, cap, count, ul);
-  box.append(node('p','The number next to each country is its best Daily position in this window.','caption'));
   if(rec.global){
     const gline=rec.globalPeak!=null
-      ? `It also entered the Global Daily chart on ${longDate(rec.debut)}, and peaked at #${rec.globalPeak}.`
-      : `It also entered the Global Daily chart on ${longDate(rec.debut)}.`;
+      ? `It also entered the Global Daily chart, with an all-time peak of #${rec.globalPeak}.`
+      : 'It also entered the Global Daily chart.';
     box.append(node('p',gline,'caption'));
   }
-  if(rec.note) box.append(node('p',rec.note,'caption'));
   box.hidden=false;
 }
 function renderDebutSummary(){
-  const tb=el('debut-rows'); if(!tb||typeof DEBUT_CHARTS==='undefined') return;
-  const rows=Object.entries(DEBUT_CHARTS).map(([title,rec])=>({title,rec})).sort((a,b)=>b.rec.countries.length-a.rec.countries.length||a.title.localeCompare(b.title,'en'));
+  const tb=el('debut-rows'); if(!tb||typeof CHART_COUNTRIES==='undefined') return;
+  const cap=el('debut-cap');
+  if(cap){
+    const asof=chartCountriesAsof();
+    cap.textContent=`Every country each song has entered on Spotify's Daily country charts, with its all-time peak. The full country list is on each song's page.${asof?` As of ${asof}.`:''} Source: Spotify Charts.`;
+  }
+  const rows=Object.entries(CHART_COUNTRIES).map(([title,rec])=>({title,rec})).sort((a,b)=>b.rec.countries.length-a.rec.countries.length||a.title.localeCompare(b.title,'en'));
   tb.replaceChildren();
   rows.forEach(({title,rec})=>{
     const tr=document.createElement('tr');
@@ -151,18 +158,17 @@ function renderDebutSummary(){
     a.textContent=title;
     a.href=(typeof songPageUrl==='function'&&songPageUrl(title))||('./song/'+slug(title)+'.html');
     songTd.append(a);
-    const day=document.createElement('td'); day.textContent=longDate(rec.debut);
     const n=document.createElement('td'); n.textContent=String(rec.countries.length);
     n.dataset.label='Countries';
     const best=document.createElement('td');
     const countryPeaks=rec.countries.map(c=>rec.peaks&&rec.peaks[c]).filter(v=>v!=null);
     best.textContent=countryPeaks.length?'#'+Math.min(...countryPeaks):'–';
     best.dataset.label='Best peak';
-    const g=document.createElement('td'); g.textContent=rec.global?'Yes':'No';
-    day.dataset.label='Debut day';
-    g.dataset.label='Global Daily';
+    const g=document.createElement('td');
+    g.textContent=rec.globalPeak!=null?'#'+rec.globalPeak:'–';
+    g.dataset.label='Global peak';
     songTd.dataset.label='Song';
-    tr.append(songTd, day, n, best, g);
+    tr.append(songTd, n, best, g);
     tb.append(tr);
   });
 }
