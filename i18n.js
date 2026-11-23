@@ -946,6 +946,8 @@ Object.assign(KO,{
 "Only the debut day, June 28, 2024, has a complete country list. Complete lists for June 29–July 4, 2024, were not archived, so no additional countries are recorded for those days.":"전체 국가 목록이 확인된 것은 데뷔일인 2024년 6월 28일뿐입니다. 2024년 6월 29일–7월 4일의 전체 목록은 보관되어 있지 않아, 그 기간에 추가된 국가는 기록되지 않았습니다.",
 "Debut day":"데뷔일",
 "Countries":"국가",
+"Best peak":"최고 순위",
+"The number next to each country is its best Daily position in this window.":"각 국가 옆의 숫자는 이 기간에 기록된 최고 일간 순위입니다.",
 "Global Daily":"글로벌 일간",
 "Yes":"예",
 "No":"아니요",
@@ -963,6 +965,8 @@ Object.assign(ES,{
 "Only the debut day, June 28, 2024, has a complete country list. Complete lists for June 29–July 4, 2024, were not archived, so no additional countries are recorded for those days.":"Solo el día de debut, el 28 de junio de 2024, tiene una lista completa de países. No se conservaron listas completas del 29 de junio al 4 de julio de 2024, así que no se registran países adicionales en esos días.",
 "Debut day":"Día de debut",
 "Countries":"Países",
+"Best peak":"Mejor puesto",
+"The number next to each country is its best Daily position in this window.":"El número junto a cada país es su mejor posición diaria en esta ventana.",
 "Global Daily":"Lista diaria Global",
 "Yes":"Sí",
 "No":"No",
@@ -972,9 +976,11 @@ Object.assign(ES,{
 });
 PAT.push(
  [/^Countries this song entered on Spotify's Daily country charts in its first chart week, from the debut day (.+) through (.+)\. Source: Spotify Charts\.$/,m=>`이 곡이 Spotify 일간 국가 차트에 처음 오른 주(데뷔일 ${m[1]}부터 ${m[2]}까지)에 진입한 국가입니다. 출처: Spotify 차트`],
+ [/^It also entered the Global Daily chart on (.+), and peaked at (#\d+)\.$/,m=>`${m[1]}에는 글로벌 일간 차트에도 올랐고, 최고 순위는 ${m[2]}입니다.`],
  [/^It also entered the Global Daily chart on (.+)\.$/,m=>`${m[1]}에는 글로벌 일간 차트에도 올랐습니다.`]
 );
 ES_PAT.push(
  [/^Countries this song entered on Spotify's Daily country charts in its first chart week, from the debut day (.+) through (.+)\. Source: Spotify Charts\.$/,m=>`Países en los que esta canción entró en las listas diarias de Spotify durante su primera semana en lista, desde el día de debut ${m[1]} hasta el ${m[2]}. Fuente: Spotify Charts`],
+ [/^It also entered the Global Daily chart on (.+), and peaked at (#\d+)\.$/,m=>`También entró en la lista diaria Global el ${m[1]}, y alcanzó el ${m[2]}.`],
  [/^It also entered the Global Daily chart on (.+)\.$/,m=>`También entró en la lista diaria Global el ${m[1]}.`]
 );

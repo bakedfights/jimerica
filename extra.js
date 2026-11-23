@@ -118,11 +118,24 @@ function renderSongDebut(title){
   ul.setAttribute('aria-label','Countries at release');
   rec.countries.slice().sort((a,b)=>debutSortName(a).localeCompare(debutSortName(b),'en')).forEach(code=>{
     const li=document.createElement('li');
-    li.textContent=debutCountryLabel(code);
+    li.append(document.createTextNode(debutCountryLabel(code)));
+    const peak=rec.peaks&&rec.peaks[code];
+    if(peak!=null){
+      const pk=document.createElement('span');
+      pk.className='peak';
+      pk.textContent=' #'+peak;
+      li.append(pk);
+    }
     ul.append(li);
   });
   box.replaceChildren(h, cap, count, ul);
-  if(rec.global) box.append(node('p',`It also entered the Global Daily chart on ${longDate(rec.debut)}.`,'caption'));
+  box.append(node('p','The number next to each country is its best Daily position in this window.','caption'));
+  if(rec.global){
+    const gline=rec.globalPeak!=null
+      ? `It also entered the Global Daily chart on ${longDate(rec.debut)}, and peaked at #${rec.globalPeak}.`
+      : `It also entered the Global Daily chart on ${longDate(rec.debut)}.`;
+    box.append(node('p',gline,'caption'));
+  }
   if(rec.note) box.append(node('p',rec.note,'caption'));
   box.hidden=false;
 }
@@ -141,11 +154,15 @@ function renderDebutSummary(){
     const day=document.createElement('td'); day.textContent=longDate(rec.debut);
     const n=document.createElement('td'); n.textContent=String(rec.countries.length);
     n.dataset.label='Countries';
+    const best=document.createElement('td');
+    const countryPeaks=rec.countries.map(c=>rec.peaks&&rec.peaks[c]).filter(v=>v!=null);
+    best.textContent=countryPeaks.length?'#'+Math.min(...countryPeaks):'–';
+    best.dataset.label='Best peak';
     const g=document.createElement('td'); g.textContent=rec.global?'Yes':'No';
     day.dataset.label='Debut day';
     g.dataset.label='Global Daily';
     songTd.dataset.label='Song';
-    tr.append(songTd, day, n, g);
+    tr.append(songTd, day, n, best, g);
     tb.append(tr);
   });
 }
