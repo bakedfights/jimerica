@@ -107,6 +107,18 @@ function debutSortName(code){
   const label=debutCountryLabel(code);
   return label.replace(/^[^\p{L}\p{N}]+/u,'').trim()||label;
 }
+function debutCountryOrder(rec,a,b){
+  const pa=rec.peaks&&rec.peaks[a], pb=rec.peaks&&rec.peaks[b];
+  if(pa!=null&&pb!=null&&pa!==pb) return pa-pb;
+  if(pa!=null&&pb==null) return -1;
+  if(pa==null&&pb!=null) return 1;
+  const sa=rec.streams&&rec.streams[a], sb=rec.streams&&rec.streams[b];
+  const both=sa!=null&&sb!=null, either=sa!=null||sb!=null;
+  // Same peak: streams (highest first) when both sides have them; otherwise alphabetical.
+  if(both&&sa!==sb) return sb-sa;
+  if(!both&&either) return debutSortName(a).localeCompare(debutSortName(b),'en');
+  return debutSortName(a).localeCompare(debutSortName(b),'en');
+}
 function renderSongDebut(title){
   const rec=debutRecord(title);
   const box=el('debut-charts');
@@ -120,7 +132,7 @@ function renderSongDebut(title){
   const ul=document.createElement('ul');
   ul.className='debut-countries';
   ul.setAttribute('aria-label','Countries charted (all time)');
-  rec.countries.slice().sort((a,b)=>debutSortName(a).localeCompare(debutSortName(b),'en')).forEach(code=>{
+  rec.countries.slice().sort((a,b)=>debutCountryOrder(rec,a,b)).forEach(code=>{
     const li=document.createElement('li');
     li.append(document.createTextNode(debutCountryLabel(code)));
     const peak=rec.peaks&&rec.peaks[code];
