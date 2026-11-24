@@ -1028,3 +1028,5 @@ PAT.push(
 ES_PAT.push(
  [/^Works registered to Jimin with the Korea Music Copyright Association \(KOMCA\), newest first\. As of (.+)\.$/,m=>`Obras registradas a nombre de Jimin en la Asociación de Derechos de Autor de Música de Corea (KOMCA), de la más reciente a la más antigua. Datos al ${m[1]}.`]
 );
+Object.assign(KO,{"Source: Spotify and YouTube. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.":"출처: Spotify, YouTube. 일일 증가는 태평양 시간(PT) 날짜와 사이트 전체와 동일한 일일 기록을 사용합니다."});
+Object.assign(ES,{"Source: Spotify and YouTube. Daily gains use Pacific dates and the same daily snapshots as the rest of the site.":"Fuente: Spotify y YouTube. Las subidas diarias usan fechas del Pacífico y las mismas instantáneas diarias que el resto del sitio."});
