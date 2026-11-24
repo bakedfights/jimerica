@@ -7,6 +7,8 @@ const TODAY_NOTICES = [
     id: 'into-the-sun-komca-2026',
     start: '2026-11-24',
     until: '2026-12-01',
+    href: './achievements.html#cat-credits',
+    link: 'Song credits',
     text: {
       en: 'Jimin is registered with KOMCA as lyricist and composer of BTS\'s "Into the Sun" (25 song credits)',
       ko: '지민이 방탄소년단의 "Into the Sun" 작사·작곡가로 KOMCA에 등록되었습니다 (등록 저작물 25곡)',

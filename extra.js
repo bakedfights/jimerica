@@ -514,7 +514,17 @@ function todayChange(dates){
   if(data.up) bits.push(mover('Biggest rise vs day before',data.up,'chg-up'));
   if(data.dn) bits.push(mover('Biggest drop vs day before',data.dn,'chg-down'));
   for(const c of data.crossed){const s=node('span',null,'today-ms');s.append(songLink(c.song),' ',node('span','passed '+short(c.mark)));bits.push(s);}
-  for(const n of (data.notices||[])){bits.push(node('span',n.text.en,'today-notice'));}
+  for(const n of (data.notices||[])){
+    const s=node('span',null,'today-notice');
+    s.append(node('span',n.text.en));
+    if(n.href){
+      s.append(document.createTextNode(' · '));
+      const a=node('a',n.link||'Song credits');
+      a.href=n.href;
+      s.append(a);
+    }
+    bits.push(s);
+  }
   bits.forEach((b,i)=>{if(i) line.append(node('span',' · ','today-change-sep')); line.append(b);});
   box.append(title,line);
   box.hidden=false;

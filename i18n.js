@@ -1002,3 +1002,29 @@ ES_PAT.push(
 // Temporary KOMCA Into the Sun notice in the Overview "What changed today" box (expires 2026-12-01 PT)
 Object.assign(KO,{"Jimin is registered with KOMCA as lyricist and composer of BTS's \"Into the Sun\" (25 song credits)":"지민이 방탄소년단의 \"Into the Sun\" 작사·작곡가로 KOMCA에 등록되었습니다 (등록 저작물 25곡)"});
 Object.assign(ES,{"Jimin is registered with KOMCA as lyricist and composer of BTS's \"Into the Sun\" (25 song credits)":"Jimin figura en KOMCA como letrista y compositor de \"Into the Sun\" de BTS (25 canciones registradas)"});
+
+// Song credits (KOMCA) on the Achievements page
+Object.assign(KO,{
+  "Song credits":"작사·작곡 크레딧",
+  "Artist":"아티스트",
+  "Role":"역할",
+  "Lyricist & composer":"작사·작곡",
+  "Composer":"작곡",
+  "Lyricist":"작사",
+  "Works registered to Jimin with the Korea Music Copyright Association (KOMCA), newest first. As of November 24, 2026.":"한국음악저작권협회(KOMCA)에 지민 명의로 등록된 저작물입니다. 최신순. 기준일: 2026년 11월 24일."
+});
+Object.assign(ES,{
+  "Song credits":"Créditos de composición",
+  "Artist":"Artista",
+  "Role":"Rol",
+  "Lyricist & composer":"Letrista y compositor",
+  "Composer":"Compositor",
+  "Lyricist":"Letrista",
+  "Works registered to Jimin with the Korea Music Copyright Association (KOMCA), newest first. As of November 24, 2026.":"Obras registradas a nombre de Jimin en la Asociación de Derechos de Autor de Música de Corea (KOMCA), de la más reciente a la más antigua. Datos al 24 de noviembre de 2026."
+});
+PAT.push(
+ [/^Works registered to Jimin with the Korea Music Copyright Association \(KOMCA\), newest first\. As of (.+)\.$/,m=>`한국음악저작권협회(KOMCA)에 지민 명의로 등록된 저작물입니다. 최신순. 기준일: ${m[1]}.`]
+);
+ES_PAT.push(
+ [/^Works registered to Jimin with the Korea Music Copyright Association \(KOMCA\), newest first\. As of (.+)\.$/,m=>`Obras registradas a nombre de Jimin en la Asociación de Derechos de Autor de Música de Corea (KOMCA), de la más reciente a la más antigua. Datos al ${m[1]}.`]
+);
