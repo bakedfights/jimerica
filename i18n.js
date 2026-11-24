@@ -998,3 +998,7 @@ ES_PAT.push(
  [/^Every country each song has entered on Spotify's Daily country charts, with its all-time peak\. The full country list is on each song's page\. As of (.+)\. Source: Spotify Charts\.$/,m=>`Todos los países en los que cada canción entró en las listas diarias de Spotify, con su mejor puesto histórico. La lista completa está en la página de cada canción. Datos al ${m[1]}. Fuente: Spotify Charts.`],
  [/^It also entered the Global Daily chart, with an all-time peak of (#\d+)\.$/,m=>`También entró en la lista diaria Global, con un puesto máximo histórico de ${m[1]}.`],
  [/^Peak #(\d+)$/,m=>`Puesto #${m[1]}`]);
+
+// Temporary KOMCA Into the Sun notice in the Overview "What changed today" box (expires 2026-12-01 PT)
+Object.assign(KO,{"Jimin is registered with KOMCA as lyricist and composer of BTS's \"Into the Sun\" (25 song credits)":"지민이 방탄소년단의 \"Into the Sun\" 작사·작곡가로 KOMCA에 등록되었습니다 (등록 저작물 25곡)"});
+Object.assign(ES,{"Jimin is registered with KOMCA as lyricist and composer of BTS's \"Into the Sun\" (25 song credits)":"Jimin figura en KOMCA como letrista y compositor de \"Into the Sun\" de BTS (25 canciones registradas)"});

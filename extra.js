@@ -468,7 +468,9 @@ function newThisWeek(){
 }
 
 // Overview "What changed today" banner: biggest rise/drop vs the day before (all songs, same logic as #movers)
-// plus any round-number milestone crossed on the data day. Hidden when the prior calendar day is missing.
+// plus any round-number milestone crossed on the data day, plus temporary notices from notices.js
+// (not overwritten by the daily data refresh; each notice expires on its `until` date).
+// Hidden when there is nothing to show (no prior calendar day, no movers, and no active notice).
 function crossedMilestones(dates){
   dates=dates||(typeof HIST_DATES!=='undefined'?HIST_DATES:null);
   if(!dates||typeof HIST_SONGS==='undefined'||typeof SONGS==='undefined'||typeof nextMilestone!=='function') return [];
@@ -492,15 +494,18 @@ function todayChangeData(dates){
   dates=dates||(typeof HIST_DATES!=='undefined'?HIST_DATES:null);
   const i=dates?dates.indexOf(UPDATED):-1;
   const hasPrev=!!dates&&typeof addDays==='function'&&i>=1&&dates[i-1]===addDays(UPDATED,-1);
-  if(!hasPrev) return {hasPrev:false, up:null, dn:null, crossed:[]};
+  const notices=typeof activeTodayNotices==='function'?activeTodayNotices():[];
+  if(!hasPrev) return {hasPrev:false, up:null, dn:null, crossed:[], notices};
   const movers=typeof biggestMovers==='function'?biggestMovers():{up:null,dn:null};
-  return {hasPrev:true, up:movers.up, dn:movers.dn, crossed:crossedMilestones(dates)};
+  return {hasPrev:true, up:movers.up, dn:movers.dn, crossed:crossedMilestones(dates), notices};
 }
 function todayChange(dates){
   const box=el('today-change'); if(!box) return;
   const data=todayChangeData(dates);
   box.replaceChildren();
-  if(!data.hasPrev||(!data.up&&!data.dn&&!data.crossed.length)){ box.hidden=true; return; }
+  const hasMovers=!!(data.hasPrev&&(data.up||data.dn||(data.crossed&&data.crossed.length)));
+  const hasNotice=!!(data.notices&&data.notices.length);
+  if(!hasMovers&&!hasNotice){ box.hidden=true; return; }
   const title=node('strong','What changed today','today-change-label');
   const line=node('p',null,'today-change-line');
   const songLink=name=>{const a=node('a',name,'no-tr');a.href=(typeof songPageUrl==='function'&&songPageUrl(name))||('./song.html?id='+slug(name));return a;};
@@ -509,6 +514,7 @@ function todayChange(dates){
   if(data.up) bits.push(mover('Biggest rise vs day before',data.up,'chg-up'));
   if(data.dn) bits.push(mover('Biggest drop vs day before',data.dn,'chg-down'));
   for(const c of data.crossed){const s=node('span',null,'today-ms');s.append(songLink(c.song),' ',node('span','passed '+short(c.mark)));bits.push(s);}
+  for(const n of (data.notices||[])){bits.push(node('span',n.text.en,'today-notice'));}
   bits.forEach((b,i)=>{if(i) line.append(node('span',' · ','today-change-sep')); line.append(b);});
   box.append(title,line);
   box.hidden=false;
