@@ -6,6 +6,17 @@ const gainClass = n => n>0?'chg-up':n<0?'chg-down':'chg-zero';
 const billions = n => (n / 1e9).toFixed(2) + 'B';
 // Parse at noon as a calendar date: no UTC-midnight shift to the previous PT day.
 const longDate = iso => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+// LIVE_AS_OF is "YYYY-MM-DD HH:MM PT". Fall back to the daily-gain date if a build has no live reading.
+const liveAsOfLabel = () => {
+  if (typeof LIVE_AS_OF === 'undefined' || !LIVE_AS_OF) return longDate(UPDATED);
+  const m = String(LIVE_AS_OF).match(/^(\d{4}-\d{2}-\d{2}) (\d{2}):(\d{2}) PT$/);
+  if (!m) return String(LIVE_AS_OF);
+  const date = new Date(m[1] + 'T12:00:00').toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'});
+  let h = +m[2];
+  const ap = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${date}, ${h}:${m[3]} ${ap} PT`;
+};
 const slug = t => t.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 // WHO in all caps (isaac, Nov 17, 2026). build_history.py already writes WHO into data.js/history.js; this keeps the display right if a daily data.js still carries Spotify's "Who".
 if(typeof SONGS!=='undefined') for(const s of SONGS) if(s&&typeof s[0]==='string') s[0]=s[0].replace(/^Who(?=$| - | \()/,'WHO');
@@ -78,7 +89,7 @@ function renderSongs() {
     row.append(title, node('td', format(s[1])), node('td', format(totalPlays(s))), daily, changeNode('td', s[0]));
     return row;
   }));
-  document.getElementById('song-count').textContent = `${rows.length} ${onlyFeatures ? 'featured ' : ''}songs · daily gains for ${UPDATED}`;
+  document.getElementById('song-count').textContent = `${rows.length} ${onlyFeatures ? 'featured ' : ''}songs · live totals as of ${liveAsOfLabel()} · daily gains for ${UPDATED}`;
 }
 function movement(m) {
   if (m === 'same') return ['= same', 'neutral'];
@@ -96,7 +107,7 @@ function biggestMovers(){
 const $ = id => document.getElementById(id);
 function init() {
   if ($('summary')) 
-  document.getElementById('summary').textContent = `Every Jimin song on Spotify, solo and features, with total streams and daily gains.`;
+  document.getElementById('summary').textContent = `Every Jimin song on Spotify, solo and features, with total streams and daily gains. Totals are live Spotify play counts as of ${liveAsOfLabel()}. Daily gains are for ${longDate(UPDATED)}.`;
   if ($('milestone')) {
   const statement = $('milestone');
   statement.append(document.createTextNode('Jimin has surpassed '),node('strong',(TOTALS.streams/1e9).toFixed(2)+' Billion'),document.createTextNode(' streams across his solo and featured songs on Spotify.'));
@@ -148,7 +159,7 @@ function init() {
     return row;
   }));
   }
-  if ($('source-description')) document.getElementById('source-description').textContent=`Last updated: ${UPDATED}. The figures are Spotify's public play counts. Daily streams are the change in each track's play count between one daily snapshot and the next. Selected song totals may be refreshed from Spotify's live play counter; these are separate from the dated daily gains. Country charts are dated ${WHO_DATE}.`;
+  if ($('source-description')) document.getElementById('source-description').textContent=`Song totals are live Spotify play counts as of ${liveAsOfLabel()}. Daily streams are the change in each track's play count between one daily snapshot and the next, for ${longDate(UPDATED)}. Country charts are dated ${WHO_DATE}. Source: Spotify.`;
 }
 function renderChart(k, rows, src) {
   const cap = $(k+'-cap'); cap.textContent = `Jimin's solo songs on Spotify's ${k==='us'?'USA':'South Korea'} Daily chart, all-time, as of ${longDate(ACH_CHART_ASOF)}. Source: `;

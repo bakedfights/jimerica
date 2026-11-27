@@ -54,7 +54,7 @@
     :`JIMERICA started saving daily Spotify totals on ${longDate(d0)}, so stream gains on this page start ${longDate(first)}. Earlier ${YEAR} days are not counted here. The page updates every morning.`));
   // Cards
   const grid=mk('section','wr-grid'); grid.id='wr-cards';
-  grid.append(card('All-time streams',format(TOTALS.streams),`As of ${longDate(UPDATED)}`,'gold'));
+  grid.append(card('All-time streams',format(TOTALS.streams),`As of ${liveAsOfLabel()}`,'gold'));
   // With the Jan 1 baseline the yearly average and the daily-snapshot cards cover different ranges, so each label names its range
   // and the Best day sits next to an average over the same Nov 3+ days (isaac found Best day < yearly average confusing).
   const addListeners=()=>{if(typeof LISTENERS!=='undefined'&&LISTENERS.length){const L=LISTENERS[LISTENERS.length-1]; const P=LISTENERS.length>1&&LISTENERS[LISTENERS.length-2][0]===addDays(L[0],-1)?LISTENERS[LISTENERS.length-2]:null, dl=P?L[1]-P[1]:null;
@@ -64,7 +64,7 @@
     if(best[0]) grid.append(card(`Best day since ${shortDate(first)}`,format(best[0][1]),longDate(best[0][0]))); }
   else{ grid.append(card('Daily average',format(Math.round(total/days.length)),`${shortDate(first)} – ${shortDate(last)}`));
     if(best[0]) grid.append(card('Best day',format(best[0][1]),longDate(best[0][0]))); addListeners(); }
-  const billion=SONGS.filter(s=>s[1]>=1e9).length; grid.append(card('Songs over 1B',String(billion),`As of ${longDate(UPDATED)}`));
+  const billion=SONGS.filter(s=>s[1]>=1e9).length; grid.append(card('Songs over 1B',String(billion),`As of ${liveAsOfLabel()}`));
   if(crossed.length) grid.append(card('Milestones crossed',String(crossed.length),range));
   else{const nx=msRows()[0]; if(nx){const c=card('Next milestone',short(nx[1]),null);const s=mk('span','wr-sub');s.append(songLink(nx[0][0]),` · est. ${longDate(addDays(UPDATED,nx[2]))}`);c.append(s);grid.append(c);}}
   out.push(grid);
@@ -92,6 +92,6 @@
       ms.append(mk('h3',null,B?`Also in ${YEAR}, as reported`:`Earlier in ${YEAR}, as reported`),rl);const p=mk('p','caption');p.append('Dated by news reports. Sources: ');const a=mk('a',null,'Achievements page');a.href='./achievements.html#milestone-history';p.append(a);ms.append(p);}}
   const nx=msRows()[0]; if(nx){const p=mk('p','wr-next');p.append('Next up: ',songLink(nx[0][0]),` ${short(nx[1])}, est. ${longDate(addDays(UPDATED,nx[2]))}`);ms.append(p);}
   out.push(ms);
-  out.push(mk('p','caption wr-src',`Data as of ${longDate(UPDATED)} · Source: Spotify`));
+  out.push(mk('p','caption wr-src',`Totals are live Spotify play counts as of ${liveAsOfLabel()}. Gains in this window use daily snapshots through ${longDate(UPDATED)}. Source: Spotify`));
   root.replaceChildren(...out);
 })();

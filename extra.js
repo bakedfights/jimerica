@@ -190,9 +190,9 @@ function songPage(){
   const id=new URLSearchParams(location.search).get('id'); const s=SONGS.find(r=>slug(r[0])===id);
   if(!s){el('song-detail').replaceChildren(node('p','Song not found. ','caption'));const a=node('a','Browse all songs →');a.href='./songs.html';el('song-detail').append(a);return;}
   document.title=s[0]+' · JIMERICA'; el('song-title').textContent=s[0];
-  {const cu='https://jimerica.wiki/song/'+id+'.html'; let c=document.querySelector('link[rel=canonical]'); if(!c){c=document.createElement('link');c.rel='canonical';document.head.append(c);} c.href=cu; let ou=document.querySelector('meta[property="og:url"]'); if(!ou){ou=document.createElement('meta');ou.setAttribute('property','og:url');document.head.append(ou);} ou.setAttribute('content',cu); const md=document.querySelector('meta[name=description]'); if(md) md.content=`${typeof displayTitle==='function'?displayTitle(s[0]):s[0]} by Jimin: ${s[1].toLocaleString('en-US')} Spotify streams as of ${longDate(UPDATED)}. Daily gains and next milestone on JIMERICA.`;} // SEO: canonical and og:url = this song's static share page (song/<slug>.html)
+  {const cu='https://jimerica.wiki/song/'+id+'.html'; let c=document.querySelector('link[rel=canonical]'); if(!c){c=document.createElement('link');c.rel='canonical';document.head.append(c);} c.href=cu; let ou=document.querySelector('meta[property="og:url"]'); if(!ou){ou=document.createElement('meta');ou.setAttribute('property','og:url');document.head.append(ou);} ou.setAttribute('content',cu); const md=document.querySelector('meta[name=description]'); if(md) md.content=`${typeof displayTitle==='function'?displayTitle(s[0]):s[0]} by Jimin: ${s[1].toLocaleString('en-US')} Spotify streams as of ${liveAsOfLabel()}. Daily gains and next milestone on JIMERICA.`;} // SEO: canonical and og:url = this song's static share page (song/<slug>.html)
   const rank=SONGS.slice().sort((a,b)=>b[1]-a[1]).indexOf(s)+1, share=s[1]/TOTALS.streams*100;
-  el('song-sub').textContent=`${s[3]?'Featured':'Solo'} song · #${rank} of ${SONGS.length} by total streams · data as of ${longDate(UPDATED)}`;
+  el('song-sub').textContent=`${s[3]?'Featured':'Solo'} song · #${rank} of ${SONGS.length} by total streams · data as of ${liveAsOfLabel()}`;
   const hero=el('song-hero');
   if(hero&&!hero.querySelector('.cover-lg')){
     const im=typeof coverImg==='function'?coverImg(s[0],'cover-lg',200):null;
@@ -261,7 +261,7 @@ function msRows(){ return SONGS.map(s=>[s,avg7(s)]).filter(([s,a])=>a.rate>0).ma
 function milestonesPage(){
   if(!el('ms-rows')) return;
   const rows=msRows();
-  el('ms-cap').textContent=`Projected from each song's average daily streams over the last ${Math.max(...rows.map(r=>r[3].n),1)} days (up to 7) as of ${longDate(UPDATED)}, assuming that pace continues. These are estimates, not predictions or official figures. Songs without a daily figure are left out.`;
+  el('ms-cap').textContent=`Current streams are live Spotify play counts as of ${liveAsOfLabel()}. Projected from each song's average daily streams over the last ${Math.max(...rows.map(r=>r[3].n),1)} days (up to 7) as of ${longDate(UPDATED)}, assuming that pace continues. These are estimates, not predictions or official figures. Songs without a daily figure are left out.`;
   el('ms-rows').replaceChildren(...rows.map(([s,m,d])=>{const tr=node('tr');const a=node('a',s[0]);a.href='./song/'+slug(s[0])+'.html';const td=node('td');td.append(a);
     const pct=Math.min(100,(s[1]-(m-(m<=1e8?1e7:m<=1e9?5e7:1e8)))/(m<=1e8?1e7:m<=1e9?5e7:1e8)*100);
     const prog=node('td',null,'prog');const bar=node('div',null,'pbar');const f=node('span');f.style.width=pct+'%';bar.append(f);prog.append(bar);

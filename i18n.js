@@ -79,13 +79,16 @@ const RULES=[
 ];
 const PAT=[ // applied after date conversion; full-string patterns
  [/^Every Jimin song on Spotify, solo and features, with total streams and daily gains\. Data as of (.+), Spotify play counts\.$/,m=>`지민의 Spotify 솔로·피처링 전곡의 총 스트리밍과 일일 증가. ${m[1]} 기준 Spotify 재생수.`],
+ [/^Every Jimin song on Spotify, solo and features, with total streams and daily gains\. Totals are live Spotify play counts as of (.+)\. Daily gains are for (.+)\.$/,m=>`지민의 Spotify 솔로·피처링 전곡의 총 스트리밍과 일일 증가. 총 스트리밍은 ${m[1]} 기준 Spotify 실시간 재생수입니다. 일일 증가는 ${m[2]} 기준입니다.`],
  [/^streams across his solo and featured songs on Spotify as of (.+)$/,m=>`스트리밍 (Spotify 솔로·피처링곡, ${m[1]} 기준)`],
  [/^Streams gained on (.+)\.$/,m=>`${m[1]} 늘어난 스트리밍.`],
  [/^([\d.]+) Billion$/,m=>`${m[1]}B`],
  [/^(\d+) songs · daily gains for (.+)$/,m=>`${m[1]}곡 · ${m[2]} 일일 증가`],
+ [/^(\d+) (featured )?songs · live totals as of (.+) · daily gains for (.+)$/,m=>`${m[1]}곡${m[2]?' 피처링':''} · ${m[3]} 기준 실시간 총 스트리밍 · ${m[4]} 일일 증가`],
  [/^(\d+) daily snapshots, (\S+) to (\S+)\. Daily = change in total play counts since the previous snapshot\. History grows by one point each day\.$/,m=>`일일 기록 ${m[1]}개, ${m[2]} ~ ${m[3]}. 일일 = 직전 기록 대비 총 재생수 변화. 매일 한 점씩 늘어납니다.`],
  [/^"WHO" daily streams summed over the country charts it appears on \((.+)\)\.$/,m=>`"WHO"가 오른 국가별 차트의 일일 스트리밍 합계 (${m[1].replace(/ countries/g,'개국')}).`],
  [/^Projected from each song's average daily streams over the last (\d+) days \(up to 7\) as of (.+), assuming that pace continues\. These are estimates, not predictions or official figures\. Songs without a daily figure are left out\.$/,m=>`${m[2]} 기준 최근 ${m[1]}일(최대 7일) 평균 일일 스트리밍이 유지된다고 가정한 예상치입니다. 공식 수치가 아니며, 일일 수치가 없는 곡은 제외했습니다.`],
+ [/^Current streams are live Spotify play counts as of (.+)\. Projected from each song's average daily streams over the last (\d+) days \(up to 7\) as of (.+), assuming that pace continues\. These are estimates, not predictions or official figures\. Songs without a daily figure are left out\.$/,m=>`현재 스트리밍은 ${m[1]} 기준 Spotify 실시간 재생수입니다. ${m[3]} 기준 최근 ${m[2]}일(최대 7일) 평균 일일 스트리밍이 유지된다고 가정한 예상치입니다. 공식 수치가 아니며, 일일 수치가 없는 곡은 제외했습니다.`],
  [/^≈ (.+) \(estimate\)$/,m=>`≈ ${m[1]} (예상)`],
  [/^(Solo|Featured) song · #(\d+) of (\d+) by total streams · data as of (.+)$/,m=>`${m[1]==='Solo'?'솔로곡':'피처링곡'} · 총 스트리밍 ${m[3]}곡 중 ${m[2]}위 · ${m[4]} 기준`],
  [/^([▲▼] )?([+\-−]?[\d,]+) vs day before$/,m=>`${m[1]||''}${m[2]} (전날 대비)`],
@@ -97,6 +100,9 @@ const PAT=[ // applied after date conversion; full-string patterns
  [/^"WHO" on Spotify's daily country charts for (\S+)\. Source: Spotify charts\. Each chart keeps its own verified date\.$/,m=>`${m[1]} Spotify 국가별 일간 차트 속 "WHO". 출처: Spotify 차트. 각 차트는 확인된 자체 날짜를 따릅니다.`],
  [/^Jimin's solo songs on Spotify's (USA|South Korea) Daily chart, all-time, as of (.+)\. Source:$/,m=>`Spotify ${m[1]==='USA'?'미국':'한국'} 일간 차트 속 지민 솔로곡 누적 기록 (${m[2]} 기준). 출처:`],
  [/^Spotify all-time streams per song as of (.+) \(updates daily\)\. Source: Spotify\.$/,m=>`${m[1]} 기준 곡별 Spotify 누적 스트리밍 (매일 업데이트). 출처: Spotify.`],
+ [/^Spotify all-time streams per song as of (.+)\. Source: Spotify\.$/,m=>`${m[1]} 기준 곡별 Spotify 누적 스트리밍. 출처: Spotify.`],
+ [/^Song totals are live Spotify play counts as of (.+)\. Daily streams are the change in each track's play count between one daily snapshot and the next, for (.+)\. Country charts are dated (.+)\. Source: Spotify\.$/,m=>`곡별 총 스트리밍은 ${m[1]} 기준 Spotify 실시간 재생수입니다. 일일 스트리밍은 ${m[2]} 기준, 하루 스냅샷과 다음 스냅샷 사이 재생수 변화입니다. 국가 차트 날짜는 ${m[3]}입니다. 출처: Spotify.`],
+ [/^Totals are live Spotify play counts as of (.+)\. Gains in this window use daily snapshots through (.+)\. Source: Spotify$/,m=>`총 스트리밍은 ${m[1]} 기준 Spotify 실시간 재생수입니다. 이 구간의 증가는 ${m[2]}까지의 일일 스냅샷을 사용합니다. 출처: Spotify`],
  [/^(\d+) (billion|million)\+ streams$/,m=>`${m[2]==='billion'?m[1]*10+'억':m[1]*100+'만'}+ 스트리밍`],
  [/^Index ([\d,]+) ·$/,m=>`지수 ${m[1]} ·`],
  [/^(.+) cover art$/,m=>`${m[1]} 커버`],
@@ -600,6 +606,7 @@ const ES_PAT=[
 [/^(\d+) daily snapshots, (\S+) to (\S+)\. Daily = change in total play counts since the previous snapshot\. History grows by one point each day\.$/,m=>`${m[1]} registros diarios, del ${m[2]} al ${m[3]}. Diario = variación del contador total desde el registro anterior. Cada día se añade un punto al historial.`],
 [/^"WHO" daily streams summed over the country charts it appears on \((.+)\)\.$/,m=>`Suma de las reproducciones diarias de "WHO" en las listas nacionales donde aparece (${m[1].replace(/ countries/g,' países')}).`],
 [/^Projected from each song's average daily streams over the last (\d+) days \(up to 7\) as of (.+), assuming that pace continues\. These are estimates, not predictions or official figures\. Songs without a daily figure are left out\.$/,m=>`Estimación basada en el promedio de reproducciones diarias de cada canción en los últimos ${m[1]} días (hasta 7), al ${m[2]}, suponiendo que ese ritmo continúe. Son estimaciones, no predicciones ni cifras oficiales. Se excluyen las canciones sin datos diarios.`],
+[/^Current streams are live Spotify play counts as of (.+)\. Projected from each song's average daily streams over the last (\d+) days \(up to 7\) as of (.+), assuming that pace continues\. These are estimates, not predictions or official figures\. Songs without a daily figure are left out\.$/,m=>`Las reproducciones actuales son los contadores en directo de Spotify al ${m[1]}. Estimación basada en el promedio de reproducciones diarias de cada canción en los últimos ${m[2]} días (hasta 7), al ${m[3]}, suponiendo que ese ritmo continúe. Son estimaciones, no predicciones ni cifras oficiales. Se excluyen las canciones sin datos diarios.`],
 [/^≈ (.+) \(estimate\)$/,m=>`≈ ${m[1]} (estimación)`],
 [/^(Solo|Featured) song · #(\d+) of (\d+) by total streams · data as of (.+)$/,m=>`Canción ${m[1]==='Solo'?'solista':'en colaboración'} · n.º ${m[2]} de ${m[3]} por reproducciones totales · datos del ${m[4]}`],
 [/^([▲▼] )?([+\-−]?[\d,]+) vs day before$/,m=>`${m[1]||''}${m[2]} respecto al día anterior`],
@@ -611,6 +618,11 @@ const ES_PAT=[
 [/^"WHO" on Spotify's daily country charts for (\S+)\. Source: Spotify charts\. Each chart keeps its own verified date\.$/,m=>`"WHO" en las listas diarias de Spotify por país del ${m[1]}. Fuente: listas de Spotify. Cada lista conserva su propia fecha verificada.`],
 [/^Jimin's solo songs on Spotify's (USA|South Korea) Daily chart, all-time, as of (.+)\. Source:$/,m=>`Historial de las canciones solistas de Jimin en la lista diaria de Spotify de ${m[1]==='USA'?'Estados Unidos':'Corea del Sur'}, al ${m[2]}. Fuente:`],
 [/^Spotify all-time streams per song as of (.+) \(updates daily\)\. Source: Spotify\.$/,m=>`Reproducciones acumuladas por canción en Spotify al ${m[1]} (actualización diaria). Fuente: Spotify.`],
+[/^Spotify all-time streams per song as of (.+)\. Source: Spotify\.$/,m=>`Reproducciones acumuladas por canción en Spotify al ${m[1]}. Fuente: Spotify.`],
+[/^Every Jimin song on Spotify, solo and features, with total streams and daily gains\. Totals are live Spotify play counts as of (.+)\. Daily gains are for (.+)\.$/,m=>`Todas las canciones de Jimin en Spotify, en solitario y colaboraciones, con reproducciones totales y aumentos diarios. Los totales son los contadores en directo de Spotify al ${m[1]}. Los aumentos diarios corresponden al ${m[2]}.`],
+[/^(\d+) (featured )?songs · live totals as of (.+) · daily gains for (.+)$/,m=>`${m[1]} canciones${m[2]?' con colaboración':''} · totales en directo al ${m[3]} · aumentos diarios del ${m[4]}`],
+[/^Song totals are live Spotify play counts as of (.+)\. Daily streams are the change in each track's play count between one daily snapshot and the next, for (.+)\. Country charts are dated (.+)\. Source: Spotify\.$/,m=>`Los totales de cada canción son los contadores en directo de Spotify al ${m[1]}. Las reproducciones diarias son la variación del contador de cada canción entre un registro diario y el siguiente, del ${m[2]}. Las listas por país corresponden al ${m[3]}. Fuente: Spotify.`],
+[/^Totals are live Spotify play counts as of (.+)\. Gains in this window use daily snapshots through (.+)\. Source: Spotify$/,m=>`Los totales son los contadores en directo de Spotify al ${m[1]}. Los aumentos de este periodo usan los registros diarios hasta el ${m[2]}. Fuente: Spotify`],
 [/^(\d+) (billion|million)\+ streams$/,m=>`${m[1]} ${m[2]==='billion'?'mil millones':'millones'} o más reproducciones`],
 [/^Index ([\d,]+)( ·)?$/,m=>`Índice ${m[1]}${m[2]||''}`],
 [/^(.+) cover art$/,m=>`Portada de ${m[1]}`],
@@ -824,6 +836,8 @@ Object.assign(KO,{"Combined streams are the sum of each album's songs. Source: S
 Object.assign(ES,{"Combined streams are the sum of each album's songs. Source: Spotify.":"Las reproducciones combinadas son la suma de las canciones de cada álbum. Fuente: Spotify."});
 PAT.push([/^(.+)% of all Jimin streams$/,m=>`지민 전체 스트리밍의 ${m[1]}%`]);
 ES_PAT.push([/^(.+)% of all Jimin streams$/,m=>`${m[1]}% de todas las reproducciones de Jimin`]);
+Object.assign(KO,{"Totals are live Spotify play counts as of the time shown below. Daily = streams gained on the latest tracked day; – means no daily figure is available.":"총 스트리밍은 아래에 표시된 시각 기준의 Spotify 실시간 재생수입니다. 일일 = 가장 최근 집계일의 증가분, – 는 일일 수치가 없다는 뜻입니다."});
+Object.assign(ES,{"Totals are live Spotify play counts as of the time shown below. Daily = streams gained on the latest tracked day; – means no daily figure is available.":"Los totales son los contadores en directo de Spotify a la hora indicada abajo. Diario = aumento del último día registrado; – significa que no hay una cifra diaria."});
 // Nov 16, 2026 features: share-as-image buttons, count-up/sparkle (remove with features1116.js; see FANSITE.md).
 Object.assign(KO,{"Save image":"이미지 저장","Share image":"이미지 공유","Preparing…":"준비 중…","Image ready ✓":"이미지 준비 완료 ✓","Could not create the image":"이미지를 만들지 못했습니다","Save an image of this section":"이 섹션을 이미지로 저장","Save a branded image of this section":"이 섹션을 JIMERICA 이미지로 저장"});
 Object.assign(ES,{"Save image":"Guardar imagen","Share image":"Compartir imagen","Preparing…":"Preparando…","Image ready ✓":"Imagen lista ✓","Could not create the image":"No se pudo crear la imagen","Save an image of this section":"Guardar una imagen de esta sección","Save a branded image of this section":"Guardar una imagen de esta sección con la marca JIMERICA"});
@@ -858,7 +872,7 @@ Object.assign(KO_BLOCK,{
  st1:"<strong>숫자의 출처.</strong> JIMERICA의 모든 스트리밍 수치는 Spotify에서 가져옵니다. 곡별 Spotify 누적 재생수와 \"WHO\"의 Spotify 국가별 일간 차트입니다. 다른 앱의 재생은 포함되지 않습니다.",
  st2:"<strong>매일 업데이트.</strong> 사이트는 매일 아침(태평양 시간) 한 번 갱신됩니다. Spotify 하루치 스트리밍이 끝나야 하므로, 갱신할 때마다 전날 수치를 보여 줍니다.",
  st3:"<strong>일일 증가.</strong> 곡의 일일 증가는 하루 동안 늘어난 스트리밍 수, 즉 그날 누적에서 전날 누적을 뺀 값입니다. 개요 페이지에서 일일 증가가 큰 곡 순위와 전날보다 늘었는지 줄었는지를 볼 수 있습니다.",
- st4:"<strong>\"기준 데이터\"와 \"데이터 업데이트\".</strong> \"기준\" 날짜는 Spotify 수치가 해당하는 날입니다. 각 페이지 상단 배지의 \"데이터 업데이트\"는 사이트를 마지막으로 갱신한 날입니다. 보통 하루 차이가 납니다.",
+ st4:"<strong>\"기준 데이터\"와 \"데이터 업데이트\".</strong> 곡별 총 스트리밍은 각 수치와 함께 표시된 시각 기준의 Spotify 실시간 재생수입니다. 일일 증가의 \"기준\" 날짜는 그 증가가 해당하는 날입니다. 각 페이지 상단 배지의 \"데이터 업데이트\"는 사이트를 마지막으로 갱신한 날입니다.",
  st5:"<strong>월간 리스너.</strong> 지민의 Spotify 아티스트 프로필에 표시되는, 최근 28일 동안 지민의 음악을 들은 사람 수입니다. 누적 합계가 아니라 이동 집계이므로 줄어들 수도 있습니다.",
  st6:"Spotify 이용약관을 지켜 주세요. 봇, 가짜 계정, 유료 스트리밍은 걸러지며 아티스트에게 해가 될 수 있습니다.",
  sm1:"<strong>마일스톤은 곡이 곧 넘어설 누적 스트리밍의 기준 숫자</strong>입니다(예: 1억, 5억, 10억). 곡이 커질수록 단위도 커집니다. 1억까지는 1천만 단위, 10억까지는 5천만 단위, 그 이후는 1억 단위입니다.",
@@ -868,7 +882,7 @@ Object.assign(ES_BLOCK,{
  st1:"<strong>De dónde salen las cifras.</strong> Todas las reproducciones de JIMERICA vienen de Spotify: el contador total de cada canción y las listas diarias por país de Spotify para \"WHO\". No se cuentan otras aplicaciones.",
  st2:"<strong>Se actualiza cada día.</strong> El sitio se actualiza una vez cada mañana, hora del Pacífico. Cada actualización muestra las cifras del día anterior, porque primero tiene que terminar un día completo de reproducciones en Spotify.",
  st3:"<strong>Ganancias diarias.</strong> La ganancia diaria de una canción es cuántas reproducciones sumó en un día: su total de ese día menos su total del día anterior. El Resumen ordena las mayores ganancias diarias y muestra si cada canción subió o bajó respecto al día anterior.",
- st4:"<strong>\"Datos a\" y \"Datos actualizados\".</strong> \"Datos a\" es el día al que corresponden las cifras de Spotify. \"Datos actualizados\", la etiqueta en la parte superior de cada página, es el día en que se actualizó el sitio por última vez. Normalmente hay un día de diferencia.",
+ st4:"<strong>\"Datos a\" y \"Datos actualizados\".</strong> Los totales de cada canción son los contadores en directo de Spotify a la hora indicada junto a esas cifras. \"Datos a\" en los aumentos diarios es el día al que corresponden esos aumentos. \"Datos actualizados\", la etiqueta en la parte superior de cada página, es el día en que se actualizó el sitio por última vez.",
  st5:"<strong>Oyentes mensuales.</strong> El número de personas que escucharon a Jimin en Spotify en los últimos 28 días, tal como aparece en su perfil de artista de Spotify. Es un recuento móvil, no un total acumulado, así que también puede bajar.",
  st6:"Respeta las condiciones de uso de Spotify. Los bots, las cuentas falsas y las reproducciones pagadas se filtran y pueden perjudicar al artista.",
  sm1:"<strong>Un hito es una cifra redonda de reproducciones totales</strong> que una canción está a punto de superar, como 100M, 500M o 1B. Los saltos crecen con la canción: cada 10M hasta 100M, cada 50M hasta 1B y luego cada 100M.",
